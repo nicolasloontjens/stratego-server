@@ -30,8 +30,8 @@ public class StrategoResponses {
         sendNotYetImplementedResponse(ctx);
     }
 
-    public static void sendStrategoVersions(RoutingContext ctx) {
-        sendNotYetImplementedResponse(ctx);
+    public static void sendStrategoVersions(RoutingContext ctx, String[] versions) {
+        sendJsonResponse(ctx, 200, new JsonObject().put("versions",versions));
     }
 
     public static void sendStrategoVersion(RoutingContext ctx) {

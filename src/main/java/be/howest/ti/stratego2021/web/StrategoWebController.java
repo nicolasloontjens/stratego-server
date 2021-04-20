@@ -20,7 +20,7 @@ public interface StrategoWebController {
     void getDemo();
     void postDemo();
 
-    void getStrategoVersions();
+    String[] getStrategoVersions();
     void getStrategoVersion();
 
     void joinGame();

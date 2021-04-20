@@ -33,8 +33,11 @@ public class StrategoController implements StrategoWebController {
     }
 
     @Override
-    public void getStrategoVersions() {
+    public String[] getStrategoVersions() {
         // needs to be implemented (update interface first)
+        return new String[]{
+                "original", "infiltrator","duel", "mini","tiny"
+        };
     }
 
     @Override
