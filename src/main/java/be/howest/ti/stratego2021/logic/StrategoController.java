@@ -1,7 +1,6 @@
 package be.howest.ti.stratego2021.logic;
 
 import be.howest.ti.stratego2021.web.StrategoWebController;
-import be.howest.ti.stratego2021.web.bridge.StrategoBridge;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,15 +42,30 @@ public class StrategoController implements StrategoWebController {
     }
 
     @Override
-    public void getStrategoVersion() {
+    public Version getStrategoVersion(String filter) {
         // needs to be implemented (update interface first)
+        List<Version> versions = new ArrayList<>();
+        versions.add(new Version("original", PieceCount.valueOf("ORIGINAL")));
+        versions.add(new Version("infiltrator", PieceCount.valueOf("INFILTRATOR")));
+        versions.add(new Version("duel", PieceCount.valueOf("DUEL")));
+        versions.add(new Version("mini", PieceCount.valueOf("MINI")));
+        versions.add(new Version("tiny", PieceCount.valueOf("TINY")));
+        Version res = null;
+        for(Version version: versions){
+            if(version.getName().contains(filter)){
+                res = version;
+            }
+        }
+        return res;
     }
 
+
+    /*
     @Override
     public void joinGame(String version, Board startConfiguration) {
         // needs to be implemented (update interface first)
     }
-
+    */
     @Override
     public void makeMove() {
         // needs to be implemented (update interface first)

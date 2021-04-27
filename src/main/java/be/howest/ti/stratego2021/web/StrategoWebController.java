@@ -1,6 +1,7 @@
 package be.howest.ti.stratego2021.web;
 
 import be.howest.ti.stratego2021.logic.Move;
+import be.howest.ti.stratego2021.logic.Version;
 
 import java.util.List;
 
@@ -25,9 +26,9 @@ public interface StrategoWebController {
     void postDemo();
 
     String[] getStrategoVersions();
-    void getStrategoVersion();
+    Version getStrategoVersion(String filter);
 
-    void joinGame(String version, Board startConfiguration);
+    //void joinGame(String version, Board startConfiguration);
 
     void makeMove();
     List<Move> getMoves();
