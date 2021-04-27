@@ -23,7 +23,7 @@ public interface StrategoWebController {
     void getStrategoVersions();
     void getStrategoVersion();
 
-    void joinGame();
+    void joinGame(String version, Board startConfiguration);
 
     void makeMove();
     void getMoves();
