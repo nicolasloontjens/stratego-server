@@ -43,7 +43,7 @@ public class StrategoController implements StrategoWebController {
     }
 
     @Override
-    public void joinGame() {
+    public void joinGame(String version, Board startConfiguration) {
         // needs to be implemented (update interface first)
     }
 

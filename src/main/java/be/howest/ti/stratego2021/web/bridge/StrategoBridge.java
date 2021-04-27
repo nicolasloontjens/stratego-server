@@ -102,7 +102,9 @@ public class StrategoBridge implements AuthenticationProvider {
     private void joinGame(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
-        controller.joinGame();
+        controller.joinGame(
+                requestParameters.getVersion(),
+                requestParameters.getStartConfiguration());
 
         StrategoResponses.sendJoinedGameInfo(ctx);
 
