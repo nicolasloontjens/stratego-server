@@ -70,9 +70,9 @@ public class StrategoBridge implements AuthenticationProvider {
     private void getStrategoVersions(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
-        controller.getStrategoVersions();
+        String[] allVersions = controller.getStrategoVersions();
 
-        StrategoResponses.sendStrategoVersions(ctx);
+        StrategoResponses.sendStrategoVersions(ctx, allVersions);
     }
 
     private void getStrategoVersion(RoutingContext ctx) {
