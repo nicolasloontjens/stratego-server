@@ -1,6 +1,7 @@
 package be.howest.ti.stratego2021.web.bridge;
 
 import be.howest.ti.stratego2021.logic.Move;
+import be.howest.ti.stratego2021.logic.Version;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
@@ -37,8 +38,8 @@ public class StrategoResponses {
         sendJsonResponse(ctx, 200, new JsonObject().put("versions",versions));
     }
 
-    public static void sendStrategoVersion(RoutingContext ctx) {
-        sendNotYetImplementedResponse(ctx);
+    public static void sendStrategoVersion(RoutingContext ctx, Version version) {
+        sendJsonResponse(ctx, 200, version);
     }
 
     public static void sendMove(RoutingContext ctx) {

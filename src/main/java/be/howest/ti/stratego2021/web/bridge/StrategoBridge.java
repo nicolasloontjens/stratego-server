@@ -2,6 +2,7 @@ package be.howest.ti.stratego2021.web.bridge;
 
 import be.howest.ti.stratego2021.logic.Move;
 import be.howest.ti.stratego2021.logic.StrategoController;
+import be.howest.ti.stratego2021.logic.Version;
 import be.howest.ti.stratego2021.logic.exceptions.StrategoGameRuleException;
 import be.howest.ti.stratego2021.logic.exceptions.StrategoResourceNotFoundException;
 
@@ -81,9 +82,9 @@ public class StrategoBridge implements AuthenticationProvider {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
         String filter = requestParameters.getVersion();
-        controller.getStrategoVersion();
+        Version res = controller.getStrategoVersion(filter);
 
-        StrategoResponses.sendStrategoVersion(ctx);
+        StrategoResponses.sendStrategoVersion(ctx, res);
     }
 
     private void makeMove(RoutingContext ctx) {
