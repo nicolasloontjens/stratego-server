@@ -3,6 +3,7 @@ package be.howest.ti.stratego2021.logic;
 import be.howest.ti.stratego2021.web.StrategoWebController;
 import be.howest.ti.stratego2021.web.bridge.StrategoBridge;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -58,7 +59,9 @@ public class StrategoController implements StrategoWebController {
 
     @Override
     public List<Move> getMoves() {
-        // needs to be implemented (update interface first)
+        List<Move> res = new ArrayList<>();
+        res.add(new Move("test",1,1,1,1));
+        return res;
     }
 
     @Override

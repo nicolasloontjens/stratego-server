@@ -98,7 +98,7 @@ public class StrategoBridge implements AuthenticationProvider {
 
         List<Move> res = controller.getMoves();
 
-        StrategoResponses.sendMoves(ctx);
+        StrategoResponses.sendMoves(ctx, res);
     }
 
     private void joinGame(RoutingContext ctx) {

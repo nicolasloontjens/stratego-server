@@ -1,9 +1,12 @@
 package be.howest.ti.stratego2021.web.bridge;
 
+import be.howest.ti.stratego2021.logic.Move;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+
+import java.util.List;
 
 
 /**
@@ -42,8 +45,8 @@ public class StrategoResponses {
         sendNotYetImplementedResponse(ctx);
     }
 
-    public static void sendMoves(RoutingContext ctx) {
-        sendNotYetImplementedResponse(ctx);
+    public static void sendMoves(RoutingContext ctx, List<Move> moves) {
+        sendJsonResponse(ctx,200, new JsonObject().put("moves",moves));
     }
 
     public static void sendGameState(RoutingContext ctx) {
