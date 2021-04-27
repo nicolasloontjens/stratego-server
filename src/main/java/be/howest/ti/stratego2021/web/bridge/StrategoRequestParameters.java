@@ -35,10 +35,10 @@ public class StrategoRequestParameters {
         JsonObject body = params.body().getJsonObject();
         return body.getString("version");
     }
-
+    /*
     public Board getStartConfiguration(){
         JsonObject body = params.body().getJsonObject();
         return body.("startConfiguration");
     }
-
+    */
 }

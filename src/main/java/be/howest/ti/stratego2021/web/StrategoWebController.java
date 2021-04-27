@@ -1,5 +1,9 @@
 package be.howest.ti.stratego2021.web;
 
+import be.howest.ti.stratego2021.logic.Move;
+
+import java.util.List;
+
 /**
  * StrategoWebController defines the boundary between the HTTP/Json webserver
  * and the actual implementation of the stratego game in Java.
@@ -26,7 +30,7 @@ public interface StrategoWebController {
     void joinGame(String version, Board startConfiguration);
 
     void makeMove();
-    void getMoves();
+    List<Move> getMoves();
 
     void getGameState();
 }
