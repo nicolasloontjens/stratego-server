@@ -46,12 +46,12 @@ public class StrategoController implements StrategoWebController {
     public void getStrategoVersion() {
         // needs to be implemented (update interface first)
     }
-
+    /*
     @Override
     public void joinGame(String version, Board startConfiguration) {
         // needs to be implemented (update interface first)
     }
-
+    */
     @Override
     public void makeMove() {
         // needs to be implemented (update interface first)

@@ -32,8 +32,7 @@ public class StrategoRequestParameters {
     }
 
     public String getVersion(){
-        JsonObject body = params.body().getJsonObject();
-        return body.getString("version");
+        return params.pathParameter("version").getString();
     }
     /*
     public Board getStartConfiguration(){

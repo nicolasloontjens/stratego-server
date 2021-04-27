@@ -80,6 +80,7 @@ public class StrategoBridge implements AuthenticationProvider {
     private void getStrategoVersion(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
+        String filter = requestParameters.getVersion();
         controller.getStrategoVersion();
 
         StrategoResponses.sendStrategoVersion(ctx);
@@ -100,7 +101,7 @@ public class StrategoBridge implements AuthenticationProvider {
 
         StrategoResponses.sendMoves(ctx, res);
     }
-
+    /*
     private void joinGame(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
@@ -111,7 +112,7 @@ public class StrategoBridge implements AuthenticationProvider {
         StrategoResponses.sendJoinedGameInfo(ctx);
 
     }
-
+    */
     private void getGameState(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
@@ -156,7 +157,7 @@ public class StrategoBridge implements AuthenticationProvider {
 
         routerBuilder.operation("getStrategoVersion").handler(this::getStrategoVersion);
 
-        routerBuilder.operation("joinGame").handler(this::joinGame);
+        //routerBuilder.operation("joinGame").handler(this::joinGame);
 
         routerBuilder.operation("getGameState")
                 .handler(this::authorize)
