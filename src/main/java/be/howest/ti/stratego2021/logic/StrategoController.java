@@ -4,6 +4,7 @@ import be.howest.ti.stratego2021.web.StrategoWebController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 /**
@@ -44,21 +45,8 @@ public class StrategoController implements StrategoWebController {
     @Override
     public Version getStrategoVersion(String filter) {
         // needs to be implemented (update interface first)
-        List<Version> versions = new ArrayList<>();
-        versions.add(new Version("original", PieceCount.valueOf("ORIGINAL")));
-        versions.add(new Version("infiltrator", PieceCount.valueOf("INFILTRATOR")));
-        versions.add(new Version("duel", PieceCount.valueOf("DUEL")));
-        versions.add(new Version("mini", PieceCount.valueOf("MINI")));
-        versions.add(new Version("tiny", PieceCount.valueOf("TINY")));
-        Version res = null;
-        for(Version version: versions){
-            if(version.getName().contains(filter)){
-                res = version;
-            }
-        }
-        return res;
+        return new Version(filter,PieceCount.valueOf(filter.toUpperCase(Locale.ROOT)));
     }
-
 
     /*
     @Override
@@ -74,7 +62,7 @@ public class StrategoController implements StrategoWebController {
     @Override
     public List<Move> getMoves() {
         List<Move> res = new ArrayList<>();
-        res.add(new Move("test",1,1,1,1));
+        res.add(new Move("test",new Coords(1,2),new Coords(2,3)));
         return res;
     }
 
