@@ -20,6 +20,10 @@ public class Pawn {
         return pawnType.name().equals("EMPTY");
     }
 
+    public String getPawnType() {
+        return pawnType.name().toLowerCase(Locale.ROOT);
+    }
+
     @Override
     public String toString() {
         return "" + pawnType;

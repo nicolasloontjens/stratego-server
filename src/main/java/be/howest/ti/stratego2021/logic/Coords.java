@@ -4,7 +4,7 @@ public class Coords {
     private final int col;
     private final int row;
 
-    public Coords(int col, int row){
+    public Coords(int row, int col){
         this.col = col;
         this.row = row;
     }

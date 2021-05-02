@@ -10,7 +10,7 @@ public class Game {
     private final PieceCount gameType;
     private Board board;
     private List<Move> moveList;
-    private boolean has2Players;
+    private boolean gameStarted;
 
     public Game(String  id, List<List<String>> blueConfig, String gameType){
         gameId = id;
@@ -18,11 +18,27 @@ public class Game {
         board = new Board();
         board.postBlueConfig(blueConfig);
         moveList = new ArrayList<>();
-        has2Players = false;
-
+        gameStarted = false;
     }
 
-    private void connectRedPlayer(Board redConfig){
-        has2Players = true;
+    public void connectRedPlayer(List<List<String>> redConfig){
+        board.postRedConfig(redConfig);
+        gameStarted = true;
+    }
+
+    public boolean isGameStarted(){
+        return gameStarted;
+    }
+
+    public Board getBoard(){
+        return board;
+    }
+
+    public Pawn getPawnAtPos(Coords src){
+        return board.getPawn(src);
+    }
+
+    public void movePlayer(Coords src, Coords tar){
+
     }
 }

@@ -68,6 +68,10 @@ public class Board {
         return board;
     }
 
+    public Pawn getPawn(Coords src){
+        return board.get(src.getRow()).get(src.getCol());
+    }
+
     @Override
     public String toString() {
         return "" + board;
