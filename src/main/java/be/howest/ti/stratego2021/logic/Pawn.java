@@ -20,6 +20,10 @@ public class Pawn {
         return pawnType.name().equals("EMPTY");
     }
 
+    public String getPlayerToken(){
+        return playerToken;
+    }
+
     public String getPawnType() {
         return pawnType.name().toLowerCase(Locale.ROOT);
     }

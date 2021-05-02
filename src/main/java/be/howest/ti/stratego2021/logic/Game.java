@@ -1,6 +1,7 @@
 package be.howest.ti.stratego2021.logic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -38,7 +39,66 @@ public class Game {
         return board.getPawn(src);
     }
 
-    public void movePlayer(Coords src, Coords tar){
+    public void movePlayer(Coords src, Coords tar, String playerToken){
+        if(validateIfMoveable(getPawnAtPos(src),playerToken)){
+            if(validateTargetCoords(src,tar,playerToken)){
 
+            }
+        }
     }
+
+    private boolean validateIfMoveable(Pawn pawn, String token){
+        List<String> nonMoveableTypes = new ArrayList<>(Arrays.asList("water","empty","bomb","flag"));
+        return !nonMoveableTypes.contains(pawn.getPawnType()) && pawn.getPlayerToken().equals(token);
+    }
+
+    private boolean validateTargetCoords(Coords src, Coords tar, String token){
+        if(getPawnAtPos(src).getPawnType().equals("scout")){
+            return scoutMovementValidation(src,tar);
+        }else{
+            
+        }
+        return true;
+    }
+
+    private boolean scoutMovementValidation(Coords src, Coords tar){
+        if(tar.getRow()>src.getRow() && tar.getCol() == src.getCol()){
+            return checkAvailableSpotsVertical(src,tar,+1);
+        }
+        if(tar.getRow()<src.getRow() && tar.getCol() == src.getCol()){
+            return checkAvailableSpotsVertical(src,tar,-1);
+        }
+        if(tar.getCol()>src.getCol() && tar.getRow() == src.getRow()){
+            return checkAvailableSpotsHorizontal(src,tar,+1);
+        }
+        if(tar.getCol()<src.getCol() && tar.getRow() == src.getRow()){
+            return checkAvailableSpotsHorizontal(src,tar,-1);
+        }
+        return false;
+    }
+
+
+    private boolean checkAvailableSpotsVertical(Coords src, Coords tar, int value) {
+        boolean res = true;
+        while(!src.equals(tar)){
+            src.setRow(src.getRow()+value);
+            if(!getPawnAtPos(src).getPawnType().equals("empty")){
+                res = false;
+            }
+        }
+        return res;
+    }
+
+
+    private boolean checkAvailableSpotsHorizontal(Coords src, Coords tar, int value){
+        boolean res = true;
+        while(!src.equals(tar)){
+            src.setCol(src.getCol()+value);
+            if(!getPawnAtPos(src).getPawnType().equals("empty")){
+                res = false;
+            }
+        }
+        return res;
+    }
+
 }
