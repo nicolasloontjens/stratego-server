@@ -22,4 +22,5 @@ public enum PawnTypes {
     PawnTypes(int rank){
         this.rank = rank;
     }
+
 }

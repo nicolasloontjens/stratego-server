@@ -5,26 +5,23 @@ import java.util.Locale;
 public class Pawn {
 
     private final String playerToken;
-    private final boolean isWater;
-    private boolean isEmpty;
     private PawnTypes pawnType;
 
-    public Pawn(String playerToken, boolean isWater, boolean isEmpty,String pawnType){
+    public Pawn(String playerToken,String pawnType){
         this.playerToken = playerToken;
-        this.isWater = isWater;
-        this.isEmpty = isEmpty;
         this.pawnType = PawnTypes.valueOf(pawnType.toUpperCase(Locale.ROOT));
     }
 
     public boolean isWater() {
-        return isWater;
+        return pawnType.name().equals("WATER");
     }
 
     public boolean isEmpty() {
-        return isEmpty;
+        return pawnType.name().equals("EMPTY");
     }
 
-    public void setEmpty(boolean empty) {
-        isEmpty = empty;
+    @Override
+    public String toString() {
+        return "" + pawnType;
     }
 }
