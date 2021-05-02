@@ -2,6 +2,7 @@ package be.howest.ti.stratego2021.logic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Board {
@@ -46,8 +47,21 @@ public class Board {
         }
     }
 
-    public void postRedConfig(List<String> redConfig){
-
+    public void postRedConfig(List<List<String>> redConfig){
+        //reverse the config so it looks like blue pov
+        Collections.reverse(redConfig);
+        for(List<String> row : redConfig){
+            Collections.reverse(row);
+        }
+        for(int rowindex = 0; rowindex < 4; rowindex++){
+            for(int colindex = 0; colindex < 10; colindex++){
+                if(redConfig.get(rowindex).get(colindex) == null){
+                    board.get(rowindex).set(colindex,new Pawn("red", "EMPTY"));
+                }else{
+                    board.get(rowindex).set(colindex,new Pawn("red", redConfig.get(rowindex).get(colindex)));
+                }
+            }
+        }
     }
 
     public List<List<Pawn>> getBoard(){
