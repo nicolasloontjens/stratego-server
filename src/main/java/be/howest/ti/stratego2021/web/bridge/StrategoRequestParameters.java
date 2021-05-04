@@ -1,5 +1,6 @@
 package be.howest.ti.stratego2021.web.bridge;
 
+import be.howest.ti.stratego2021.logic.Coords;
 import io.vertx.ext.auth.User;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.validation.RequestParameters;
@@ -40,5 +41,20 @@ public class StrategoRequestParameters {
     public List<List<String>> getStartConfiguration(){
         JoinGamePostBody body = params.body().getJsonObject().mapTo(JoinGamePostBody.class);
         return body.getStartConfiguration();
+    }
+
+    public Coords getSrc(){
+        MakeMovePosBody body = params.body().getJsonObject().mapTo(MakeMovePosBody.class);
+        return body.getSrc();
+    }
+
+    public Coords getTar(){
+        MakeMovePosBody body = params.body().getJsonObject().mapTo(MakeMovePosBody.class);
+        return body.getTar();
+    }
+
+    public String getInfiltrate(){
+        MakeMovePosBody body = params.body().getJsonObject().mapTo(MakeMovePosBody.class);
+        return body.getInfiltrate();
     }
 }
