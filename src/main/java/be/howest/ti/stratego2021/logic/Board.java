@@ -35,7 +35,6 @@ public class Board {
     }
 
     public void postBlueConfig(List<List<String>> blueConfig){
-
         for(int rowindex = 6; rowindex < 10; rowindex++){
             for(int colindex = 0; colindex < 10; colindex++){
                 if(blueConfig.get(rowindex).get(colindex) == null){

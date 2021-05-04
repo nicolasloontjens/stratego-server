@@ -21,14 +21,19 @@ public class GameManager {
 
     public void connectToGame(String version, String token, List<List<String>> config){
         if(checkForExistingGames(version)){
-            gamesList.get(version).get(gamesList.get(version).size()).connectRedPlayer(config);
+            gamesList.get(version).get(gamesList.get(version).size()).connectRedPlayer(config,token);
         }
         else{
-            gamesList.get(version).add(new Game("",null,version));
+            gamesList.get(version).add(new Game("",null,token,version));
+            gamesCounter++;
         }
     }
 
-    private boolean checkForExistingGames(String version){
+    public int getGamesCounter(){
+        return gamesCounter;
+    }
+
+    public boolean checkForExistingGames(String version){
         for(Game game: gamesList.get(version)){
             if(!game.isGameStarted()){
                 return true;

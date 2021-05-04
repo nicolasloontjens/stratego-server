@@ -1,6 +1,7 @@
 package be.howest.ti.stratego2021.logic;
 
 import be.howest.ti.stratego2021.web.StrategoWebController;
+import be.howest.ti.stratego2021.web.tokens.RandomGeneratedTextTokens;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class StrategoController implements StrategoWebController {
     private static final Logger LOGGER = Logger.getLogger(StrategoController.class.getName());
 
     GameManager gameManager = new GameManager();
+    RandomGeneratedTextTokens tokenGen = new RandomGeneratedTextTokens();
 
     @Override
     public void getDemo() {
@@ -52,8 +54,15 @@ public class StrategoController implements StrategoWebController {
 
 
     @Override
-    public void joinGame(String version, List<List<String>> startConfiguration) {
-        gameManager.connectToGame(version,"token here",startConfiguration);
+    public void joinGame(String version, List<List<String>> startConfiguration, String gameID){
+        String currentToken = "";
+        if(gameManager.checkForExistingGames(version)){
+            currentToken = tokenGen.createToken(gameID,"red",gameManager.getGamesCounter());
+        }else{
+            currentToken = tokenGen.createToken(gameID,"blue",gameManager.getGamesCounter());
+        }
+
+        gameManager.connectToGame(version,currentToken,startConfiguration);
         // needs to be implemented (update interface first)
     }
 

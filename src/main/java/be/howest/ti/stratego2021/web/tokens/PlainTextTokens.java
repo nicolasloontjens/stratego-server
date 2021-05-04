@@ -5,7 +5,7 @@ import be.howest.ti.stratego2021.web.exceptions.InvalidTokenException;
 public class PlainTextTokens implements TokenManager {
 
     @Override
-    public String createToken(String gameId, String player) {
+    public String createToken(String gameId, String player, int gameCount) {
         return gameId + "-" + player;
     }
 

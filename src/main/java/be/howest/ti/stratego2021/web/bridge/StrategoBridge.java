@@ -108,7 +108,8 @@ public class StrategoBridge implements AuthenticationProvider {
 
         controller.joinGame(
                 requestParameters.getVersion(),
-                requestParameters.getStartConfiguration());
+                requestParameters.getStartConfiguration(),
+                requestParameters.getRoomID());
 
         StrategoResponses.sendJoinedGameInfo(ctx);
 
