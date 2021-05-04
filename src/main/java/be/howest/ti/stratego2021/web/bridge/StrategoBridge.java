@@ -10,6 +10,7 @@ import be.howest.ti.stratego2021.web.StrategoWebController;
 import be.howest.ti.stratego2021.web.exceptions.ForbiddenAccessException;
 import be.howest.ti.stratego2021.web.exceptions.InvalidTokenException;
 import be.howest.ti.stratego2021.web.tokens.PlainTextTokens;
+import be.howest.ti.stratego2021.web.tokens.RandomGeneratedTextTokens;
 import be.howest.ti.stratego2021.web.tokens.TokenManager;
 
 import io.vertx.core.AsyncResult;
@@ -44,7 +45,7 @@ public class StrategoBridge implements AuthenticationProvider {
     private static final Logger LOGGER = Logger.getLogger(StrategoBridge.class.getName());
 
     private final StrategoWebController controller;
-    private final TokenManager tokenManager = new PlainTextTokens();
+    private final TokenManager tokenManager = new RandomGeneratedTextTokens();
 
     public StrategoBridge(StrategoWebController controller) {
         this.controller = controller;
@@ -81,7 +82,7 @@ public class StrategoBridge implements AuthenticationProvider {
     private void getStrategoVersion(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
-        String filter = requestParameters.getVersion();
+        String filter = requestParameters.getVersionFromPath();
         Version res = controller.getStrategoVersion(filter);
 
         StrategoResponses.sendStrategoVersion(ctx, res);
@@ -110,11 +111,12 @@ public class StrategoBridge implements AuthenticationProvider {
     private void joinGame(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
-        controller.joinGame(
+        String res = controller.joinGame(
                 requestParameters.getVersion(),
-                requestParameters.getStartConfiguration());
+                requestParameters.getStartConfiguration(),
+                requestParameters.getRoomID());
 
-        StrategoResponses.sendJoinedGameInfo(ctx);
+        StrategoResponses.sendJoinedGameInfo(ctx,tokenManager.token2gameId(res),tokenManager.token2player(res),res);
 
     }
 

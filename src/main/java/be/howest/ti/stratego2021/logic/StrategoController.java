@@ -1,6 +1,7 @@
 package be.howest.ti.stratego2021.logic;
 
 import be.howest.ti.stratego2021.web.StrategoWebController;
+import be.howest.ti.stratego2021.web.tokens.RandomGeneratedTextTokens;
 import be.howest.ti.stratego2021.web.bridge.JoinGamePostBody;
 import be.howest.ti.stratego2021.web.bridge.MakeMovePosBody;
 
@@ -27,6 +28,8 @@ public class StrategoController implements StrategoWebController {
 
     private static final Logger LOGGER = Logger.getLogger(StrategoController.class.getName());
 
+    GameManager gameManager = new GameManager();
+    RandomGeneratedTextTokens tokenGen = new RandomGeneratedTextTokens();
 
     @Override
     public void getDemo() {
@@ -40,7 +43,6 @@ public class StrategoController implements StrategoWebController {
 
     @Override
     public String[] getStrategoVersions() {
-        // needs to be implemented (update interface first)
         return new String[]{
                 "original", "infiltrator","duel", "mini","tiny"
         };
@@ -48,14 +50,20 @@ public class StrategoController implements StrategoWebController {
 
     @Override
     public Version getStrategoVersion(String filter) {
-        // needs to be implemented (update interface first)
         return new Version(filter,PieceCount.valueOf(filter.toUpperCase(Locale.ROOT)));
     }
 
 
     @Override
-    public JoinGamePostBody joinGame(String version, List<List<String>> startConfiguration) {
-        return new JoinGamePostBody(version, startConfiguration);
+    public String joinGame(String version, List<List<String>> startConfiguration, String gameID){
+        String currentToken = "";
+        if(gameManager.checkForExistingGames(version)){
+            currentToken = tokenGen.createToken(gameID,"RED",gameManager.getGamesCounter());
+        }else{
+            currentToken = tokenGen.createToken(gameID,"BLUE",gameManager.getGamesCounter());
+        }
+        gameManager.connectToGame(version,currentToken,startConfiguration);
+        return currentToken;
     }
 
     @Override

@@ -54,8 +54,12 @@ public class StrategoResponses {
         sendNotYetImplementedResponse(ctx);
     }
 
-    public static void sendJoinedGameInfo(RoutingContext ctx) {
-        sendNotYetImplementedResponse(ctx);
+    public static void sendJoinedGameInfo(RoutingContext ctx, String gameID, String player, String playerToken) {
+        sendJsonResponse(ctx,200, new JsonObject()
+                .put("gameId", gameID)
+                .put("player", player)
+                .put("playerToken",playerToken)
+        );
     }
 
     public static void sendFailure(RoutingContext ctx, int code, String message) {

@@ -1,12 +1,16 @@
 package be.howest.ti.stratego2021.web.tokens;
 
 import be.howest.ti.stratego2021.web.exceptions.InvalidTokenException;
+import java.util.Random;
 
-public class PlainTextTokens implements TokenManager {
+public class RandomGeneratedTextTokens implements TokenManager{
+
+    Random rand = new Random();
 
     @Override
     public String createToken(String gameId, String player, int gameCount) {
-        return gameId + "-" + player;
+        int randomplayernr = rand.nextInt(99999999) + 9999;
+        return gameId + gameCount + '-' + Integer.toHexString(randomplayernr) + player;
     }
 
     @Override
@@ -16,7 +20,12 @@ public class PlainTextTokens implements TokenManager {
 
     @Override
     public String token2player(String token) {
-        return parseToken(token, 1);
+        if(token.substring(token.length()-3).equals("RED")){
+            return "red";
+        }
+        else{
+            return "blue";
+        }
     }
 
     private String parseToken(String token, int part) {

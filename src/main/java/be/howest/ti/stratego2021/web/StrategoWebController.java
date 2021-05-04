@@ -1,13 +1,12 @@
 package be.howest.ti.stratego2021.web;
 
+
 import be.howest.ti.stratego2021.logic.Coords;
 import be.howest.ti.stratego2021.web.bridge.JoinGamePostBody;
 import be.howest.ti.stratego2021.logic.Move;
 import be.howest.ti.stratego2021.logic.Version;
 import be.howest.ti.stratego2021.web.bridge.MakeMovePosBody;
-
 import java.util.List;
-
 
 /**
  * StrategoWebController defines the boundary between the HTTP/Json webserver
@@ -32,7 +31,7 @@ public interface StrategoWebController {
     String[] getStrategoVersions();
     Version getStrategoVersion(String filter);
 
-    JoinGamePostBody joinGame(String version, List<List<String>> startConfiguration);
+    String joinGame(String version, List<List<String>> startConfiguration, String gameID);
 
     MakeMovePosBody makeMove(Coords scr, Coords tar, String infiltrate);
     List<Move> getMoves();

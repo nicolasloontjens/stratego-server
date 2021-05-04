@@ -14,7 +14,7 @@ import io.vertx.ext.auth.User;
  */
 public interface TokenManager {
 
-    String createToken(String gameId, String player);
+    String createToken(String gameId, String player, int gameCount);
 
     String token2gameId(String token);
     String token2player(String token);

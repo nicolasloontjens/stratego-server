@@ -8,22 +8,29 @@ import java.util.Locale;
 public class Game {
 
     private String gameId;
+    private final String blueToken;
+    private String redToken;
     private final PieceCount gameType;
     private Board board;
     private List<Move> moveList;
     private boolean gameStarted;
 
-    public Game(String  id, List<List<String>> blueConfig, String gameType){
+    public Game(String  id, List<List<String>> blueConfig, String blueToken, String gameType){
         gameId = id;
+        this.blueToken = blueToken;
+        this.redToken = null;
         this.gameType = PieceCount.valueOf(gameType.toUpperCase(Locale.ROOT));
         board = new Board();
-        board.postBlueConfig(blueConfig);
+        board.postBlueConfig(blueConfig, blueToken);
         moveList = new ArrayList<>();
+        moveList.add(new Move("blue",new Coords(0,0),new Coords(0,0)));
         gameStarted = false;
     }
 
-    public void connectRedPlayer(List<List<String>> redConfig){
-        board.postRedConfig(redConfig);
+    public void connectRedPlayer(List<List<String>> redConfig, String redToken){
+        board.postRedConfig(redConfig, redToken);
+        this.redToken = redToken;
+        moveList.add(new Move("red",new Coords(0,0),new Coords(0,0)));
         gameStarted = true;
     }
 
@@ -33,6 +40,18 @@ public class Game {
 
     public Board getBoard(){
         return board;
+    }
+
+    public String getGameId(){
+        return gameId;
+    }
+
+    public String getBlueToken() {
+        return blueToken;
+    }
+
+    public String getRedToken() {
+        return redToken;
     }
 
     public Pawn getPawnAtPos(Coords src){
@@ -101,4 +120,16 @@ public class Game {
         return res;
     }
 
+    @Override
+    public String toString() {
+        return "Game{" +
+                "gameId='" + gameId + '\'' +
+                ", blueToken='" + blueToken + '\'' +
+                ", redToken='" + redToken + '\'' +
+                ", gameType=" + gameType +
+                ", board=" + board +
+                ", moveList=" + moveList +
+                ", gameStarted=" + gameStarted +
+                '}';
+    }
 }
