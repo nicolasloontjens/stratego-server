@@ -123,9 +123,9 @@ public class StrategoBridge implements AuthenticationProvider {
     private void getGameState(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
-        controller.getGameState();
+        List<List<String>> res = controller.getGameState();
 
-        StrategoResponses.sendGameState(ctx);
+        StrategoResponses.sendGameState(ctx, res);
     }
 
     private void authorize(RoutingContext ctx) {

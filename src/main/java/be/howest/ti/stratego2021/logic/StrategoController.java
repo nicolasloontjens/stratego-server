@@ -79,7 +79,8 @@ public class StrategoController implements StrategoWebController {
     }
 
     @Override
-    public void getGameState() {
-        // needs to be implemented (update interface first)
+    public List<List<String>> getGameState() {
+        List<List<String>> res = null;
+        return res;
     }
 }

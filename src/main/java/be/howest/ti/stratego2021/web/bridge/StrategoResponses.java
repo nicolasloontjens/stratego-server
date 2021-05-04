@@ -50,8 +50,8 @@ public class StrategoResponses {
         sendJsonResponse(ctx,200, new JsonObject().put("moves",moves));
     }
 
-    public static void sendGameState(RoutingContext ctx) {
-        sendNotYetImplementedResponse(ctx);
+    public static void sendGameState(RoutingContext ctx, List<List<String>> res) {
+        sendJsonResponse(ctx,200, new JsonObject().put("configuration", res));
     }
 
     public static void sendJoinedGameInfo(RoutingContext ctx, String gameID, String player, String playerToken) {
