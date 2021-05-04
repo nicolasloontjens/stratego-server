@@ -1,6 +1,9 @@
 package be.howest.ti.stratego2021.logic;
 
 import be.howest.ti.stratego2021.web.StrategoWebController;
+import be.howest.ti.stratego2021.web.bridge.JoinGamePostBody;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,7 @@ import java.util.logging.Logger;
 public class StrategoController implements StrategoWebController {
 
     private static final Logger LOGGER = Logger.getLogger(StrategoController.class.getName());
+
 
     @Override
     public void getDemo() {
@@ -48,12 +52,12 @@ public class StrategoController implements StrategoWebController {
         return new Version(filter,PieceCount.valueOf(filter.toUpperCase(Locale.ROOT)));
     }
 
-    /*
+
     @Override
-    public void joinGame(String version, Board startConfiguration) {
-        // needs to be implemented (update interface first)
+    public JoinGamePostBody joinGame(String version, List<List<String>> startConfiguration) {
+        return new JoinGamePostBody(version, startConfiguration);
     }
-    */
+
     @Override
     public void makeMove() {
         // needs to be implemented (update interface first)

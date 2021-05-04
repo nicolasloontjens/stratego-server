@@ -1,10 +1,11 @@
 package be.howest.ti.stratego2021.web.bridge;
 
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.validation.RequestParameters;
 import io.vertx.ext.web.validation.ValidationHandler;
+
+import java.util.List;
 
 /**
  * The StrategoRequestParameters class is responsible for translating information that is part of the
@@ -32,12 +33,12 @@ public class StrategoRequestParameters {
     }
 
     public String getVersion(){
-        return params.pathParameter("version").getString();
+        JoinGamePostBody body = params.body().getJsonObject().mapTo(JoinGamePostBody.class);
+        return body.getVersion();
+
     }
-    /*
-    public Board getStartConfiguration(){
-        JsonObject body = params.body().getJsonObject();
-        return body.("startConfiguration");
+    public List<List<String>> getStartConfiguration(){
+        JoinGamePostBody body = params.body().getJsonObject().mapTo(JoinGamePostBody.class);
+        return body.getStartConfiguration();
     }
-    */
 }
