@@ -41,8 +41,6 @@ public class Game {
 
     public Pawn getTargetCoords(Coords tar) {return board.getPawn(tar);}
 
-    public Infiltration infiltrate(Coords tar) {return board.infiltrate(tar);}
-
     public void movePlayer(Coords src, Coords tar, String playerToken){
         if(validateIfMoveable(getPawnAtPos(src),playerToken)){
             if(validateTargetCoords(src,tar,playerToken)){
@@ -60,15 +58,11 @@ public class Game {
         if(getPawnAtPos(src).getPawnType().equals("scout")){
             return scoutMovementValidation(src,tar);
         }else{
-            if (getTargetCoords(tar).isEmpty()){
-                return checkAvailableSpotsHorizontal(src,tar,1) && checkAvailableSpotsVertical(src,tar,1);
-            }else{
-                return
+            return checkAvailableSpotsHorizontal(src,tar,+1) && checkAvailableSpotsVertical(src,tar,+1);
+
             }
 
         }
-
-    }
 
     private boolean scoutMovementValidation(Coords src, Coords tar){
         if(tar.getRow()>src.getRow() && tar.getCol() == src.getCol()){
