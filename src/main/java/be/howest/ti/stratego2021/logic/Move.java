@@ -7,24 +7,24 @@ public class Move {
     private final Attack attack;
     private final Infiltration infiltration;
 
-    public Move(String player, int srccol, int srcrow, int tarcol, int tarrow){
+    public Move(String player, Coords src, Coords tar){
         this.player = player;
-        src = new Coords(srccol, srcrow);
-        tar = new Coords(tarcol, tarrow);
+        this.src = src;
+        this.tar = tar;
         attack = null;
         infiltration = null;
     }
-    public Move(String player, int srccol, int srcrow, int tarcol, int tarrow, String attacker, String defender, String winner){
+    public Move(String player, Coords src, Coords tar, String attacker, String defender, String winner){
         this.player = player;
-        src = new Coords(srccol, srcrow);
-        tar = new Coords(tarcol, tarrow);
+        this.src = src;
+        this.tar = tar;
         infiltration = null;
         attack = new Attack(attacker, defender, winner);
     }
-    public Move(String player, int srccol, int srcrow, int tarcol, int tarrow,String guess, String actual, boolean success){
+    public Move(String player, Coords src, Coords tar,String guess, String actual, boolean success){
         this.player = player;
-        src = new Coords(srccol, srcrow);
-        tar = new Coords(tarcol, tarrow);
+        this.src = src;
+        this.tar = tar;
         attack = null;
         infiltration = new Infiltration(guess, actual, success);
     }
