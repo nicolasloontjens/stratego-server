@@ -17,7 +17,7 @@ public enum PawnTypes {
     FLAG(0),
     EMPTY(0);
 
-    private int rank;
+    public int rank;
 
     PawnTypes(int rank){
         this.rank = rank;
