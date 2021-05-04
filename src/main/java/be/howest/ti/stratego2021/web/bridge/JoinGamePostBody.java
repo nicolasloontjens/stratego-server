@@ -1,6 +1,5 @@
 package be.howest.ti.stratego2021.web.bridge;
 
-import be.howest.ti.stratego2021.logic.Board;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

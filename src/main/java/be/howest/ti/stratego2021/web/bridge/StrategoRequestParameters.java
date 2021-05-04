@@ -1,6 +1,5 @@
 package be.howest.ti.stratego2021.web.bridge;
 
-import be.howest.ti.stratego2021.logic.Board;
 import io.vertx.ext.auth.User;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.validation.RequestParameters;

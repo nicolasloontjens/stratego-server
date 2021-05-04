@@ -2,7 +2,7 @@ package be.howest.ti.stratego2021.logic;
 
 import be.howest.ti.stratego2021.web.StrategoWebController;
 import be.howest.ti.stratego2021.web.bridge.JoinGamePostBody;
-import be.howest.ti.stratego2021.web.bridge.StrategoBridge;
+
 
 
 import java.util.ArrayList;
