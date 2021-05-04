@@ -21,13 +21,13 @@ public class Game {
         this.redToken = null;
         this.gameType = PieceCount.valueOf(gameType.toUpperCase(Locale.ROOT));
         board = new Board();
-        board.postBlueConfig(blueConfig);
+        board.postBlueConfig(blueConfig, blueToken);
         moveList = new ArrayList<>();
         gameStarted = false;
     }
 
     public void connectRedPlayer(List<List<String>> redConfig, String redToken){
-        board.postRedConfig(redConfig);
+        board.postRedConfig(redConfig, redToken);
         this.redToken = redToken;
         gameStarted = true;
     }

@@ -27,6 +27,7 @@ public class GameManager {
             gamesList.get(version).add(new Game("",config,token,version));
             gamesCounter++;
         }
+        System.out.println(gamesList.get(version));
     }
 
     public int getGamesCounter(){

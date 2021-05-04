@@ -24,7 +24,7 @@ class GameTest {
 
     @Test
     void testGetPawnAtPos(){
-        Game game = new Game("1",returnBlueConfig(),"original","");
+        Game game = new Game("1",returnBlueConfig(),"","original");
         assertFalse(game.isGameStarted());
         game.connectRedPlayer(returnRedConfig(),"");
         assertEquals("colonel", game.getPawnAtPos(new Coords(6,7)).getPawnType());
