@@ -1,6 +1,5 @@
 package be.howest.ti.stratego2021.web.bridge;
 
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.validation.RequestParameters;
@@ -32,13 +31,13 @@ public class StrategoRequestParameters {
     }
 
     public String getVersion(){
-        JsonObject body = params.body().getJsonObject();
-        return body.getString("version");
+        JoinGamePostBody body = params.body().getJsonObject().mapTo(JoinGamePostBody.class);
+        return body.getVersion();
     }
 
     public Board getStartConfiguration(){
-        JsonObject body = params.body().getJsonObject();
-        return body.("startConfiguration");
+        JoinGamePostBody body = params.body().getJsonObject().mapTo(JoinGamePostBody.class);
+        return body.getStartConfiguration();
     }
 
 }
