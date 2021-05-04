@@ -6,6 +6,8 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.validation.RequestParameters;
 import io.vertx.ext.web.validation.ValidationHandler;
 
+import java.util.List;
+
 /**
  * The StrategoRequestParameters class is responsible for translating information that is part of the
  * request into Java.
@@ -36,9 +38,8 @@ public class StrategoRequestParameters {
         return body.getVersion();
 
     }
-    public Board getStartConfiguration(){
+    public List<List<String>> getStartConfiguration(){
         JoinGamePostBody body = params.body().getJsonObject().mapTo(JoinGamePostBody.class);
         return body.getStartConfiguration();
     }
-
 }

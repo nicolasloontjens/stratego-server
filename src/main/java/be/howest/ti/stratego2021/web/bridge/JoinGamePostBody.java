@@ -4,15 +4,18 @@ import be.howest.ti.stratego2021.logic.Board;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 public class JoinGamePostBody {
 
     private final String version;
-    private final Board startConfiguration;
+    private final List<List<String>> startConfiguration;
 
     @JsonCreator
     public JoinGamePostBody(
-            @JsonProperty String version,
-            @JsonProperty Board startConfiguration) {
+            @JsonProperty("version") String version,
+            @JsonProperty("startConfiguration") List<List<String>> startConfiguration
+    ) {
         this.version = version;
         this.startConfiguration = startConfiguration;
     }
@@ -21,7 +24,7 @@ public class JoinGamePostBody {
         return version;
     }
 
-    public Board getStartConfiguration() {
+    public List<List<String>> getStartConfiguration() {
         return startConfiguration;
     }
 }

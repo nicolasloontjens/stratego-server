@@ -54,7 +54,7 @@ public class StrategoController implements StrategoWebController {
 
 
     @Override
-    public JoinGamePostBody joinGame(String version, Board startConfiguration) {
+    public JoinGamePostBody joinGame(String version, List<List<String>> startConfiguration) {
         return new JoinGamePostBody(version, startConfiguration);
     }
 
