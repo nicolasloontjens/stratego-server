@@ -37,15 +37,15 @@ class BoardTest {
     @Test
     void testPostBlueConfig(){
         Board board1 = new Board();
-        board1.postBlueConfig(returnBlueConfig(), "blue");
+        board1.postConfig(returnBlueConfig(), "blue", 6,10);
         board1.getBoard().forEach(System.out::println);
     }
 
     @Test
     void testPostRedConfig(){
         Board board1 = new Board();
-        board1.postBlueConfig(returnBlueConfig(),"blue");
-        board1.postRedConfig(returnRedConfig(),"red");
+        board1.postConfig(returnBlueConfig(),"blue", 6, 10);
+        board1.postConfig(returnRedConfig(),"red", 0, 4);
         board1.getBoard().forEach(System.out::println);
     }
 
