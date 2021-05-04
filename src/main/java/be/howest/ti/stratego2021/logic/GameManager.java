@@ -8,6 +8,7 @@ import java.util.Map;
 public class GameManager {
 
     private Map<String, List<Game>> gamesList;
+    private int gamesCounter;
 
     public GameManager(){
         gamesList = new HashMap<>();

@@ -28,7 +28,7 @@ public interface StrategoWebController {
     String[] getStrategoVersions();
     Version getStrategoVersion(String filter);
 
-    //void joinGame(String version, Board startConfiguration);
+    void joinGame(String version, List<List<String>> startConfiguration);
 
     void makeMove();
     List<Move> getMoves();

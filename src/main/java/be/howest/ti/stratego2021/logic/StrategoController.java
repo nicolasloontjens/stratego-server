@@ -24,6 +24,8 @@ public class StrategoController implements StrategoWebController {
 
     private static final Logger LOGGER = Logger.getLogger(StrategoController.class.getName());
 
+    GameManager gameManager = new GameManager();
+
     @Override
     public void getDemo() {
         // needs to be removed in the final version
@@ -48,12 +50,13 @@ public class StrategoController implements StrategoWebController {
         return new Version(filter,PieceCount.valueOf(filter.toUpperCase(Locale.ROOT)));
     }
 
-    /*
+
     @Override
-    public void joinGame(String version, Board startConfiguration) {
+    public void joinGame(String version, List<List<String>> startConfiguration) {
+        gameManager.connectToGame(version,"token here",startConfiguration);
         // needs to be implemented (update interface first)
     }
-    */
+
     @Override
     public void makeMove() {
         // needs to be implemented (update interface first)
