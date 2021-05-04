@@ -36,10 +36,9 @@ public class StrategoRequestParameters {
     public String getVersion(){
         return params.pathParameter("version").getString();
     }
-
     public List<List<String>> getStartConfiguration(){
-        JsonObject body = params.body().getJsonObject();
-        //return body.("startConfiguration");
-        return null;
+        JoinGamePostBody body = params.body().getJsonObject().mapTo(JoinGamePostBody.class);
+        return body.getStartConfiguration();
     }
+
 }

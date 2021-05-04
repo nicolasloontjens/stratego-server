@@ -1,7 +1,6 @@
 package be.howest.ti.stratego2021.logic;
 
 import be.howest.ti.stratego2021.web.StrategoWebController;
-import be.howest.ti.stratego2021.web.tokens.RandomGeneratedTextTokens;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +64,7 @@ public class StrategoController implements StrategoWebController {
         gameManager.connectToGame(version,currentToken,startConfiguration);
         // needs to be implemented (update interface first)
     }
-
+    */
     @Override
     public void makeMove() {
         // needs to be implemented (update interface first)
