@@ -33,12 +33,22 @@ public class StrategoRequestParameters {
         return user.get("player");
     }
 
-    public String getVersion(){
+    public String getVersionFromPath(){
         return params.pathParameter("version").getString();
     }
+
+    public String getVersion(){
+        JoinGamePostBody body = params.body().getJsonObject().mapTo(JoinGamePostBody.class);
+        return body.getVersion();
+    }
+
     public List<List<String>> getStartConfiguration(){
         JoinGamePostBody body = params.body().getJsonObject().mapTo(JoinGamePostBody.class);
         return body.getStartConfiguration();
+    }
+
+    public String getRoomID(){
+        return params.pathParameter("roomId").getString();
     }
 
 }

@@ -4,7 +4,7 @@ public enum PawnTypes {
     WATER(13),
     INFILTRATOR(12),
     BOMB(11),
-    MARSHALL(10),
+    MARSHAL(10),
     GENERAL(9),
     COLONEL(8),
     MAJOR(7),

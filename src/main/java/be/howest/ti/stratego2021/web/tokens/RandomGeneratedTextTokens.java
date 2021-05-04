@@ -10,7 +10,7 @@ public class RandomGeneratedTextTokens implements TokenManager{
     @Override
     public String createToken(String gameId, String player, int gameCount) {
         int randomplayernr = rand.nextInt(999) + 1;
-        return gameId + gameCount + '-' + player + randomplayernr;
+        return gameId + gameCount + '-' + randomplayernr +player;
     }
 
     @Override
