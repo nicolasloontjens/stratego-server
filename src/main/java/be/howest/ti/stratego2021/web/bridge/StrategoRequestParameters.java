@@ -48,12 +48,10 @@ public class StrategoRequestParameters {
         return body.getStartConfiguration();
     }
 
-<<<<<<< src/main/java/be/howest/ti/stratego2021/web/bridge/StrategoRequestParameters.java
     public String getRoomID(){
         return params.pathParameter("roomId").getString();
     }
 
-=======
     public Coords getSrc(){
         MakeMovePosBody body = params.body().getJsonObject().mapTo(MakeMovePosBody.class);
         return body.getSrc();
@@ -68,5 +66,4 @@ public class StrategoRequestParameters {
         MakeMovePosBody body = params.body().getJsonObject().mapTo(MakeMovePosBody.class);
         return body.getInfiltrate();
     }
->>>>>>> src/main/java/be/howest/ti/stratego2021/web/bridge/StrategoRequestParameters.java
 }
