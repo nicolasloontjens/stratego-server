@@ -40,7 +40,6 @@ public class StrategoController implements StrategoWebController {
 
     @Override
     public String[] getStrategoVersions() {
-        // needs to be implemented (update interface first)
         return new String[]{
                 "original", "infiltrator","duel", "mini","tiny"
         };
@@ -48,7 +47,6 @@ public class StrategoController implements StrategoWebController {
 
     @Override
     public Version getStrategoVersion(String filter) {
-        // needs to be implemented (update interface first)
         return new Version(filter,PieceCount.valueOf(filter.toUpperCase(Locale.ROOT)));
     }
 

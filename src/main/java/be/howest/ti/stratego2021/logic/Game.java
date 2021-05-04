@@ -23,12 +23,14 @@ public class Game {
         board = new Board();
         board.postBlueConfig(blueConfig, blueToken);
         moveList = new ArrayList<>();
+        moveList.add(new Move("blue",new Coords(0,0),new Coords(0,0)));
         gameStarted = false;
     }
 
     public void connectRedPlayer(List<List<String>> redConfig, String redToken){
         board.postRedConfig(redConfig, redToken);
         this.redToken = redToken;
+        moveList.add(new Move("red",new Coords(0,0),new Coords(0,0)));
         gameStarted = true;
     }
 
