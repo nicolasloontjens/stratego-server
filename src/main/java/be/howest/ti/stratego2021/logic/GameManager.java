@@ -22,12 +22,11 @@ public class GameManager {
     public void connectToGame(String version, String token, List<List<String>> config){
         if(checkForExistingGames(version)){
             gamesList.get(version).get(gamesList.get(version).size()-1).connectRedPlayer(config,token);
+            gamesCounter++;
         }
         else{
             gamesList.get(version).add(new Game("",config,token,version));
-            gamesCounter++;
         }
-        System.out.println(gamesList.get(version));
     }
 
     public int getGamesCounter(){

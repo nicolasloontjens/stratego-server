@@ -1,9 +1,6 @@
 package be.howest.ti.stratego2021.logic;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class Game {
 
@@ -21,14 +18,18 @@ public class Game {
         this.redToken = null;
         this.gameType = PieceCount.valueOf(gameType.toUpperCase(Locale.ROOT));
         board = new Board();
-        board.postBlueConfig(blueConfig, blueToken);
+        board.postConfig(blueConfig, blueToken, 6,10);
         moveList = new ArrayList<>();
         moveList.add(new Move("blue",new Coords(0,0),new Coords(0,0)));
         gameStarted = false;
     }
 
     public void connectRedPlayer(List<List<String>> redConfig, String redToken){
-        board.postRedConfig(redConfig, redToken);
+        Collections.reverse(redConfig);
+        for(List<String> row : redConfig){
+            Collections.reverse(row);
+        }
+        board.postConfig(redConfig, redToken, 0,4);
         this.redToken = redToken;
         moveList.add(new Move("red",new Coords(0,0),new Coords(0,0)));
         gameStarted = true;

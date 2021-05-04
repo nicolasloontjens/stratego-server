@@ -34,34 +34,18 @@ public class Board {
         return new Pawn("WATER", "WATER");
     }
 
-    public void postBlueConfig(List<List<String>> blueConfig, String blueToken){
-        for(int rowindex = 6; rowindex < 10; rowindex++){
+    public void postConfig(List<List<String>> config, String token, int startRowIndex, int maxRowIndex){
+        for(int rowindex = startRowIndex; rowindex < maxRowIndex; rowindex++){
             for(int colindex = 0; colindex < 10; colindex++){
-                if(blueConfig.get(rowindex).get(colindex) == null){
-                    board.get(rowindex).set(colindex,new Pawn(blueToken, "EMPTY"));
+                if(config.get(rowindex).get(colindex) == null){
+                    board.get(rowindex).set(colindex,new Pawn(token, "EMPTY"));
                 }else{
-                    board.get(rowindex).set(colindex,new Pawn(blueToken, blueConfig.get(rowindex).get(colindex)));
+                    board.get(rowindex).set(colindex,new Pawn(token, config.get(rowindex).get(colindex)));
                 }
             }
         }
     }
 
-    public void postRedConfig(List<List<String>> redConfig, String redToken){
-        //reverse the config so it looks like blue pov
-        Collections.reverse(redConfig);
-        for(List<String> row : redConfig){
-            Collections.reverse(row);
-        }
-        for(int rowindex = 0; rowindex < 4; rowindex++){
-            for(int colindex = 0; colindex < 10; colindex++){
-                if(redConfig.get(rowindex).get(colindex) == null){
-                    board.get(rowindex).set(colindex,new Pawn(redToken, "EMPTY"));
-                }else{
-                    board.get(rowindex).set(colindex,new Pawn(redToken, redConfig.get(rowindex).get(colindex)));
-                }
-            }
-        }
-    }
 
     public List<List<Pawn>> getBoard(){
         return board;
