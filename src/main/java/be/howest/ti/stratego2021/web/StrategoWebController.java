@@ -1,8 +1,11 @@
 package be.howest.ti.stratego2021.web;
 
+
+import be.howest.ti.stratego2021.logic.Coords;
+import be.howest.ti.stratego2021.web.bridge.JoinGamePostBody;
 import be.howest.ti.stratego2021.logic.Move;
 import be.howest.ti.stratego2021.logic.Version;
-
+import be.howest.ti.stratego2021.web.bridge.MakeMovePosBody;
 import java.util.List;
 
 /**
@@ -30,7 +33,7 @@ public interface StrategoWebController {
 
     String joinGame(String version, List<List<String>> startConfiguration, String gameID);
 
-    void makeMove();
+    MakeMovePosBody makeMove(Coords scr, Coords tar, String infiltrate);
     List<Move> getMoves();
 
     void getGameState();

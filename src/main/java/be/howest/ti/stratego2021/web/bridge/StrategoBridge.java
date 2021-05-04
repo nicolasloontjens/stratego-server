@@ -91,7 +91,11 @@ public class StrategoBridge implements AuthenticationProvider {
     private void makeMove(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
-        controller.makeMove();
+        controller.makeMove(
+                requestParameters.getSrc(),
+                requestParameters.getTar(),
+                requestParameters.getInfiltrate()
+        );
 
         StrategoResponses.sendMove(ctx);
     }

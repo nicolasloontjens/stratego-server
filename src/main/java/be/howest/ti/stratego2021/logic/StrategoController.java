@@ -2,6 +2,9 @@ package be.howest.ti.stratego2021.logic;
 
 import be.howest.ti.stratego2021.web.StrategoWebController;
 import be.howest.ti.stratego2021.web.tokens.RandomGeneratedTextTokens;
+import be.howest.ti.stratego2021.web.bridge.JoinGamePostBody;
+import be.howest.ti.stratego2021.web.bridge.MakeMovePosBody;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,8 +69,8 @@ public class StrategoController implements StrategoWebController {
     }
 
     @Override
-    public void makeMove() {
-        // needs to be implemented (update interface first)
+    public MakeMovePosBody makeMove(Coords src, Coords tar, String infiltrate) {
+        return new MakeMovePosBody(src, tar, infiltrate);
     }
 
     @Override

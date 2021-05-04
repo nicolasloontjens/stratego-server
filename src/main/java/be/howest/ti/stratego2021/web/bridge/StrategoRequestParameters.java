@@ -1,6 +1,7 @@
 package be.howest.ti.stratego2021.web.bridge;
 
 import io.vertx.core.json.JsonObject;
+import be.howest.ti.stratego2021.logic.Coords;
 import io.vertx.ext.auth.User;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.validation.RequestParameters;
@@ -47,8 +48,25 @@ public class StrategoRequestParameters {
         return body.getStartConfiguration();
     }
 
+<<<<<<< src/main/java/be/howest/ti/stratego2021/web/bridge/StrategoRequestParameters.java
     public String getRoomID(){
         return params.pathParameter("roomId").getString();
     }
 
+=======
+    public Coords getSrc(){
+        MakeMovePosBody body = params.body().getJsonObject().mapTo(MakeMovePosBody.class);
+        return body.getSrc();
+    }
+
+    public Coords getTar(){
+        MakeMovePosBody body = params.body().getJsonObject().mapTo(MakeMovePosBody.class);
+        return body.getTar();
+    }
+
+    public String getInfiltrate(){
+        MakeMovePosBody body = params.body().getJsonObject().mapTo(MakeMovePosBody.class);
+        return body.getInfiltrate();
+    }
+>>>>>>> src/main/java/be/howest/ti/stratego2021/web/bridge/StrategoRequestParameters.java
 }
