@@ -1,6 +1,8 @@
 package be.howest.ti.stratego2021.web.bridge;
 
+import be.howest.ti.stratego2021.logic.Move;
 import be.howest.ti.stratego2021.logic.StrategoController;
+import be.howest.ti.stratego2021.logic.Version;
 import be.howest.ti.stratego2021.logic.exceptions.StrategoGameRuleException;
 import be.howest.ti.stratego2021.logic.exceptions.StrategoResourceNotFoundException;
 
@@ -25,6 +27,7 @@ import io.vertx.ext.web.handler.CorsHandler;
 import io.vertx.ext.web.handler.impl.HttpStatusException;
 import io.vertx.ext.web.openapi.RouterBuilder;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,9 +81,10 @@ public class StrategoBridge implements AuthenticationProvider {
     private void getStrategoVersion(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
-        controller.getStrategoVersion();
+        String filter = requestParameters.getVersion();
+        Version res = controller.getStrategoVersion(filter);
 
-        StrategoResponses.sendStrategoVersion(ctx);
+        StrategoResponses.sendStrategoVersion(ctx, res);
     }
 
     private void makeMove(RoutingContext ctx) {
@@ -94,11 +98,11 @@ public class StrategoBridge implements AuthenticationProvider {
     private void getMoves(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
-        controller.getMoves();
+        List<Move> res = controller.getMoves();
 
-        StrategoResponses.sendMoves(ctx);
+        StrategoResponses.sendMoves(ctx, res);
     }
-
+    /*
     private void joinGame(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
@@ -109,7 +113,7 @@ public class StrategoBridge implements AuthenticationProvider {
         StrategoResponses.sendJoinedGameInfo(ctx);
 
     }
-
+    */
     private void getGameState(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
@@ -154,7 +158,7 @@ public class StrategoBridge implements AuthenticationProvider {
 
         routerBuilder.operation("getStrategoVersion").handler(this::getStrategoVersion);
 
-        routerBuilder.operation("joinGame").handler(this::joinGame);
+        //routerBuilder.operation("joinGame").handler(this::joinGame);
 
         routerBuilder.operation("getGameState")
                 .handler(this::authorize)

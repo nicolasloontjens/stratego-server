@@ -4,6 +4,10 @@ import be.howest.ti.stratego2021.web.StrategoWebController;
 import be.howest.ti.stratego2021.web.bridge.JoinGamePostBody;
 import be.howest.ti.stratego2021.web.bridge.StrategoBridge;
 
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 /**
@@ -43,9 +47,11 @@ public class StrategoController implements StrategoWebController {
     }
 
     @Override
-    public void getStrategoVersion() {
+    public Version getStrategoVersion(String filter) {
         // needs to be implemented (update interface first)
+        return new Version(filter,PieceCount.valueOf(filter.toUpperCase(Locale.ROOT)));
     }
+
 
     @Override
     public JoinGamePostBody joinGame(String version, Board startConfiguration) {
@@ -58,8 +64,10 @@ public class StrategoController implements StrategoWebController {
     }
 
     @Override
-    public void getMoves() {
-        // needs to be implemented (update interface first)
+    public List<Move> getMoves() {
+        List<Move> res = new ArrayList<>();
+        res.add(new Move("test",new Coords(1,2),new Coords(2,3)));
+        return res;
     }
 
     @Override

@@ -1,6 +1,12 @@
 package be.howest.ti.stratego2021.web;
 
+import be.howest.ti.stratego2021.logic.Board;
 import be.howest.ti.stratego2021.web.bridge.JoinGamePostBody;
+import be.howest.ti.stratego2021.logic.Move;
+import be.howest.ti.stratego2021.logic.Version;
+
+import java.util.List;
+
 
 /**
  * StrategoWebController defines the boundary between the HTTP/Json webserver
@@ -23,12 +29,12 @@ public interface StrategoWebController {
     void postDemo();
 
     String[] getStrategoVersions();
-    void getStrategoVersion();
+    Version getStrategoVersion(String filter);
 
     JoinGamePostBody joinGame(String version, Board startConfiguration);
 
     void makeMove();
-    void getMoves();
+    List<Move> getMoves();
 
     void getGameState();
 }
