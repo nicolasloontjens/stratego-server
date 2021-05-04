@@ -118,4 +118,16 @@ public class Game {
         return res;
     }
 
+    @Override
+    public String toString() {
+        return "Game{" +
+                "gameId='" + gameId + '\'' +
+                ", blueToken='" + blueToken + '\'' +
+                ", redToken='" + redToken + '\'' +
+                ", gameType=" + gameType +
+                ", board=" + board +
+                ", moveList=" + moveList +
+                ", gameStarted=" + gameStarted +
+                '}';
+    }
 }

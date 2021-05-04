@@ -9,8 +9,8 @@ public class RandomGeneratedTextTokens implements TokenManager{
 
     @Override
     public String createToken(String gameId, String player, int gameCount) {
-        int randomplayernr = rand.nextInt(999) + 1;
-        return gameId + gameCount + '-' + randomplayernr +player;
+        int randomplayernr = rand.nextInt(99999999) + 9999;
+        return gameId + gameCount + '-' + Integer.toHexString(randomplayernr) + player;
     }
 
     @Override
@@ -20,7 +20,12 @@ public class RandomGeneratedTextTokens implements TokenManager{
 
     @Override
     public String token2player(String token) {
-        return parseToken(token, 1);
+        if(token.substring(token.length()-3).equals("RED")){
+            return "red";
+        }
+        else{
+            return "blue";
+        }
     }
 
     private String parseToken(String token, int part) {

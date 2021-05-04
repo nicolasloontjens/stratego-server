@@ -54,7 +54,7 @@ public class StrategoController implements StrategoWebController {
 
 
     @Override
-    public void joinGame(String version, List<List<String>> startConfiguration, String gameID){
+    public String joinGame(String version, List<List<String>> startConfiguration, String gameID){
         String currentToken = "";
         if(gameManager.checkForExistingGames(version)){
             currentToken = tokenGen.createToken(gameID,"RED",gameManager.getGamesCounter());
@@ -62,7 +62,7 @@ public class StrategoController implements StrategoWebController {
             currentToken = tokenGen.createToken(gameID,"BLUE",gameManager.getGamesCounter());
         }
         gameManager.connectToGame(version,currentToken,startConfiguration);
-        // needs to be implemented (update interface first)
+        return currentToken;
     }
 
     @Override
