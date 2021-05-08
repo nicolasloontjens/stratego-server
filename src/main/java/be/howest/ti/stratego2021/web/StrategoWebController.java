@@ -36,5 +36,5 @@ public interface StrategoWebController {
     MakeMovePosBody makeMove(Coords scr, Coords tar, String infiltrate);
     List<Move> getMoves();
 
-    void getGameState();
+    List<List<String>> getGameState();
 }
