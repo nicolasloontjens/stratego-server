@@ -1,5 +1,9 @@
 package be.howest.ti.stratego2021.logic;
 
+import be.howest.ti.stratego2021.web.bridge.ReturnBoardGetBody;
+import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
+
+import java.sql.Array;
 import java.util.*;
 
 public class Game {
@@ -60,6 +64,48 @@ public class Game {
     }
 
     public Pawn getTargetCoords(Coords tar) {return board.getPawn(tar);}
+
+    public List<List<ReturnBoardPawn>> returnClientBoard(String token){
+        String player = checkIfBlueOrRed(token);
+        String enemy = getEnemy(player);
+        List<List<ReturnBoardPawn>> res = getEmptyReturnBoard();
+        List<String> nonMoveableTypes = new ArrayList<>(Arrays.asList("water","empty"));
+        for(int row = 0;row<10;row++){
+            for(int col = 0;col<10;col++){
+                if(board.getPawn(new Coords(row,col)).getPlayerToken().equals(token)){
+                    res.get(row).set(col, new ReturnBoardGetBody(player,board.getPawn(new Coords(row,col)).getPawnType()));
+                }
+                else if(nonMoveableTypes.contains(board.getPawn(new Coords(row,col)).getPawnType())){
+                    res.get(row).set(col,null);
+                }
+                else{
+                    res.get(row).set(col, new ReturnBoardPawn(enemy));
+                }
+            }
+        }
+        return res;
+    }
+
+    private List<List<ReturnBoardPawn>> getEmptyReturnBoard(){
+        return Arrays.asList(getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow());
+    }
+    private List<ReturnBoardPawn> getEmptyRow(){
+        return Arrays.asList(null,null,null,null,null,null,null,null,null,null);
+    }
+
+    private String checkIfBlueOrRed(String token){
+        if(redToken.equals(token)){
+            return "red";
+        }
+        return "blue";
+    }
+
+    private String getEnemy(String player){
+        if(player.equals("red")){
+            return "blue";
+        }
+        return "red";
+    }
 
     public void movePlayer(Coords src, Coords tar, String playerToken){
         if(validateIfMoveable(getPawnAtPos(src),playerToken)){

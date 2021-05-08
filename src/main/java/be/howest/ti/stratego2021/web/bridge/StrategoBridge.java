@@ -121,18 +121,17 @@ public class StrategoBridge implements AuthenticationProvider {
 
     private void getGameState(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
-
-        List<List<String>> res = controller.getGameState();
+        String gameID = requestParameters.getAuthorizedGameId();
+        String token = requestParameters.getAuthorizedPlayer();
+        List<List<ReturnBoardPawn>> res = controller.getGameState(gameID,token);
 
         StrategoResponses.sendGameState(ctx, res);
     }
 
     private void authorize(RoutingContext ctx) {
-
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
         String authorizedGameId = requestParameters.getAuthorizedGameId();
         String authorizedPlayer = requestParameters.getAuthorizedPlayer();
-
         try{
             if(controller.validateIfTokenBelongsToGame(controller.getGameFromID(authorizedGameId),authorizedPlayer)){
                 ctx.next();

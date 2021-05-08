@@ -50,7 +50,7 @@ public class StrategoResponses {
         sendJsonResponse(ctx,200, new JsonObject().put("moves",moves));
     }
 
-    public static void sendGameState(RoutingContext ctx, List<List<String>> res) {
+    public static void sendGameState(RoutingContext ctx, List<List<ReturnBoardPawn>> res) {
         sendJsonResponse(ctx,200, new JsonObject().put("configuration", res));
     }
 

@@ -1,6 +1,8 @@
 package be.howest.ti.stratego2021.logic;
 
 import be.howest.ti.stratego2021.web.StrategoWebController;
+import be.howest.ti.stratego2021.web.bridge.ReturnBoardGetBody;
+import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
 import be.howest.ti.stratego2021.web.tokens.RandomGeneratedTextTokens;
 import be.howest.ti.stratego2021.web.bridge.MakeMovePosBody;
 
@@ -88,8 +90,7 @@ public class StrategoController implements StrategoWebController {
     }
 
     @Override
-    public List<List<String>> getGameState() {
-        List<List<String>> res = null;
-        return res;
+    public List<List<ReturnBoardPawn>> getGameState(String gameID, String token) {
+        return gameManager.convertBoardForClient(gameID, token);
     }
 }

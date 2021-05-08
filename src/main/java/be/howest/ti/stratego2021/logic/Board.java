@@ -38,7 +38,7 @@ public class Board {
         for(int rowindex = startRowIndex; rowindex < maxRowIndex; rowindex++){
             for(int colindex = 0; colindex < 10; colindex++){
                 if(config.get(rowindex).get(colindex) == null){
-                    board.get(rowindex).set(colindex,new Pawn(token, "EMPTY"));
+                    board.get(rowindex).set(colindex,new Pawn("empty", "EMPTY"));
                 }else{
                     board.get(rowindex).set(colindex,new Pawn(token, config.get(rowindex).get(colindex)));
                 }
