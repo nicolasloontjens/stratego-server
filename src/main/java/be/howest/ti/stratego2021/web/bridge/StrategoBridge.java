@@ -89,14 +89,18 @@ public class StrategoBridge implements AuthenticationProvider {
 
     private void makeMove(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
+        Move move = null;
 
-        Move move = controller.makeMove(requestParameters.getAuthorizedGameId(),
+        try{
+            move = controller.makeMove(requestParameters.getAuthorizedGameId(),
                 requestParameters.getAuthorizedPlayer(),
                 requestParameters.getSrc(),
                 requestParameters.getTar(),
                 requestParameters.getInfiltrate()
         );
-
+        }catch(IllegalArgumentException exception){
+            StrategoResponses.sendFailure(ctx,401,"Unauthorized");
+        }
         StrategoResponses.sendMove(ctx,move);
     }
 
