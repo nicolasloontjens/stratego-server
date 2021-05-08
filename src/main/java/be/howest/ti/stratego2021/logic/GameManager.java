@@ -1,5 +1,7 @@
 package be.howest.ti.stratego2021.logic;
 
+import be.howest.ti.stratego2021.web.exceptions.InvalidTokenException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +29,7 @@ public class GameManager {
             gamesCounter++;
         }
         else{
-            Game game = new Game("",config,token,version);
+            Game game = new Game(id,config,token,version);
             gamesList.get(version).add(game);
             gamesById.put(id,game);
         }
@@ -41,10 +43,7 @@ public class GameManager {
     }
 
     public boolean checkIfTokenBelongsToGame(Game game, String token){
-        if(game.getBlueToken().equals(token)||game.getRedToken().equals(token)){
-            return true;
-        }
-        return false;
+        return game.getBlueToken().equals(token) || game.getRedToken().equals(token);
     }
 
     public int getGamesCounter(){

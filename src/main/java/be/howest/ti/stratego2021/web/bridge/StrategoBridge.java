@@ -128,8 +128,8 @@ public class StrategoBridge implements AuthenticationProvider {
     }
 
     private void authorize(RoutingContext ctx) {
-        StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
+        StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
         String authorizedGameId = requestParameters.getAuthorizedGameId();
         String authorizedPlayer = requestParameters.getAuthorizedPlayer();
 
@@ -137,8 +137,11 @@ public class StrategoBridge implements AuthenticationProvider {
             if(controller.validateIfTokenBelongsToGame(controller.getGameFromID(authorizedGameId),authorizedPlayer)){
                 ctx.next();
             }
+            else{
+                throw new IllegalArgumentException();
+            }
         }catch(IllegalArgumentException exception){
-            throw new ForbiddenAccessException();
+            StrategoResponses.sendFailure(ctx,401,"Unauthorized");
         }
     }
 
