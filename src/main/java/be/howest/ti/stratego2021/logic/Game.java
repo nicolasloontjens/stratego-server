@@ -3,7 +3,6 @@ package be.howest.ti.stratego2021.logic;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardGetBody;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
 
-import java.sql.Array;
 import java.util.*;
 
 public class Game {
@@ -83,29 +82,39 @@ public class Game {
                 }
             }
         }
-        return res;
+        return flipBoardIfRedPlayer(res,player);
     }
 
+    //methods used to return the board to the user
+    private List<List<ReturnBoardPawn>> flipBoardIfRedPlayer(List<List<ReturnBoardPawn>> res,String player){
+        if(player.equals("red")){
+            Collections.reverse(res);
+            for(List<ReturnBoardPawn> row : res){
+                Collections.reverse(row);
+            }
+            return res;
+        }
+        return res;
+    }
     private List<List<ReturnBoardPawn>> getEmptyReturnBoard(){
         return Arrays.asList(getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow());
     }
     private List<ReturnBoardPawn> getEmptyRow(){
         return Arrays.asList(null,null,null,null,null,null,null,null,null,null);
     }
-
     private String checkIfBlueOrRed(String token){
         if(redToken.equals(token)){
             return "red";
         }
         return "blue";
     }
-
     private String getEnemy(String player){
         if(player.equals("red")){
             return "blue";
         }
         return "red";
     }
+
 
     public void movePlayer(Coords src, Coords tar, String playerToken){
         if(validateIfMoveable(getPawnAtPos(src),playerToken)){
@@ -170,16 +179,4 @@ public class Game {
         return res;
     }
 
-    @Override
-    public String toString() {
-        return "Game{" +
-                "gameId='" + gameId + '\'' +
-                ", blueToken='" + blueToken + '\'' +
-                ", redToken='" + redToken + '\'' +
-                ", gameType=" + gameType +
-                ", board=" + board +
-                ", moveList=" + moveList +
-                ", gameStarted=" + gameStarted +
-                '}';
-    }
 }
