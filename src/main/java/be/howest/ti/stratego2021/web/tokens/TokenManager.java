@@ -23,7 +23,7 @@ public interface TokenManager {
         User user = User.fromToken(token);
         user.principal()
                 .put("gameId", token2gameId(token))
-                .put("player", token2player(token));
+                .put("player", token);
         return user;
     }
 

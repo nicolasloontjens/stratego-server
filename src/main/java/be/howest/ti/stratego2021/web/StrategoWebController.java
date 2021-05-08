@@ -2,10 +2,13 @@ package be.howest.ti.stratego2021.web;
 
 
 import be.howest.ti.stratego2021.logic.Coords;
-import be.howest.ti.stratego2021.web.bridge.JoinGamePostBody;
+import be.howest.ti.stratego2021.logic.Game;
 import be.howest.ti.stratego2021.logic.Move;
 import be.howest.ti.stratego2021.logic.Version;
 import be.howest.ti.stratego2021.web.bridge.MakeMovePosBody;
+import be.howest.ti.stratego2021.web.bridge.ReturnBoardGetBody;
+import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
+
 import java.util.List;
 
 /**
@@ -33,8 +36,12 @@ public interface StrategoWebController {
 
     String joinGame(String version, List<List<String>> startConfiguration, String gameID);
 
+    Game getGameFromID(String gameID);
+
+    boolean validateIfTokenBelongsToGame(Game game, String token);
+
     MakeMovePosBody makeMove(Coords scr, Coords tar, String infiltrate);
     List<Move> getMoves();
 
-    List<List<String>> getGameState();
+    List<List<ReturnBoardPawn>> getGameState(String gameID, String token);
 }

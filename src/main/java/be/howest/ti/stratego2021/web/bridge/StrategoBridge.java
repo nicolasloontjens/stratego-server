@@ -9,7 +9,6 @@ import be.howest.ti.stratego2021.logic.exceptions.StrategoResourceNotFoundExcept
 import be.howest.ti.stratego2021.web.StrategoWebController;
 import be.howest.ti.stratego2021.web.exceptions.ForbiddenAccessException;
 import be.howest.ti.stratego2021.web.exceptions.InvalidTokenException;
-import be.howest.ti.stratego2021.web.tokens.PlainTextTokens;
 import be.howest.ti.stratego2021.web.tokens.RandomGeneratedTextTokens;
 import be.howest.ti.stratego2021.web.tokens.TokenManager;
 
@@ -122,23 +121,27 @@ public class StrategoBridge implements AuthenticationProvider {
 
     private void getGameState(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
-
-        List<List<String>> res = controller.getGameState();
+        String gameID = requestParameters.getAuthorizedGameId();
+        String token = requestParameters.getAuthorizedPlayer();
+        List<List<ReturnBoardPawn>> res = controller.getGameState(gameID,token);
 
         StrategoResponses.sendGameState(ctx, res);
     }
 
     private void authorize(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
-
         String authorizedGameId = requestParameters.getAuthorizedGameId();
         String authorizedPlayer = requestParameters.getAuthorizedPlayer();
-
-        if ("invalid".equals(authorizedGameId) || "invalid".equals(authorizedPlayer)) {
-            throw new ForbiddenAccessException();
+        try{
+            if(controller.validateIfTokenBelongsToGame(controller.getGameFromID(authorizedGameId),authorizedPlayer)){
+                ctx.next();
+            }
+            else{
+                throw new IllegalArgumentException();
+            }
+        }catch(IllegalArgumentException exception){
+            StrategoResponses.sendFailure(ctx,401,"Unauthorized");
         }
-
-        ctx.next();
     }
 
     public Router buildRouter(RouterBuilder routerBuilder) {
