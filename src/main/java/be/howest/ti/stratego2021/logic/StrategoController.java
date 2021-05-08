@@ -2,7 +2,6 @@ package be.howest.ti.stratego2021.logic;
 
 import be.howest.ti.stratego2021.web.StrategoWebController;
 import be.howest.ti.stratego2021.web.tokens.RandomGeneratedTextTokens;
-import be.howest.ti.stratego2021.web.bridge.JoinGamePostBody;
 import be.howest.ti.stratego2021.web.bridge.MakeMovePosBody;
 
 
@@ -62,13 +61,23 @@ public class StrategoController implements StrategoWebController {
         }else{
             currentToken = tokenGen.createToken(gameID,"BLUE",gameManager.getGamesCounter());
         }
-        gameManager.connectToGame(version,currentToken,startConfiguration);
+        gameManager.connectToGame(version,currentToken,tokenGen.token2gameId(currentToken),startConfiguration);
         return currentToken;
     }
 
     @Override
     public MakeMovePosBody makeMove(Coords src, Coords tar, String infiltrate) {
         return new MakeMovePosBody(src, tar, infiltrate);
+    }
+
+    @Override
+    public Game getGameFromID(String gameID){
+        return gameManager.getGameById(gameID);
+    }
+
+    @Override
+    public boolean validateIfTokenBelongsToGame(Game game, String token){
+        return gameManager.checkIfTokenBelongsToGame(game, token);
     }
 
     @Override

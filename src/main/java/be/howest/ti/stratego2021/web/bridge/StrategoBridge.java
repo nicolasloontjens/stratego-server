@@ -9,7 +9,6 @@ import be.howest.ti.stratego2021.logic.exceptions.StrategoResourceNotFoundExcept
 import be.howest.ti.stratego2021.web.StrategoWebController;
 import be.howest.ti.stratego2021.web.exceptions.ForbiddenAccessException;
 import be.howest.ti.stratego2021.web.exceptions.InvalidTokenException;
-import be.howest.ti.stratego2021.web.tokens.PlainTextTokens;
 import be.howest.ti.stratego2021.web.tokens.RandomGeneratedTextTokens;
 import be.howest.ti.stratego2021.web.tokens.TokenManager;
 
@@ -134,11 +133,13 @@ public class StrategoBridge implements AuthenticationProvider {
         String authorizedGameId = requestParameters.getAuthorizedGameId();
         String authorizedPlayer = requestParameters.getAuthorizedPlayer();
 
-        if ("invalid".equals(authorizedGameId) || "invalid".equals(authorizedPlayer)) {
+        try{
+            if(controller.validateIfTokenBelongsToGame(controller.getGameFromID(authorizedGameId),authorizedPlayer)){
+                ctx.next();
+            }
+        }catch(IllegalArgumentException exception){
             throw new ForbiddenAccessException();
         }
-
-        ctx.next();
     }
 
     public Router buildRouter(RouterBuilder routerBuilder) {
