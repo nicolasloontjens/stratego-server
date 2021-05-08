@@ -2,7 +2,6 @@ package be.howest.ti.stratego2021.logic;
 
 public enum PawnTypes {
     WATER(13),
-    INFILTRATOR(12),
     BOMB(11),
     MARSHAL(10),
     GENERAL(9),
@@ -13,14 +12,18 @@ public enum PawnTypes {
     SERGEANT(4),
     MINER(3),
     SCOUT(2),
+    INFILTRATOR(1),
     SPY(1),
     FLAG(0),
     EMPTY(0);
 
-    public int rank;
+    private final int rank;
 
     PawnTypes(int rank){
         this.rank = rank;
     }
 
+    public int getRank() {
+        return rank;
+    }
 }

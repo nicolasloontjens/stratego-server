@@ -60,6 +60,11 @@ public class GameManager {
         return false;
     }
 
+    public Move movePlayer(String gameID,Coords src, Coords tar, String token){
+        Game game = getGameById(gameID);
+        return game.movePlayer(src,tar,token);
+    }
+
     public List<List<ReturnBoardPawn>> convertBoardForClient(String gameID, String token){
         Game game = getGameById(gameID);
         return game.returnClientBoard(token);

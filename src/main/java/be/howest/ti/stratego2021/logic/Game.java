@@ -62,6 +62,10 @@ public class Game {
         return board.getPawn(src);
     }
 
+    public void setPawnAtPos(Coords src, Pawn pawn){
+        board.setPawn(src,pawn);
+    }
+
     public Pawn getTargetCoords(Coords tar) {return board.getPawn(tar);}
 
     public List<List<ReturnBoardPawn>> returnClientBoard(String token){
@@ -116,12 +120,59 @@ public class Game {
     }
 
 
-    public void movePlayer(Coords src, Coords tar, String playerToken){
+    public Move movePlayer(Coords src, Coords tar, String playerToken){
         if(validateIfMoveable(getPawnAtPos(src),playerToken)){
-            if(validateTargetCoords(src,tar,playerToken)){
-
+            if(validateIfCoordsOutOfBounds(src,tar)){
+                if(validateTargetCoords(src,tar)){
+                    if(validateTarget(tar,playerToken)){
+                        if(isAttack(tar)){
+                            return executeAttack(src,tar, playerToken);
+                        }
+                        else{
+                            return executeMove(src,tar,playerToken);
+                        }
+                    }
+                }
             }
         }
+        throw new IllegalArgumentException();
+    }
+
+    private Move executeAttack(Coords src, Coords tar, String token){
+        int res = getPawnAtPos(src).compareTo(getPawnAtPos(tar));
+        String player = checkIfBlueOrRed(token).toUpperCase(Locale.ROOT);
+        if(res>0){
+            Move move = new Move(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"attacker");
+            setPawnAtPos(tar,getPawnAtPos(src));
+            setPawnAtPos(src,board.getEmptyPawn());
+            return move;
+        }else if(res == 0){
+            Move move = new Move(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"draw");
+            setPawnAtPos(tar,board.getEmptyPawn());
+            setPawnAtPos(src,board.getEmptyPawn());
+            return move;
+        }
+        else{
+            Move move= new Move(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"defender");
+            setPawnAtPos(src,board.getEmptyPawn());
+            return move;
+        }
+    }
+
+
+    private Move executeMove(Coords src, Coords tar, String token){
+        setPawnAtPos(tar,getPawnAtPos(src));
+        setPawnAtPos(src,board.getEmptyPawn());
+        return new Move(checkIfBlueOrRed(token).toUpperCase(Locale.ROOT),src,tar);
+    }
+
+    //validation methods for the movement of pawns
+    private boolean validateTarget(Coords tar, String playerToken){
+        return !board.getPawn(tar).getPawnType().equals("water") && !board.getPawn(tar).getPlayerToken().equals(playerToken);
+    }
+
+    private boolean isAttack(Coords tar){
+        return !getPawnAtPos(tar).getPawnType().equals("empty");
     }
 
     private boolean validateIfMoveable(Pawn pawn, String token){
@@ -129,15 +180,17 @@ public class Game {
         return !nonMoveableTypes.contains(pawn.getPawnType()) && pawn.getPlayerToken().equals(token);
     }
 
-    private boolean validateTargetCoords(Coords src, Coords tar, String token){
-        if(getPawnAtPos(src).getPawnType().equals("scout")){
-            return scoutMovementValidation(src,tar);
+    private boolean validateIfCoordsOutOfBounds(Coords src, Coords tar){
+        return src.getCol() > 0 && src.getCol() < 10 && src.getRow() > 0 && src.getRow() < 10 && tar.getCol() > 0 && tar.getCol() < 10 && tar.getRow() > 0 && tar.getRow() < 10;
+    }
+
+    private boolean validateTargetCoords(Coords src, Coords tar) {
+        if(getPawnAtPos(src).getPawnType().equals("scout")) {
+            return scoutMovementValidation(src, tar);
         }else{
-            return checkAvailableSpotsHorizontal(src,tar,+1) && checkAvailableSpotsVertical(src,tar,+1);
-
-            }
-
+            return normalPawnMovementValidation(src, tar);
         }
+    }
 
     private boolean scoutMovementValidation(Coords src, Coords tar){
         if(tar.getRow()>src.getRow() && tar.getCol() == src.getCol()){
@@ -155,7 +208,6 @@ public class Game {
         return false;
     }
 
-
     private boolean checkAvailableSpotsVertical(Coords src, Coords tar, int value) {
         boolean res = true;
         while(!src.equals(tar)){
@@ -167,7 +219,6 @@ public class Game {
         return res;
     }
 
-
     private boolean checkAvailableSpotsHorizontal(Coords src, Coords tar, int value){
         boolean res = true;
         while(!src.equals(tar)){
@@ -177,6 +228,22 @@ public class Game {
             }
         }
         return res;
+    }
+
+    private boolean normalPawnMovementValidation(Coords src, Coords tar){
+        if(tar.getRow()>src.getRow() && tar.getCol()==src.getCol()){
+            return tar.getRow() == src.getRow() + 1;
+        }
+        if(tar.getRow()<src.getRow() && tar.getCol()==src.getCol()){
+            return tar.getRow() == src.getRow() - 1;
+        }
+        if(tar.getCol()>src.getCol() && tar.getRow()==src.getRow()){
+            return tar.getCol() == src.getCol() + 1;
+        }
+        if(tar.getCol()<src.getCol() && tar.getRow()==src.getRow()){
+            return tar.getCol() == src.getCol() - 1;
+        }
+        return false;
     }
 
 }

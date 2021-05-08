@@ -68,8 +68,14 @@ public class StrategoController implements StrategoWebController {
     }
 
     @Override
-    public MakeMovePosBody makeMove(Coords src, Coords tar, String infiltrate) {
-        return new MakeMovePosBody(src, tar, infiltrate);
+    public Move makeMove(String gameID,String token,Coords src, Coords tar, String infiltrate) {
+        if(infiltrate.equals("")){
+            return gameManager.movePlayer(gameID,src,tar,token);
+        }
+        else{
+            //infiltrate
+            return new Move("no",new Coords(0,0),new Coords(0,0));
+        }
     }
 
     @Override

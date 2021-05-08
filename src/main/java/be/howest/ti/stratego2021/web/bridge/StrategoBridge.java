@@ -90,13 +90,14 @@ public class StrategoBridge implements AuthenticationProvider {
     private void makeMove(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
 
-        controller.makeMove(
+        Move move = controller.makeMove(requestParameters.getAuthorizedGameId(),
+                requestParameters.getAuthorizedPlayer(),
                 requestParameters.getSrc(),
                 requestParameters.getTar(),
                 requestParameters.getInfiltrate()
         );
 
-        StrategoResponses.sendMove(ctx);
+        StrategoResponses.sendMove(ctx,move);
     }
 
     private void getMoves(RoutingContext ctx) {
