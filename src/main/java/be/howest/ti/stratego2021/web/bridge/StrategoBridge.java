@@ -99,7 +99,9 @@ public class StrategoBridge implements AuthenticationProvider {
                 requestParameters.getInfiltrate()
         );
         }catch(IllegalArgumentException exception){
-            StrategoResponses.sendFailure(ctx,401,"Unauthorized");
+            StrategoResponses.sendFailure(ctx,403,"Forbidden");
+        }catch(ForbiddenAccessException exception){
+            StrategoResponses.sendFailure(ctx, 401,"Unauthorized");
         }
         StrategoResponses.sendMove(ctx,move);
     }

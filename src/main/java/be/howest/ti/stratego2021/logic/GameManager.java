@@ -60,8 +60,21 @@ public class GameManager {
         return false;
     }
 
+    public Move infiltrate(String gameID, Coords src, Coords tar, String token, String infiltrationGuess){
+        Game game = getGameById(gameID);
+        if(game.getRedToken().equals(token)){
+            src.invertCoords();
+            tar.invertCoords();
+        }
+        return game.infiltratePlayer(src, tar, token, infiltrationGuess);
+    }
+
     public Move movePlayer(String gameID,Coords src, Coords tar, String token){
         Game game = getGameById(gameID);
+        if(game.getRedToken().equals(token)){
+            src.invertCoords();
+            tar.invertCoords();
+        }
         return game.movePlayer(src,tar,token);
     }
 

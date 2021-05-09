@@ -33,6 +33,11 @@ public class Coords {
         this.row = row;
     }
 
+    public void invertCoords(){
+        col = Math.abs(col - 9);
+        row = Math.abs(row - 9);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
