@@ -73,8 +73,7 @@ public class StrategoController implements StrategoWebController {
             return gameManager.movePlayer(gameID,src,tar,token);
         }
         else{
-            //infiltrate
-            return new Move("no",new Coords(0,0),new Coords(0,0));
+            return gameManager.infiltrate(gameID,src,tar,token,infiltrate);
         }
     }
 

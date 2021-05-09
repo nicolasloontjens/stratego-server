@@ -181,12 +181,15 @@ public class Game {
     }
 
     private Move executeInfiltration(Coords src, Coords tar, String token, String guess){
+        String player = checkIfBlueOrRed(token).toUpperCase(Locale.ROOT);
+        isBlueTurn = !isBlueTurn;
         if(getPawnAtPos(tar).getPawnType().equals(guess)){
-            //successful guess
+            Move move = new Move(player,src,tar,guess,getPawnAtPos(tar).getPawnType(),true);
+            setPawnAtPos(tar,board.getEmptyPawn());
+            return move;
         }else{
-            //unsuccessful guess
+            return new Move(player,src,tar,guess,getPawnAtPos(tar).getPawnType(),false);
         }
-        return null
     }
 
 
@@ -194,14 +197,6 @@ public class Game {
 
 
     public Move infiltratePlayer(Coords src, Coords tar, String token, String guess){
-        //first check if your turn +
-        //check if coords are out of bounds or not +
-        //check if pawn is an infiltrator and your pawn+
-        //check if infiltrator is in enemy territory +
-        //check if infiltrator tar coords are within 2 of the src +
-        //check if target isn't one of your pawns +
-        //compare the guess vs the actual type of the pawn
-        //execute the changes on the board itself
         if(!checkIfMyTurn(token)){
             throw new ForbiddenAccessException();
         }
