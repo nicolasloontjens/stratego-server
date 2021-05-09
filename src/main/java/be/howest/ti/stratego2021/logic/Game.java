@@ -180,22 +180,45 @@ public class Game {
         return new Move(checkIfBlueOrRed(token).toUpperCase(Locale.ROOT),src,tar);
     }
 
+    private Move executeInfiltration(Coords src, Coords tar, String token, String guess){
+        if(getPawnAtPos(tar).getPawnType().equals(guess)){
+            //successful guess
+        }else{
+            //unsuccessful guess
+        }
+        return null
+    }
+
 
 
 
 
     public Move infiltratePlayer(Coords src, Coords tar, String token, String guess){
-        //first check if your turn
-        //check if pawn is an infiltrator
-        //check if infiltrator is in enemy territory
-        //check if infiltrator tar coords are within 2 of the src
-        //check if target isn't one of your pawns
-        //
-        return null;
+        //first check if your turn +
+        //check if coords are out of bounds or not +
+        //check if pawn is an infiltrator and your pawn+
+        //check if infiltrator is in enemy territory +
+        //check if infiltrator tar coords are within 2 of the src +
+        //check if target isn't one of your pawns +
+        //compare the guess vs the actual type of the pawn
+        //execute the changes on the board itself
+        if(!checkIfMyTurn(token)){
+            throw new ForbiddenAccessException();
+        }
+        if(validateIfInfiltrator(src,token)){
+            if(validateIfCoordsOutOfBounds(src,tar)){
+                if(isInEnemyTerritory(src,tar,token)){
+                    if(infiltratorMovementValidation(src,tar)&&validateTarget(tar,token)){
+                        return executeInfiltration(src,tar,token,guess);
+                    }
+                }
+            }
+        }
+        throw new IllegalArgumentException();
     }
 
 
-    //validation methods for the movement of pawns
+    //validation methods for the movement of pawns, comments in every function with it's functionality
     private boolean validateTarget(Coords tar, String playerToken){
         //check if the target isn't water, or one of your own pawns
         return !board.getPawn(tar).getPawnType().equals("water") && !board.getPawn(tar).getPlayerToken().equals(playerToken);
@@ -213,8 +236,8 @@ public class Game {
     }
 
     private boolean validateIfCoordsOutOfBounds(Coords src, Coords tar){
-        //check if the given Coords are out of bounds
-        return src.getCol() > 0 && src.getCol() < 10 && src.getRow() > 0 && src.getRow() < 10 && tar.getCol() > 0 && tar.getCol() < 10 && tar.getRow() > 0 && tar.getRow() < 10;
+        //check if the given Coords are out of bounds and check if the coords arent the same
+        return src.getCol() >= 0 && src.getCol() < 10 && src.getRow() >= 0 && src.getRow() < 10 && tar.getCol() >= 0 && tar.getCol() < 10 && tar.getRow() >= 0 && tar.getRow() < 10 && !src.equals(tar);
     }
 
     private boolean validateTargetCoords(Coords src, Coords tar) {
@@ -282,6 +305,44 @@ public class Game {
         }
         if(tar.getCol()<src.getCol() && tar.getRow()==src.getRow()){
             return tar.getCol() == src.getCol() - 1;
+        }
+        return false;
+    }
+
+
+    //infiltrator specific
+    private boolean validateIfInfiltrator(Coords src, String token){
+        //check if the pawn type is infiltrator, and it's your infiltrator
+        return getPawnAtPos(src).getPawnType().equals("infiltrator") && getPawnAtPos(src).getPlayerToken().equals(token);
+    }
+
+    private boolean isInEnemyTerritory(Coords src, Coords tar, String token){
+        //get player color, then check if they are in enemy territory. the red coords are already adjusted for blue server pov
+        if(checkIfBlueOrRed(token).equals("red")){
+            return checkEnemyTerritory(src,tar,6,10);
+        }else{
+            return checkEnemyTerritory(src,tar,0,4);
+        }
+    }
+
+    private boolean checkEnemyTerritory(Coords src, Coords tar, int startrow,int maxrow){
+        //check if both coords are in the enemy territory
+        return src.getRow()>= startrow && src.getRow() < maxrow && tar.getRow()>= startrow && tar.getRow()< maxrow;
+    }
+
+    private boolean infiltratorMovementValidation(Coords src, Coords tar){
+        //check the direction, and if it doesn't move diagonally, then check if it's max +2 or -2 from src, then check if there's nothing between
+        if(tar.getRow()>src.getRow() && tar.getCol() == src.getCol() && tar.getRow()<=src.getRow()+2){
+            return checkAvailableSpotsVertical(src,tar,+1);
+        }
+        if(tar.getRow()<src.getRow() && tar.getCol() == src.getCol() && tar.getRow()>=src.getRow()-2){
+            return checkAvailableSpotsVertical(src,tar,-1);
+        }
+        if(tar.getCol()>src.getCol() && tar.getRow() == src.getRow() && tar.getCol()<=src.getCol()+2){
+            return checkAvailableSpotsHorizontal(src,tar,+1);
+        }
+        if(tar.getCol()<src.getCol() && tar.getRow() == src.getRow() && tar.getCol()>=src.getCol()-2){
+            return checkAvailableSpotsHorizontal(src,tar,-1);
         }
         return false;
     }
