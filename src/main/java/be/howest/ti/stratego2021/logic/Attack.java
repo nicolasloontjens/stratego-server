@@ -1,6 +1,6 @@
 package be.howest.ti.stratego2021.logic;
 
-public class Attack{
+public class Attack {
     private final String attacker;
     private final String defender;
     private final String winner;
