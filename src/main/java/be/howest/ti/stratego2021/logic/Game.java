@@ -233,7 +233,7 @@ public class Game {
         if(!isAttackableTarget(tar,token)){
             throw new StrategoGameRuleException("You can't infiltrate that target");
         }
-        if(isInfiltrator(src,token)&& checkIfCoordsOutOfBounds(src,tar)&&gameStarted){
+        if(isInfiltrator(src,token)&&checkIfCoordsOutOfBounds(src,tar)&&gameStarted){
             if(isInEnemyTerritory(src,tar,token)){
                 if(infiltratorMovementValidation(src,tar)&& isAttackableTarget(tar,token)){
                     return executeInfiltration(src,tar,token,guess);
@@ -298,9 +298,10 @@ public class Game {
     private boolean checkAvailableSpotsVertical(Coords src, Coords tar, int value) {
         //if any spot between the src and tar is not empty, return false
         boolean res = true;
-        while(!src.equals(tar)){
-            src.setRow(src.getRow()+value);
-            if(!getPawnAtPos(src).getPawnType().equals("empty")){
+        Coords curCords = new Coords(src.getRow(),src.getCol());
+        while(!curCords.equals(tar)){
+            curCords.setRow(curCords.getRow()+value);
+            if(!getPawnAtPos(curCords).getPawnType().equals("empty")&&curCords.getRow()!=tar.getRow()){
                 res = false;
             }
         }
@@ -310,9 +311,10 @@ public class Game {
     private boolean checkAvailableSpotsHorizontal(Coords src, Coords tar, int value){
         //if any spot between the src and tar is not empty, return false
         boolean res = true;
-        while(!src.equals(tar)){
-            src.setCol(src.getCol()+value);
-            if(!getPawnAtPos(src).getPawnType().equals("empty")){
+        Coords curCords = new Coords(src.getRow(),src.getCol());
+        while(!curCords.equals(tar)){
+            curCords.setCol(curCords.getCol()+value);
+            if(!getPawnAtPos(curCords).getPawnType().equals("empty")&&curCords.getCol()!=tar.getCol()){
                 res = false;
             }
         }
@@ -359,6 +361,7 @@ public class Game {
 
     private boolean infiltratorMovementValidation(Coords src, Coords tar){
         //check the direction, and if it doesn't move diagonally, then check if it's max +2 or -2 from src, then check if there's nothing between
+
         if(tar.getRow()>src.getRow() && tar.getCol() == src.getCol() && tar.getRow()<=src.getRow()+2){
             return checkAvailableSpotsVertical(src,tar,+1);
         }

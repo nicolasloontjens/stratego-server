@@ -14,13 +14,13 @@ class GameTest {
 
     List<List<String>> returnBlueConfig(){
         List<String> nullList = new ArrayList<>(Arrays.asList(null,null,null,null,null,null,null,null,null,null));
-        List<String> pawnList = new ArrayList<>(Arrays.asList("flag","bomb","colonel","colonel","colonel","colonel","colonel","colonel","colonel","colonel"));
+        List<String> pawnList = new ArrayList<>(Arrays.asList("flag","bomb","colonel","colonel","colonel","colonel","colonel","colonel","colonel","infiltrator"));
         return new ArrayList<>(Arrays.asList(nullList,nullList,nullList,nullList,nullList,nullList,pawnList,pawnList,pawnList,pawnList));
     }
 
     List<List<String>> returnRedConfig(){
         List<String> nullList = new ArrayList<>(Arrays.asList(null,null,null,null,null,null,null,null,null,null));
-        List<String> pawnList = new ArrayList<>(Arrays.asList("flag","bomb","sergeant","sergeant","sergeant","sergeant","sergeant","sergeant","sergeant","sergeant"));
+        List<String> pawnList = new ArrayList<>(Arrays.asList("flag","bomb","sergeant","sergeant","sergeant","sergeant","sergeant","sergeant","sergeant","infiltrator"));
         return new ArrayList<>(Arrays.asList(nullList,nullList,nullList,nullList,nullList,nullList,pawnList,pawnList,pawnList,nullList));
     }
 
@@ -139,6 +139,24 @@ class GameTest {
             game.applyGameRulesAndCheckIfAttackOrMove(new Coords(6,1),new Coords(5,1),"blueTestToken");
             game.executeMove(new Coords(6,1),new Coords(5,1),"blueTestToken");
         });
+    }
+
+    @Test
+    void checkIfInfiltratingIsPossible(){
+        Game game = returnWorkingGame();
+        game.executeMove(new Coords(6,9),new Coords(5,9),"blueTestToken");
+        game.executeMove(new Coords(3,9),new Coords(4,9),"redTestToken");
+        game.executeMove(new Coords(6,4),new Coords(5,4),"blueTestToken");
+        game.executeMove(new Coords(4,9),new Coords(4,8),"redTestToken");
+        game.executeMove(new Coords(5,9),new Coords(4,9),"blueTestToken");
+        game.executeMove(new Coords(4,8),new Coords(5,8),"redTestToken");
+        game.executeMove(new Coords(4,9),new Coords(3,9),"blueTestToken");
+        game.executeMove(new Coords(5,8),new Coords(6,8),"redTestToken");
+
+        InfiltrationMove move = game.infiltratePlayer(new Coords(3,9),new Coords(2,9),"blueTestToken","infiltrator");
+        System.out.println(move.getInfiltration().getExpected());
+        System.out.println(move.getInfiltration().getActual());
+        System.out.println(move.getInfiltration().isSuccess());
     }
 
 }
