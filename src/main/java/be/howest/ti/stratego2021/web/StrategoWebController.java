@@ -40,8 +40,8 @@ public interface StrategoWebController {
 
     boolean validateIfTokenBelongsToGame(Game game, String token);
 
-    MakeMovePosBody makeMove(Coords scr, Coords tar, String infiltrate);
-    List<Move> getMoves();
+    Move makeMove(String gameID,String token,Coords scr, Coords tar, String infiltrate);
+    List<Move> getMoves(String gameID, String player);
 
     List<List<ReturnBoardPawn>> getGameState(String gameID, String token);
 }

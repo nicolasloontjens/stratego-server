@@ -89,21 +89,34 @@ public class StrategoBridge implements AuthenticationProvider {
 
     private void makeMove(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
-
-        controller.makeMove(
+        Move move = null;
+        try{
+            move = controller.makeMove(requestParameters.getAuthorizedGameId(),
+                requestParameters.getAuthorizedPlayer(),
                 requestParameters.getSrc(),
                 requestParameters.getTar(),
                 requestParameters.getInfiltrate()
         );
-
-        StrategoResponses.sendMove(ctx);
+        }catch(IllegalArgumentException exception){
+            StrategoResponses.sendFailure(ctx,403,"Forbidden");
+        }catch(ForbiddenAccessException exception){
+            StrategoResponses.sendFailure(ctx, 401,"Unauthorized");
+        }
+        StrategoResponses.sendMove(ctx,move);
     }
 
     private void getMoves(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
-
-        List<Move> res = controller.getMoves();
-
+        String player = requestParameters.getAuthorizedPlayer();
+        String gameID = requestParameters.getRoomID();
+        List<Move> res = null;
+        try {
+            res = controller.getMoves(gameID, player);
+        }catch(InvalidTokenException exception){
+            StrategoResponses.sendFailure(ctx, 401,"Unauthorized");
+        }catch(IllegalArgumentException exception){
+            StrategoResponses.sendFailure(ctx,403,"Forbidden");
+        }
         StrategoResponses.sendMoves(ctx, res);
     }
 

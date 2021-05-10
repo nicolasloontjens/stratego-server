@@ -42,8 +42,8 @@ public class StrategoResponses {
         sendJsonResponse(ctx, 200, version);
     }
 
-    public static void sendMove(RoutingContext ctx) {
-        sendNotYetImplementedResponse(ctx);
+    public static void sendMove(RoutingContext ctx, Move move) {
+        sendJsonResponse(ctx,200,move);
     }
 
     public static void sendMoves(RoutingContext ctx, List<Move> moves) {

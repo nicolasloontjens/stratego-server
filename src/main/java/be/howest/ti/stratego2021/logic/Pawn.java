@@ -1,11 +1,14 @@
 package be.howest.ti.stratego2021.logic;
 
-import java.util.Locale;
+import org.jetbrains.annotations.NotNull;
 
-public class Pawn {
+import java.util.Locale;
+import java.util.Objects;
+
+public class Pawn implements Comparable<Pawn>{
 
     private final String playerToken;
-    private PawnTypes pawnType;
+    private final PawnTypes pawnType;
 
     public Pawn(String playerToken,String pawnType){
         this.playerToken = playerToken;
@@ -31,5 +34,29 @@ public class Pawn {
     @Override
     public String toString() {
         return "" + pawnType + " " + playerToken;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pawn pawn = (Pawn) o;
+        return playerToken.equals(pawn.playerToken) && pawnType == pawn.pawnType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(playerToken, pawnType);
+    }
+
+    @Override
+    public int compareTo(@NotNull Pawn other) {
+        if(getPawnType().equals("spy")&&other.getPawnType().equals("marshal")){
+            return 1;
+        }
+        if(getPawnType().equals("miner")&&other.getPawnType().equals("bomb")){
+            return 1;
+        }
+        return this.pawnType.getRank() - other.pawnType.getRank();
     }
 }

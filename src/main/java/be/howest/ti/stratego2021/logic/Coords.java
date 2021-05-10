@@ -1,12 +1,18 @@
 package be.howest.ti.stratego2021.logic;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Coords {
     private int col;
     private int row;
 
-    public Coords(int row, int col){
+    @JsonCreator
+    public Coords(
+            @JsonProperty("row")int row,
+            @JsonProperty("col")int col){
         this.col = col;
         this.row = row;
     }
@@ -25,6 +31,11 @@ public class Coords {
 
     public void setRow(int row) {
         this.row = row;
+    }
+
+    public void invertCoords(){
+        col = Math.abs(col - 9);
+        row = Math.abs(row - 9);
     }
 
     @Override
