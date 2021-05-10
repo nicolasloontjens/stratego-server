@@ -59,6 +59,7 @@ public class StrategoController implements StrategoWebController {
     @Override
     public String joinGame(String version, List<List<String>> startConfiguration, String gameID){
         String currentToken = "";
+        gameManager.checkRightVersion(version, startConfiguration);
         if(gameManager.checkForExistingGames(version)){
             currentToken = tokenGen.createToken(gameID,"RED",gameManager.getGamesCounter());
         }else{

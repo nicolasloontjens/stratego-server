@@ -82,4 +82,11 @@ public class GameManager {
         Game game = getGameById(gameID);
         return game.returnClientBoard(token);
     }
+
+    public void checkRightVersion(String version,List<List<String>> startConfiguration){
+        //get version total pieces
+        //count startConfiguration pieces
+        //compare version pieces to startConfiguration pieces
+        //throw when pieces dont match
+    }
 }
