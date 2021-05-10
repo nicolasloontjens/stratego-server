@@ -162,20 +162,20 @@ public class Game {
         String player = checkIfBlueOrRed(token).toUpperCase(Locale.ROOT);
         isBlueTurn = !isBlueTurn;
         if(res>0){
-            Move move = new Move(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"attacker");
+            Move move = new Attack(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"attacker");
             addMove(move);
             setPawnAtPos(tar,getPawnAtPos(src));
             setPawnAtPos(src,board.getEmptyPawn());
             return move;
         }else if(res == 0){
-            Move move = new Move(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"draw");
+            Move move = new Attack(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"draw");
             addMove(move);
             setPawnAtPos(tar,board.getEmptyPawn());
             setPawnAtPos(src,board.getEmptyPawn());
             return move;
         }
         else{
-            Move move= new Move(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"defender");
+            Move move= new Attack(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"defender");
             addMove(move);
             setPawnAtPos(src,board.getEmptyPawn());
             return move;
@@ -195,12 +195,12 @@ public class Game {
         String player = checkIfBlueOrRed(token).toUpperCase(Locale.ROOT);
         isBlueTurn = !isBlueTurn;
         if(getPawnAtPos(tar).getPawnType().equals(guess)){
-            Move move = new Move(player,src,tar,guess,getPawnAtPos(tar).getPawnType(),true);
+            Move move = new Infiltration(player,src,tar,guess,getPawnAtPos(tar).getPawnType(),true);
             addMove(move);
             setPawnAtPos(tar,board.getEmptyPawn());
             return move;
         }else{
-            Move move = new Move(player,src,tar,guess,getPawnAtPos(tar).getPawnType(),false);
+            Move move = new Infiltration(player,src,tar,guess,getPawnAtPos(tar).getPawnType(),false);
             addMove(move);
             return move;
         }
