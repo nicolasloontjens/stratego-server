@@ -13,13 +13,13 @@ class GameTest {
 
     List<List<String>> returnBlueConfig(){
         List<String> nullList = new ArrayList<>(Arrays.asList(null,null,null,null,null,null,null,null,null,null));
-        List<String> pawnList = new ArrayList<>(Arrays.asList("colonel","colonel","colonel","colonel","colonel","colonel","colonel","colonel","colonel","colonel"));
+        List<String> pawnList = new ArrayList<>(Arrays.asList("flag","bomb","colonel","colonel","colonel","colonel","colonel","colonel","colonel","colonel"));
         return new ArrayList<>(Arrays.asList(nullList,nullList,nullList,nullList,nullList,nullList,pawnList,pawnList,pawnList,pawnList));
     }
 
     List<List<String>> returnRedConfig(){
         List<String> nullList = new ArrayList<>(Arrays.asList(null,null,null,null,null,null,null,null,null,null));
-        List<String> pawnList = new ArrayList<>(Arrays.asList("sergeant","sergeant","sergeant","sergeant","sergeant","sergeant","sergeant","sergeant","sergeant","sergeant"));
+        List<String> pawnList = new ArrayList<>(Arrays.asList("flag","bomb","sergeant","sergeant","sergeant","sergeant","sergeant","sergeant","sergeant","sergeant"));
         return new ArrayList<>(Arrays.asList(nullList,nullList,nullList,nullList,nullList,nullList,pawnList,pawnList,pawnList,nullList));
     }
 
@@ -62,7 +62,7 @@ class GameTest {
     }
 
     @Test
-    void testIfWaterIsMoveable(){
+    void testIfWaterIsNotMoveable(){
         Game game = returnWorkingGame();
         assertThrows(IllegalArgumentException.class, () ->{
             game.movePlayer(new Coords(5,5),new Coords(5,6),"blueTestToken");
@@ -70,7 +70,7 @@ class GameTest {
     }
 
     @Test
-    void testIfEnemyIsMoveable(){
+    void testIfEnemyIsNotMoveable(){
         Game game = returnWorkingGame();
         assertThrows(IllegalArgumentException.class, () ->{
             game.movePlayer(new Coords(3,5),new Coords(4,5),"blueTestToken");
@@ -116,6 +116,20 @@ class GameTest {
         assertEquals("empty",game.getPawnAtPos(new Coords(5,4)).getPawnType());
     }
 
+    @Test
+    void checkIfFlagIsNotMoveable(){
+        Game game = returnWorkingGame();
+        assertThrows(IllegalArgumentException.class, () ->{
+            game.movePlayer(new Coords(6,0),new Coords(5,0),"blueTestToken");
+        });
+    }
 
+    @Test
+    void checkIfBombIsNotMoveable(){
+        Game game = returnWorkingGame();
+        assertThrows(IllegalArgumentException.class, () ->{
+            game.movePlayer(new Coords(6,1),new Coords(5,1),"blueTestToken");
+        });
+    }
 
 }
