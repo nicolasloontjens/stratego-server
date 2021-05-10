@@ -12,7 +12,7 @@ class VersionTest {
         assertEquals(1,original.getPieceCount().getGeneral());
         assertEquals(8,original.getPieceCount().getScout());
         Version tiny = new Version("original", PieceCount.valueOf("TINY"));
-        assertEquals(1,tiny.getPieceCount().getMarshall());
+        assertEquals(1,tiny.getPieceCount().getMarshal());
         assertEquals(0,tiny.getPieceCount().getInfiltrator());
     }
 

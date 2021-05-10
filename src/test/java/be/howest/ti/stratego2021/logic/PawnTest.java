@@ -22,5 +22,18 @@ class PawnTest {
         assertEquals(1,spy.compareTo(marshal));
         assertTrue(spy.compareTo(scout)<0);
     }
+    @Test
+    void testDrawLogic(){
+        Pawn scout = new Pawn("blue","scout");
+        Pawn scoutEnemy = new Pawn("red","scout");
+        assertEquals(0,scout.compareTo(scoutEnemy));
+    }
+    @Test
+    void testNormalRankingLogic(){
+        Pawn major = new Pawn("blue","major");
+        Pawn scout = new Pawn("red","scout");
+        assertTrue(major.compareTo(scout)>0);
+        assertTrue(scout.compareTo(major)<0);
+    }
 
 }
