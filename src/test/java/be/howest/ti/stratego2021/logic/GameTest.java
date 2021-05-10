@@ -1,5 +1,6 @@
 package be.howest.ti.stratego2021.logic;
 
+import be.howest.ti.stratego2021.web.exceptions.ForbiddenAccessException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -22,6 +23,12 @@ class GameTest {
         return new ArrayList<>(Arrays.asList(nullList,nullList,nullList,nullList,nullList,nullList,pawnList,pawnList,pawnList,nullList));
     }
 
+    Game returnWorkingGame(){
+        Game game = new Game("1",returnBlueConfig(),"blueTestToken","original");
+        game.connectRedPlayer(returnRedConfig(),"redTestToken");
+        return game;
+    }
+
     @Test
     void testGetPawnAtPos(){
         Game game = new Game("1",returnBlueConfig(),"","original");
@@ -29,6 +36,29 @@ class GameTest {
         game.connectRedPlayer(returnRedConfig(),"");
         assertEquals("colonel", game.getPawnAtPos(new Coords(6,7)).getPawnType());
         assertEquals("water", game.getPawnAtPos(new Coords(5,3)).getPawnType());
+    }
+
+    @Test
+    void testMovePawnChangesBoard(){
+        Game game = returnWorkingGame();
+        game.movePlayer(new Coords(6,5),new Coords(5,5),"blueTestToken");
+        assertNotEquals(returnWorkingGame().getBoard(),game.getBoard());
+    }
+
+    @Test
+    void testTokenAuthForMove(){
+        Game game = returnWorkingGame();
+        assertThrows(ForbiddenAccessException.class,() -> {
+            game.movePlayer(new Coords(6,5),new Coords(5,5),"notAvalidToken");
+        });
+    }
+
+    @Test
+    void testOutOfBoundsError(){
+        Game game = returnWorkingGame();
+        assertThrows(IllegalArgumentException.class, () ->{
+            game.movePlayer(new Coords(11,5),new Coords(5,5),"blueTestToken");
+        });
     }
 
 }
