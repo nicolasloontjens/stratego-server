@@ -153,7 +153,7 @@ public class StrategoBridge implements AuthenticationProvider {
                 throw new IllegalArgumentException();
             }
         }catch(IllegalArgumentException exception){
-            StrategoResponses.sendFailure(ctx,401,"Unauthorized");
+            sendUnauthorized(ctx);
         }
     }
 

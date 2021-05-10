@@ -144,15 +144,13 @@ public class Game {
         if(!checkIfMyTurn(playerToken)){
             throw new ForbiddenAccessException();
         }
-        if(validateIfMoveable(getPawnAtPos(src),playerToken)&&gameStarted){
-            if(validateIfCoordsOutOfBounds(src,tar)){
-                if(validateTargetCoords(src,tar)&&validateTarget(tar,playerToken)){
-                    if(isAttack(tar)){
-                        return executeAttack(src,tar, playerToken);
-                    }
-                    else{
-                        return executeMove(src,tar,playerToken);
-                    }
+        if(validateIfCoordsOutOfBounds(src,tar) && validateIfMoveable(getPawnAtPos(src),playerToken)&&gameStarted){
+            if(validateTargetCoords(src,tar)&&validateTarget(tar,playerToken)){
+                if(isAttack(tar)){
+                    return executeAttack(src,tar, playerToken);
+                }
+                else{
+                    return executeMove(src,tar,playerToken);
                 }
             }
         }
@@ -212,12 +210,10 @@ public class Game {
         if(!checkIfMyTurn(token)){
             throw new ForbiddenAccessException();
         }
-        if(validateIfInfiltrator(src,token)){
-            if(validateIfCoordsOutOfBounds(src,tar)){
-                if(isInEnemyTerritory(src,tar,token)){
-                    if(infiltratorMovementValidation(src,tar)&&validateTarget(tar,token)){
-                        return executeInfiltration(src,tar,token,guess);
-                    }
+        if(validateIfInfiltrator(src,token)&&validateIfCoordsOutOfBounds(src,tar)&&gameStarted){
+            if(isInEnemyTerritory(src,tar,token)){
+                if(infiltratorMovementValidation(src,tar)&&validateTarget(tar,token)){
+                    return executeInfiltration(src,tar,token,guess);
                 }
             }
         }
