@@ -2,6 +2,7 @@ package be.howest.ti.stratego2021.logic;
 
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardGetBody;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
+import be.howest.ti.stratego2021.web.exceptions.InvalidTokenException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,6 +77,14 @@ public class GameManager {
             tar.invertCoords();
         }
         return game.movePlayer(src,tar,token);
+    }
+
+    public List<Move> getMovesFromGame(String gameID, String player){
+        Game game = getGameById(gameID);
+        if(checkIfTokenBelongsToGame(game,player)){
+            return game.getMoveList();
+        }
+        throw new InvalidTokenException();
     }
 
     public List<List<ReturnBoardPawn>> convertBoardForClient(String gameID, String token){
