@@ -96,7 +96,26 @@ class GameTest {
     @Test
     void checkReturnedMoveObject(){
         Game game = returnWorkingGame();
-
+        Move move = game.movePlayer(new Coords(6,4),new Coords(5,4),"blueTestToken");
+        assertEquals("BLUE",move.getPlayer());
+        assertEquals(new Coords(6,4),move.getSrc());
+        assertEquals(new Coords(5,4),move.getTar());
+        assertEquals("blueTestToken",game.getPawnAtPos(new Coords(5,4)).getPlayerToken());
     }
+
+    @Test
+    void checkIfAttackWorks(){
+        Game game = returnWorkingGame();
+        game.movePlayer(new Coords(6,4),new Coords(5,4),"blueTestToken");
+        game.movePlayer(new Coords(3,4),new Coords(4,4),"redTestToken");
+        Move move = game.movePlayer(new Coords(5,4),new Coords(4,4),"blueTestToken");
+        assertEquals("colonel",move.getAttack().getAttacker());
+        assertEquals("sergeant",move.getAttack().getDefender());
+        assertEquals("attacker",move.getAttack().getWinner());
+        assertEquals("colonel",game.getPawnAtPos(new Coords(4,4)).getPawnType());
+        assertEquals("empty",game.getPawnAtPos(new Coords(5,4)).getPawnType());
+    }
+
+
 
 }
