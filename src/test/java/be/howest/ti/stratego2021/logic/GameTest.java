@@ -61,4 +61,42 @@ class GameTest {
         });
     }
 
+    @Test
+    void testIfWaterIsMoveable(){
+        Game game = returnWorkingGame();
+        assertThrows(IllegalArgumentException.class, () ->{
+            game.movePlayer(new Coords(5,5),new Coords(5,6),"blueTestToken");
+        });
+    }
+
+    @Test
+    void testIfEnemyIsMoveable(){
+        Game game = returnWorkingGame();
+        assertThrows(IllegalArgumentException.class, () ->{
+            game.movePlayer(new Coords(3,5),new Coords(4,5),"blueTestToken");
+        });
+    }
+
+    @Test
+    void checkIfTurnsWork(){
+        Game game = returnWorkingGame();
+        assertThrows(ForbiddenAccessException.class, () ->{
+            game.movePlayer(new Coords(6,5),new Coords(5,5),"redTestToken");
+        });
+    }
+
+    @Test
+    void checkIfYouCanAttackYourOwnPawns(){
+        Game game = returnWorkingGame();
+        assertThrows(IllegalArgumentException.class, () ->{
+            game.movePlayer(new Coords(9,9),new Coords(8,9),"blueTestToken");
+        });
+    }
+
+    @Test
+    void checkReturnedMoveObject(){
+        Game game = returnWorkingGame();
+
+    }
+
 }
