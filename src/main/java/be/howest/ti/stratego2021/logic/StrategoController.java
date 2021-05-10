@@ -90,13 +90,7 @@ public class StrategoController implements StrategoWebController {
 
     @Override
     public List<Move> getMoves(String gameID, String player) {
-        Game game = gameManager.getGameById(gameID);
-        if(gameManager.checkIfTokenBelongsToGame(game,player)){
-            return game.getMoveList();
-        }
-        else{
-            throw new InvalidTokenException();
-        }
+        return gameManager.getMovesFromGame(gameID,player);
     }
 
     @Override

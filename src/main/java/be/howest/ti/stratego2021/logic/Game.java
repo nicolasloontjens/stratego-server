@@ -206,10 +206,6 @@ public class Game {
         }
     }
 
-
-
-
-
     public Move infiltratePlayer(Coords src, Coords tar, String token, String guess){
         if(!checkIfMyTurn(token)){
             throw new ForbiddenAccessException();
