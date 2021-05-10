@@ -1,6 +1,5 @@
 package be.howest.ti.stratego2021.logic;
 
-import be.howest.ti.stratego2021.web.bridge.ReturnBoardGetBody;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
 import be.howest.ti.stratego2021.web.exceptions.InvalidTokenException;
 
@@ -61,7 +60,11 @@ public class GameManager {
         return false;
     }
 
-    public Move infiltrate(String gameID, Coords src, Coords tar, String token, String infiltrationGuess){
+    public boolean checkIfAttack(String gameID, Coords src, Coords tar, String token){
+        return getGameById(gameID).isAnAttack(src,tar,token);
+    }
+
+    public InfiltrationMove infiltrate(String gameID, Coords src, Coords tar, String token, String infiltrationGuess){
         Game game = getGameById(gameID);
         if(game.getRedToken().equals(token)){
             src.invertCoords();
@@ -76,7 +79,16 @@ public class GameManager {
             src.invertCoords();
             tar.invertCoords();
         }
-        return game.movePlayer(src,tar,token);
+        return game.executeMove(src,tar,token);
+    }
+
+    public AttackMove attackPlayer(String gameID, Coords src, Coords tar, String token){
+        Game game = getGameById(gameID);
+        if(game.getRedToken().equals(token)){
+            src.invertCoords();
+            tar.invertCoords();
+        }
+        return game.executeAttack(src,tar,token);
     }
 
     public List<Move> getMovesFromGame(String gameID, String player){

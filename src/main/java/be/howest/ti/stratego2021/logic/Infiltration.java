@@ -1,12 +1,11 @@
 package be.howest.ti.stratego2021.logic;
 
-public class Infiltration extends Move{
+public class Infiltration {
     private final String expected;
     private final String actual;
     private final boolean success;
 
-    public Infiltration(String player, Coords src, Coords tar,String expected, String actual, boolean success) {
-        super(player,src,tar);
+    public Infiltration(String expected, String actual, boolean success) {
         this.expected = expected;
         this.actual = actual;
         this.success = success;

@@ -137,52 +137,44 @@ public class Game {
     }
 
 
-
-
-
-    public Move movePlayer(Coords src, Coords tar, String playerToken){
-        if(!checkIfMyTurn(playerToken)){
+    public boolean isAnAttack(Coords src, Coords tar, String token){
+        if(!checkIfMyTurn(token)){
             throw new ForbiddenAccessException();
         }
-        if(validateIfCoordsOutOfBounds(src,tar) && validateIfMoveable(getPawnAtPos(src),playerToken)&&gameStarted){
-            if(validateTargetCoords(src,tar)&&validateTarget(tar,playerToken)){
-                if(isAttack(tar)){
-                    return executeAttack(src,tar, playerToken);
-                }
-                else{
-                    return executeMove(src,tar,playerToken);
-                }
+        if(validateIfCoordsOutOfBounds(src,tar) && validateIfMoveable(getPawnAtPos(src),token)&&gameStarted){
+            if(validateTargetCoords(src,tar)&&validateTarget(tar,token)){
+                return isAttack(tar);
             }
         }
         throw new IllegalArgumentException();
     }
 
-    private Move executeAttack(Coords src, Coords tar, String token){
+    public AttackMove executeAttack(Coords src, Coords tar, String token){
         int res = getPawnAtPos(src).compareTo(getPawnAtPos(tar));
         String player = checkIfBlueOrRed(token).toUpperCase(Locale.ROOT);
         isBlueTurn = !isBlueTurn;
         if(res>0){
-            Move move = new Attack(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"attacker");
+            AttackMove move = new AttackMove(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"attacker");
             addMove(move);
             setPawnAtPos(tar,getPawnAtPos(src));
             setPawnAtPos(src,board.getEmptyPawn());
             return move;
         }else if(res == 0){
-            Move move = new Attack(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"draw");
+            AttackMove move = new AttackMove(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"draw");
             addMove(move);
             setPawnAtPos(tar,board.getEmptyPawn());
             setPawnAtPos(src,board.getEmptyPawn());
             return move;
         }
         else{
-            Move move= new Attack(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"defender");
+            AttackMove move= new AttackMove(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"defender");
             addMove(move);
             setPawnAtPos(src,board.getEmptyPawn());
             return move;
         }
     }
 
-    private Move executeMove(Coords src, Coords tar, String token){
+    public Move executeMove(Coords src, Coords tar, String token){
         Move move = new Move(checkIfBlueOrRed(token).toUpperCase(Locale.ROOT),src,tar);
         addMove(move);
         setPawnAtPos(tar,getPawnAtPos(src));
@@ -191,22 +183,22 @@ public class Game {
         return move;
     }
 
-    private Move executeInfiltration(Coords src, Coords tar, String token, String guess){
+    private InfiltrationMove executeInfiltration(Coords src, Coords tar, String token, String guess){
         String player = checkIfBlueOrRed(token).toUpperCase(Locale.ROOT);
         isBlueTurn = !isBlueTurn;
         if(getPawnAtPos(tar).getPawnType().equals(guess)){
-            Move move = new Infiltration(player,src,tar,guess,getPawnAtPos(tar).getPawnType(),true);
+            InfiltrationMove move = new InfiltrationMove(player,src,tar,guess,getPawnAtPos(tar).getPawnType(),true);
             addMove(move);
             setPawnAtPos(tar,board.getEmptyPawn());
             return move;
         }else{
-            Move move = new Infiltration(player,src,tar,guess,getPawnAtPos(tar).getPawnType(),false);
+            InfiltrationMove move = new InfiltrationMove(player,src,tar,guess,getPawnAtPos(tar).getPawnType(),false);
             addMove(move);
             return move;
         }
     }
 
-    public Move infiltratePlayer(Coords src, Coords tar, String token, String guess){
+    public InfiltrationMove infiltratePlayer(Coords src, Coords tar, String token, String guess){
         if(!checkIfMyTurn(token)){
             throw new ForbiddenAccessException();
         }
