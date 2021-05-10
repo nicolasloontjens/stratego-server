@@ -49,7 +49,7 @@ class GameTest {
     void testTokenAuthForMove(){
         Game game = returnWorkingGame();
         assertThrows(ForbiddenAccessException.class,() -> {
-            game.isAnAttack(new Coords(6,5),new Coords(5,5),"notAvalidToken");
+            game.applyGameRulesAndCheckIfAttackOrMove(new Coords(6,5),new Coords(5,5),"notAvalidToken");
             game.executeMove(new Coords(6,5),new Coords(5,5),"notAvalidToken");
         });
     }
@@ -58,7 +58,7 @@ class GameTest {
     void testOutOfBoundsError(){
         Game game = returnWorkingGame();
         assertThrows(IllegalArgumentException.class, () ->{
-            game.isAnAttack(new Coords(11,5),new Coords(5,5),"blueTestToken");
+            game.applyGameRulesAndCheckIfAttackOrMove(new Coords(11,5),new Coords(5,5),"blueTestToken");
             game.executeMove(new Coords(11,5),new Coords(5,5),"blueTestToken");
         });
     }
@@ -67,7 +67,7 @@ class GameTest {
     void testIfWaterIsNotMoveable(){
         Game game = returnWorkingGame();
         assertThrows(IllegalArgumentException.class, () ->{
-            game.isAnAttack(new Coords(5,5),new Coords(5,6),"blueTestToken");
+            game.applyGameRulesAndCheckIfAttackOrMove(new Coords(5,5),new Coords(5,6),"blueTestToken");
             game.executeMove(new Coords(5,5),new Coords(5,6),"blueTestToken");
         });
     }
@@ -76,7 +76,7 @@ class GameTest {
     void testIfEnemyIsNotMoveable(){
         Game game = returnWorkingGame();
         assertThrows(IllegalArgumentException.class, () ->{
-            game.isAnAttack(new Coords(3,5),new Coords(4,5),"blueTestToken");
+            game.applyGameRulesAndCheckIfAttackOrMove(new Coords(3,5),new Coords(4,5),"blueTestToken");
             game.executeMove(new Coords(3,5),new Coords(4,5),"blueTestToken");
         });
     }
@@ -85,7 +85,7 @@ class GameTest {
     void checkIfTurnsWork(){
         Game game = returnWorkingGame();
         assertThrows(ForbiddenAccessException.class, () ->{
-            game.isAnAttack(new Coords(6,5),new Coords(5,5),"redTestToken");
+            game.applyGameRulesAndCheckIfAttackOrMove(new Coords(6,5),new Coords(5,5),"redTestToken");
             game.executeMove(new Coords(6,5),new Coords(5,5),"redTestToken");
         });
     }
@@ -94,7 +94,7 @@ class GameTest {
     void checkIfYouCanAttackYourOwnPawns(){
         Game game = returnWorkingGame();
         assertThrows(IllegalArgumentException.class, () ->{
-            game.isAnAttack(new Coords(9,9),new Coords(8,9),"blueTestToken");
+            game.applyGameRulesAndCheckIfAttackOrMove(new Coords(9,9),new Coords(8,9),"blueTestToken");
             game.executeAttack(new Coords(9,9),new Coords(8,9),"blueTestToken");
         });
     }
@@ -126,7 +126,7 @@ class GameTest {
     void checkIfFlagIsNotMoveable(){
         Game game = returnWorkingGame();
         assertThrows(IllegalArgumentException.class, () ->{
-            game.isAnAttack(new Coords(6,0),new Coords(5,0),"blueTestToken");
+            game.applyGameRulesAndCheckIfAttackOrMove(new Coords(6,0),new Coords(5,0),"blueTestToken");
             game.executeMove(new Coords(6,0),new Coords(5,0),"blueTestToken");
         });
     }
@@ -135,7 +135,7 @@ class GameTest {
     void checkIfBombIsNotMoveable(){
         Game game = returnWorkingGame();
         assertThrows(IllegalArgumentException.class, () ->{
-            game.isAnAttack(new Coords(6,1),new Coords(5,1),"blueTestToken");
+            game.applyGameRulesAndCheckIfAttackOrMove(new Coords(6,1),new Coords(5,1),"blueTestToken");
             game.executeMove(new Coords(6,1),new Coords(5,1),"blueTestToken");
         });
     }

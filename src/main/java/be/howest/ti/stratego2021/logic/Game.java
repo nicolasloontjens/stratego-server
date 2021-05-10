@@ -1,5 +1,6 @@
 package be.howest.ti.stratego2021.logic;
 
+import be.howest.ti.stratego2021.logic.exceptions.StrategoGameRuleException;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardGetBody;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
 import be.howest.ti.stratego2021.web.exceptions.ForbiddenAccessException;
@@ -137,16 +138,32 @@ public class Game {
     }
 
 
-    public boolean isAnAttack(Coords src, Coords tar, String token){
+    public boolean applyGameRulesAndCheckIfAttackOrMove(Coords src, Coords tar, String token){
         if(!checkIfMyTurn(token)){
-            throw new ForbiddenAccessException();
+            throw new StrategoGameRuleException("It's not your turn");
         }
-        if(validateIfCoordsOutOfBounds(src,tar) && validateIfMoveable(getPawnAtPos(src),token)&&gameStarted){
+        if(!validateIfCoordsOutOfBounds(src,tar)){
+            throw new StrategoGameRuleException("Cannot move outside the board");
+        }
+        if(!validateIfMoveable(src,token)){
+            throw new StrategoGameRuleException("The selected pawn isn't moveable");
+        }
+        if(!gameStarted){
+            throw new StrategoGameRuleException("The game hasn't started yet");
+        }
+        if(!validateTargetCoords(src,tar)){
+            throw new StrategoGameRuleException("The pawn can't move like that");
+        }
+        if(!validateTarget(tar, token)){
+            throw new StrategoGameRuleException("You can't attack this target");
+        }
+        if(validateIfCoordsOutOfBounds(src,tar) && validateIfMoveable(src,token)&&gameStarted){
             if(validateTargetCoords(src,tar)&&validateTarget(tar,token)){
                 return isAttack(tar);
             }
         }
         throw new IllegalArgumentException();
+
     }
 
     public AttackMove executeAttack(Coords src, Coords tar, String token){
@@ -224,8 +241,10 @@ public class Game {
         return !getPawnAtPos(tar).getPawnType().equals("empty");
     }
 
-    private boolean validateIfMoveable(Pawn pawn, String token){
+    private boolean validateIfMoveable(Coords src, String token){
         //check if the src pawn can be moved, by checking the type and the token it belongs to
+        System.out.println(src);
+        Pawn pawn = getPawnAtPos(src);
         List<String> nonMoveableTypes = new ArrayList<>(Arrays.asList("water","empty","bomb","flag"));
         return !nonMoveableTypes.contains(pawn.getPawnType()) && pawn.getPlayerToken().equals(token);
     }

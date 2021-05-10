@@ -1,5 +1,6 @@
 package be.howest.ti.stratego2021.logic;
 
+import be.howest.ti.stratego2021.logic.exceptions.StrategoGameRuleException;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
 import be.howest.ti.stratego2021.web.exceptions.InvalidTokenException;
 
@@ -38,7 +39,7 @@ public class GameManager {
 
     public Game getGameById(String gameID){
         if(!gamesById.containsKey(gameID)){
-            throw new IllegalArgumentException();
+            throw new StrategoGameRuleException("The game doesn't exist");
         }
         return gamesById.get(gameID);
     }
@@ -60,15 +61,21 @@ public class GameManager {
         return false;
     }
 
-    public boolean checkIfAttack(String gameID, Coords src, Coords tar, String token){
-        return getGameById(gameID).isAnAttack(src,tar,token);
+    public boolean applyGameRulesAndCheckIfAttackOrMove(String gameID, Coords src, Coords tar, String token){
+        Game game = getGameById(gameID);
+        if(!game.isGameStarted()){
+            throw new StrategoGameRuleException("the game hasn't started yet");
+        }
+        if(game.getRedToken().equals(token)){
+            return game.applyGameRulesAndCheckIfAttackOrMove(src.invertCoords(),tar.invertCoords(),token);
+        }
+        return game.applyGameRulesAndCheckIfAttackOrMove(src,tar,token);
     }
 
     public InfiltrationMove infiltrate(String gameID, Coords src, Coords tar, String token, String infiltrationGuess){
         Game game = getGameById(gameID);
         if(game.getRedToken().equals(token)){
-            src.invertCoords();
-            tar.invertCoords();
+            return game.infiltratePlayer(src.invertCoords(), tar.invertCoords(), token, infiltrationGuess);
         }
         return game.infiltratePlayer(src, tar, token, infiltrationGuess);
     }
@@ -76,8 +83,7 @@ public class GameManager {
     public Move movePlayer(String gameID,Coords src, Coords tar, String token){
         Game game = getGameById(gameID);
         if(game.getRedToken().equals(token)){
-            src.invertCoords();
-            tar.invertCoords();
+            return game.executeMove(src.invertCoords(),tar.invertCoords(),token);
         }
         return game.executeMove(src,tar,token);
     }
@@ -85,8 +91,7 @@ public class GameManager {
     public AttackMove attackPlayer(String gameID, Coords src, Coords tar, String token){
         Game game = getGameById(gameID);
         if(game.getRedToken().equals(token)){
-            src.invertCoords();
-            tar.invertCoords();
+            return game.executeAttack(src.invertCoords(),tar.invertCoords(),token);
         }
         return game.executeAttack(src,tar,token);
     }
