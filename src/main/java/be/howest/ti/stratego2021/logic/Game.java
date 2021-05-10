@@ -3,7 +3,6 @@ package be.howest.ti.stratego2021.logic;
 import be.howest.ti.stratego2021.logic.exceptions.StrategoGameRuleException;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardGetBody;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
-import be.howest.ti.stratego2021.web.exceptions.ForbiddenAccessException;
 
 import java.util.*;
 
@@ -142,11 +141,11 @@ public class Game {
         if(!checkIfMyTurn(token)){
             throw new StrategoGameRuleException("It's not your turn");
         }
-        if(!validateIfCoordsOutOfBounds(src,tar)){
+        if(!checkIfCoordsOutOfBounds(src,tar)){
             throw new StrategoGameRuleException("Cannot move outside the board");
         }
         if(!validateIfMoveable(src,token)){
-            throw new StrategoGameRuleException("The selected pawn isn't moveable");
+            throw new StrategoGameRuleException("The selected pawn isn't movable");
         }
         if(!gameStarted){
             throw new StrategoGameRuleException("The game hasn't started yet");
@@ -154,12 +153,12 @@ public class Game {
         if(!validateTargetCoords(src,tar)){
             throw new StrategoGameRuleException("The pawn can't move like that");
         }
-        if(!validateTarget(tar, token)){
+        if(!isAttackableTarget(tar, token)){
             throw new StrategoGameRuleException("You can't attack this target");
         }
-        if(validateIfCoordsOutOfBounds(src,tar) && validateIfMoveable(src,token)&&gameStarted){
-            if(validateTargetCoords(src,tar)&&validateTarget(tar,token)){
-                return isAttack(tar);
+        if(checkIfCoordsOutOfBounds(src,tar) && validateIfMoveable(src,token)&&gameStarted){
+            if(validateTargetCoords(src,tar)&& isAttackableTarget(tar,token)){
+                return isEmptySpot(tar);
             }
         }
         throw new IllegalArgumentException();
@@ -217,11 +216,23 @@ public class Game {
 
     public InfiltrationMove infiltratePlayer(Coords src, Coords tar, String token, String guess){
         if(!checkIfMyTurn(token)){
-            throw new ForbiddenAccessException();
+            throw new StrategoGameRuleException("It's not your turn");
         }
-        if(validateIfInfiltrator(src,token)&&validateIfCoordsOutOfBounds(src,tar)&&gameStarted){
+        if(!isInfiltrator(src,token)){
+            throw new StrategoGameRuleException("You can't infiltrate if you're not the infiltrator");
+        }
+        if(!isInEnemyTerritory(src,tar,token)){
+            throw new StrategoGameRuleException("You need to be in the enemies territory to infiltrate");
+        }
+        if(!infiltratorMovementValidation(src,tar)){
+            throw new StrategoGameRuleException("You can't move there");
+        }
+        if(!isAttackableTarget(tar,token)){
+            throw new StrategoGameRuleException("You can't infiltrate that target");
+        }
+        if(isInfiltrator(src,token)&& checkIfCoordsOutOfBounds(src,tar)&&gameStarted){
             if(isInEnemyTerritory(src,tar,token)){
-                if(infiltratorMovementValidation(src,tar)&&validateTarget(tar,token)){
+                if(infiltratorMovementValidation(src,tar)&& isAttackableTarget(tar,token)){
                     return executeInfiltration(src,tar,token,guess);
                 }
             }
@@ -231,25 +242,24 @@ public class Game {
 
 
     //validation methods for the movement of pawns, comments in every function with it's functionality
-    private boolean validateTarget(Coords tar, String playerToken){
+    private boolean isAttackableTarget(Coords tar, String playerToken){
         //check if the target isn't water, or one of your own pawns
         return !board.getPawn(tar).getPawnType().equals("water") && !board.getPawn(tar).getPlayerToken().equals(playerToken);
     }
 
-    private boolean isAttack(Coords tar){
+    private boolean isEmptySpot(Coords tar){
         //check if tar contains a pawn or an empty spot
         return !getPawnAtPos(tar).getPawnType().equals("empty");
     }
 
     private boolean validateIfMoveable(Coords src, String token){
         //check if the src pawn can be moved, by checking the type and the token it belongs to
-        System.out.println(src);
         Pawn pawn = getPawnAtPos(src);
         List<String> nonMoveableTypes = new ArrayList<>(Arrays.asList("water","empty","bomb","flag"));
         return !nonMoveableTypes.contains(pawn.getPawnType()) && pawn.getPlayerToken().equals(token);
     }
 
-    private boolean validateIfCoordsOutOfBounds(Coords src, Coords tar){
+    private boolean checkIfCoordsOutOfBounds(Coords src, Coords tar){
         //check if the given Coords are out of bounds and check if the coords arent the same
         return src.getCol() >= 0 && src.getCol() < 10 && src.getRow() >= 0 && src.getRow() < 10 && tar.getCol() >= 0 && tar.getCol() < 10 && tar.getRow() >= 0 && tar.getRow() < 10 && !src.equals(tar);
     }
@@ -325,7 +335,7 @@ public class Game {
 
 
     //infiltrator specific
-    private boolean validateIfInfiltrator(Coords src, String token){
+    private boolean isInfiltrator(Coords src, String token){
         //check if the pawn type is infiltrator, and it's your infiltrator
         return getPawnAtPos(src).getPawnType().equals("infiltrator") && getPawnAtPos(src).getPlayerToken().equals(token);
     }

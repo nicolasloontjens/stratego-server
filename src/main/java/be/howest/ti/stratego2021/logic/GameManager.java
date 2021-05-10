@@ -62,6 +62,7 @@ public class GameManager {
     }
 
     public boolean applyGameRulesAndCheckIfAttackOrMove(String gameID, Coords src, Coords tar, String token){
+        //method for controller that will either execute move method or attack method
         Game game = getGameById(gameID);
         if(!game.isGameStarted()){
             throw new StrategoGameRuleException("the game hasn't started yet");
@@ -70,14 +71,6 @@ public class GameManager {
             return game.applyGameRulesAndCheckIfAttackOrMove(src.invertCoords(),tar.invertCoords(),token);
         }
         return game.applyGameRulesAndCheckIfAttackOrMove(src,tar,token);
-    }
-
-    public InfiltrationMove infiltrate(String gameID, Coords src, Coords tar, String token, String infiltrationGuess){
-        Game game = getGameById(gameID);
-        if(game.getRedToken().equals(token)){
-            return game.infiltratePlayer(src.invertCoords(), tar.invertCoords(), token, infiltrationGuess);
-        }
-        return game.infiltratePlayer(src, tar, token, infiltrationGuess);
     }
 
     public Move movePlayer(String gameID,Coords src, Coords tar, String token){
@@ -96,12 +89,20 @@ public class GameManager {
         return game.executeAttack(src,tar,token);
     }
 
+    public InfiltrationMove infiltrate(String gameID, Coords src, Coords tar, String token, String infiltrationGuess){
+        Game game = getGameById(gameID);
+        if(game.getRedToken().equals(token)){
+            return game.infiltratePlayer(src.invertCoords(), tar.invertCoords(), token, infiltrationGuess);
+        }
+        return game.infiltratePlayer(src, tar, token, infiltrationGuess);
+    }
+
     public List<Move> getMovesFromGame(String gameID, String player){
         Game game = getGameById(gameID);
         if(checkIfTokenBelongsToGame(game,player)){
             return game.getMoveList();
         }
-        throw new InvalidTokenException();
+        throw new StrategoGameRuleException("Game doesn't exist, or you don't have the right token");
     }
 
     public List<List<ReturnBoardPawn>> convertBoardForClient(String gameID, String token){

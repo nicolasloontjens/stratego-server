@@ -106,14 +106,7 @@ public class StrategoBridge implements AuthenticationProvider {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
         String player = requestParameters.getAuthorizedPlayer();
         String gameID = tokenManager.token2gameId(player);
-        List<Move> res = null;
-        try {
-            res = controller.getMoves(gameID, player);
-        }catch(InvalidTokenException exception){
-            sendUnauthorized(ctx);
-        }catch(IllegalArgumentException exception){
-            sendForbidden(ctx);
-        }
+        List<Move> res = controller.getMoves(gameID, player);
         StrategoResponses.sendMoves(ctx, res);
     }
 
