@@ -41,7 +41,7 @@ public interface StrategoWebController {
     boolean validateIfTokenBelongsToGame(Game game, String token);
 
     Move makeMove(String gameID,String token,Coords scr, Coords tar, String infiltrate);
-    List<Move> getMoves();
+    List<Move> getMoves(String gameID, String player);
 
     List<List<ReturnBoardPawn>> getGameState(String gameID, String token);
 }

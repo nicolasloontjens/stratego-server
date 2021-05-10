@@ -67,6 +67,14 @@ public class Game {
         return redToken;
     }
 
+    public List<Move> getMoveList(){
+        return moveList;
+    }
+
+    public void addMove(Move move){
+        moveList.add(move);
+    }
+
     public Pawn getPawnAtPos(Coords src){
         return board.getPawn(src);
     }
@@ -157,27 +165,32 @@ public class Game {
         isBlueTurn = !isBlueTurn;
         if(res>0){
             Move move = new Move(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"attacker");
+            addMove(move);
             setPawnAtPos(tar,getPawnAtPos(src));
             setPawnAtPos(src,board.getEmptyPawn());
             return move;
         }else if(res == 0){
             Move move = new Move(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"draw");
+            addMove(move);
             setPawnAtPos(tar,board.getEmptyPawn());
             setPawnAtPos(src,board.getEmptyPawn());
             return move;
         }
         else{
             Move move= new Move(player,src,tar,getPawnAtPos(src).getPawnType(),getPawnAtPos(tar).getPawnType(),"defender");
+            addMove(move);
             setPawnAtPos(src,board.getEmptyPawn());
             return move;
         }
     }
 
     private Move executeMove(Coords src, Coords tar, String token){
+        Move move = new Move(checkIfBlueOrRed(token).toUpperCase(Locale.ROOT),src,tar);
+        addMove(move);
         setPawnAtPos(tar,getPawnAtPos(src));
         setPawnAtPos(src,board.getEmptyPawn());
         isBlueTurn = !isBlueTurn;
-        return new Move(checkIfBlueOrRed(token).toUpperCase(Locale.ROOT),src,tar);
+        return move;
     }
 
     private Move executeInfiltration(Coords src, Coords tar, String token, String guess){
@@ -185,10 +198,13 @@ public class Game {
         isBlueTurn = !isBlueTurn;
         if(getPawnAtPos(tar).getPawnType().equals(guess)){
             Move move = new Move(player,src,tar,guess,getPawnAtPos(tar).getPawnType(),true);
+            addMove(move);
             setPawnAtPos(tar,board.getEmptyPawn());
             return move;
         }else{
-            return new Move(player,src,tar,guess,getPawnAtPos(tar).getPawnType(),false);
+            Move move = new Move(player,src,tar,guess,getPawnAtPos(tar).getPawnType(),false);
+            addMove(move);
+            return move;
         }
     }
 

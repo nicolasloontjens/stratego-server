@@ -3,6 +3,7 @@ package be.howest.ti.stratego2021.logic;
 import be.howest.ti.stratego2021.web.StrategoWebController;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardGetBody;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
+import be.howest.ti.stratego2021.web.exceptions.InvalidTokenException;
 import be.howest.ti.stratego2021.web.tokens.RandomGeneratedTextTokens;
 import be.howest.ti.stratego2021.web.bridge.MakeMovePosBody;
 
@@ -88,10 +89,14 @@ public class StrategoController implements StrategoWebController {
     }
 
     @Override
-    public List<Move> getMoves() {
-        List<Move> res = new ArrayList<>();
-        res.add(new Move("test",new Coords(1,2),new Coords(2,3)));
-        return res;
+    public List<Move> getMoves(String gameID, String player) {
+        Game game = gameManager.getGameById(gameID);
+        if(gameManager.checkIfTokenBelongsToGame(game,player)){
+            return game.getMoveList();
+        }
+        else{
+            throw new InvalidTokenException();
+        }
     }
 
     @Override
