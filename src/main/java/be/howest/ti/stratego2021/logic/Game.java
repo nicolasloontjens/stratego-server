@@ -221,6 +221,9 @@ public class Game {
         if(!isInfiltrator(src,token)){
             throw new StrategoGameRuleException("You can't infiltrate if you're not the infiltrator");
         }
+        if(!checkIfCoordsOutOfBounds(src,tar)){
+            throw new StrategoGameRuleException("not on board");
+        }
         if(!isInEnemyTerritory(src,tar,token)){
             throw new StrategoGameRuleException("You need to be in the enemies territory to infiltrate");
         }
