@@ -109,16 +109,11 @@ public class StrategoBridge implements AuthenticationProvider {
 
     private void joinGame(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
-        String res = null;
-        try {
-            res = controller.joinGame(
-                    requestParameters.getVersion(),
-                    requestParameters.getStartConfiguration(),
-                    requestParameters.getRoomID());
-        }catch (IllegalArgumentException exception){
-            StrategoResponses.sendFailure(ctx, 409, "violates a game rule");
-        }
 
+        String res = controller.joinGame(
+                requestParameters.getVersion(),
+                requestParameters.getStartConfiguration(),
+                requestParameters.getRoomID());
 
         StrategoResponses.sendJoinedGameInfo(ctx,tokenManager.token2gameId(res),tokenManager.token2player(res).toUpperCase(Locale.ROOT),res);
 

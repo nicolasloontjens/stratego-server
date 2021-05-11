@@ -11,6 +11,7 @@ import be.howest.ti.stratego2021.web.bridge.MakeMovePosBody;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**

@@ -110,18 +110,22 @@ public class GameManager {
 
     public void checkRightVersion(String version,List<List<String>> startConfiguration){
         //get version total pieces
-        for (String name: PieceCount.valueOf(version.toUpperCase(Locale.ROOT))) {
+        Map<PawnTypes, Integer> x = PieceCount.valueOf(version.toUpperCase(Locale.ROOT)).getCounters();
 
+        for (PawnTypes pawnTypes: x.keySet()) {
+            countPiece(startConfiguration, pawnTypes, x.get(pawnTypes));
         }
+
         //count and compares pawnTypes + throw when pieces dont match
-        countPiece(startConfiguration,pawnTypes, pieceAmount);
+
     }
 
     private void countPiece(List<List<String>> startConfiguration,PawnTypes pawnTypes, int pieceAmount) {
         int currentAmount = 0;
+
         for (List<String> row: startConfiguration) {
             for (String piece: row) {
-                if (piece.equals(pawnTypes.toString())){
+                if (piece != null && piece.equals(pawnTypes.toString())){
                     currentAmount++;
                 }
             }
