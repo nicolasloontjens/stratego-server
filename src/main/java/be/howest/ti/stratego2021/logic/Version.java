@@ -1,6 +1,7 @@
 package be.howest.ti.stratego2021.logic;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class Version {
 
@@ -21,10 +22,15 @@ public class Version {
     }
 
     @Override
-    public String toString() {
-        return "Version{" +
-                "name='" + name + '\'' +
-                ", pieceCount=" + pieceCount +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Version version = (Version) o;
+        return name.equals(version.name) && pieceCount == version.pieceCount;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, pieceCount);
     }
 }

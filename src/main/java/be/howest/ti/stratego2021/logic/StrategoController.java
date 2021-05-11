@@ -61,10 +61,11 @@ public class StrategoController implements StrategoWebController {
         String currentToken = "";
         gameManager.checkConfig(version,startConfiguration);
         if(gameManager.checkForExistingGames(version)){
-            currentToken = tokenGen.createToken(gameID,version,"RED",gameManager.getGamesCounter());
+            currentToken = tokenGen.createToken(gameID,version,"RED",gameManager.getGamesCounter(version));
         }else{
-            currentToken = tokenGen.createToken(gameID,version,"BLUE",gameManager.getGamesCounter());
+            currentToken = tokenGen.createToken(gameID,version,"BLUE",gameManager.getGamesCounter(version));
         }
+        System.out.println(currentToken);
         gameManager.connectToGame(version,currentToken,tokenGen.token2gameId(currentToken),startConfiguration);
         return currentToken;
     }
