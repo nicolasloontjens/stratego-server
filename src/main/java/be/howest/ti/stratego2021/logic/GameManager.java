@@ -108,22 +108,30 @@ public class GameManager {
         return game.returnClientBoard(token);
     }
 
-    public boolean checkConfig(String version, List<List<String>> startConfig){
+    public void checkConfig(String version, List<List<String>> startConfig){
         Map<PawnTypes, Integer> pieceCount = PieceCount.valueOf(version.toUpperCase(Locale.ROOT)).getCounters();
         Map<PawnTypes,Integer> configCount = new HashMap<>();
+        Map<PawnTypes,Integer> compare = new HashMap<>();
         for(List<String> row: startConfig){
             for(String piece : row){
                 if(piece != null){
-                    PawnTypes currentpawn = PawnTypes.valueOf(piece);
+                    PawnTypes currentpawn = PawnTypes.valueOf(piece.toUpperCase(Locale.ROOT));
                     if(configCount.containsKey(currentpawn)){
-                        configCount.put(currentpawn,configCount.get(PawnTypes.valueOf(piece))+1);
+                        configCount.put(currentpawn,configCount.get(PawnTypes.valueOf(piece.toUpperCase(Locale.ROOT)))+1);
                     }else{
                         configCount.put(currentpawn,1);
                     }
                 }
             }
         }
-        return configCount.equals(pieceCount);
+        for(PawnTypes type: pieceCount.keySet()){
+            if(pieceCount.get(type) >0){
+                compare.put(type,pieceCount.get(type));
+            }
+        }
+        if(!configCount.equals(compare)){
+            throw new StrategoGameRuleException("not valid");
+        }
     }
 
 }
