@@ -156,7 +156,7 @@ class GameTest {
         InfiltrationMove move = game.infiltratePlayer(new Coords(3,9),new Coords(2,9),"blueTestToken","infiltrator");
         assertEquals("infiltrator",move.getInfiltration().getExpected());
         assertEquals("flag",move.getInfiltration().getActual());
-        assertFalse(move.getInfiltration().isSuccess());
+        assertFalse(move.getInfiltration().isSuccessful());
     }
 
     @Test

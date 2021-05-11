@@ -158,7 +158,7 @@ public class Game {
         }
         if(checkIfCoordsOutOfBounds(src,tar) && validateIfMoveable(src,token)&&gameStarted){
             if(validateTargetCoords(src,tar)&& isAttackableTarget(tar,token)){
-                return isEmptySpot(tar);
+                return isNotEmptySpot(tar);
             }
         }
         throw new IllegalArgumentException();
@@ -233,9 +233,12 @@ public class Game {
         if(!isAttackableTarget(tar,token)){
             throw new StrategoGameRuleException("You can't infiltrate that target");
         }
+        if(!isNotEmptySpot(tar)){
+            throw new StrategoGameRuleException("You can't infiltrate an empty spot");
+        }
         if(isInfiltrator(src,token)&&checkIfCoordsOutOfBounds(src,tar)&&gameStarted){
             if(isInEnemyTerritory(src,tar,token)){
-                if(infiltratorMovementValidation(src,tar)&& isAttackableTarget(tar,token)){
+                if(infiltratorMovementValidation(src,tar)&& isAttackableTarget(tar,token)&& isNotEmptySpot(tar)){
                     return executeInfiltration(src,tar,token,guess);
                 }
             }
@@ -250,7 +253,7 @@ public class Game {
         return !board.getPawn(tar).getPawnType().equals("water") && !board.getPawn(tar).getPlayerToken().equals(playerToken);
     }
 
-    private boolean isEmptySpot(Coords tar){
+    private boolean isNotEmptySpot(Coords tar){
         //check if tar contains a pawn or an empty spot
         return !getPawnAtPos(tar).getPawnType().equals("empty");
     }
