@@ -55,7 +55,6 @@ public class StrategoController implements StrategoWebController {
         return new Version(filter,PieceCount.valueOf(filter.toUpperCase(Locale.ROOT)));
     }
 
-
     @Override
     public String joinGame(String version, List<List<String>> startConfiguration, String gameID){
         String currentToken = "";
@@ -65,7 +64,6 @@ public class StrategoController implements StrategoWebController {
             currentToken = tokenGen.createToken(gameID,version,"BLUE",gameManager.getGamesCounter());
         }
         gameManager.connectToGame(version,currentToken,tokenGen.token2gameId(currentToken),startConfiguration);
-        System.out.println(currentToken);
         return currentToken;
     }
 
