@@ -2,11 +2,9 @@ package be.howest.ti.stratego2021.logic;
 
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardGetBody;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
+import be.howest.ti.stratego2021.logic.StrategoController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameManager {
 
@@ -85,8 +83,24 @@ public class GameManager {
 
     public void checkRightVersion(String version,List<List<String>> startConfiguration){
         //get version total pieces
-        //count startConfiguration pieces
-        //compare version pieces to startConfiguration pieces
-        //throw when pieces dont match
+        for (String name: PieceCount.valueOf(version.toUpperCase(Locale.ROOT))) {
+
+        }
+        //count and compares pawnTypes + throw when pieces dont match
+        countPiece(startConfiguration,pawnTypes, pieceAmount);
+    }
+
+    private void countPiece(List<List<String>> startConfiguration,PawnTypes pawnTypes, int pieceAmount) {
+        int currentAmount = 0;
+        for (List<String> row: startConfiguration) {
+            for (String piece: row) {
+                if (piece.equals(pawnTypes.toString())){
+                    currentAmount++;
+                }
+            }
+        }
+        if (currentAmount != pieceAmount){
+            throw new IllegalArgumentException();
+        }
     }
 }
