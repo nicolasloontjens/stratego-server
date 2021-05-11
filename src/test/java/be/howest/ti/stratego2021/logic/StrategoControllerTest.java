@@ -86,9 +86,11 @@ class StrategoControllerTest {
         RandomGeneratedTextTokens tokenManager = new RandomGeneratedTextTokens();
         String answer = controller.joinGame("mini",returnMiniConfig(),"gr25test");
         assertEquals("gr25testmini0",tokenManager.token2gameId(answer));
+
         assertThrows(StrategoGameRuleException.class, () ->{
             controller.joinGame("original",returnMiniConfig(),"gr25test");
         });
+
         String answer2 =  controller.joinGame("tiny",returnTinyConfig(),"gr25test");
         assertEquals("gr25testtiny0",tokenManager.token2gameId(answer2));
 
@@ -97,6 +99,28 @@ class StrategoControllerTest {
 
         String answer4 =  controller.joinGame("tiny",returnTinyConfig(),"gr25test");
         assertEquals("gr25testtiny0",tokenManager.token2gameId(answer4));
+
+        String answer5 = controller.joinGame("mini",returnMiniConfig(),"gr25test");
+        assertEquals("gr25testmini1",tokenManager.token2gameId(answer5));
+
+        String answer6 = controller.joinGame("mini",returnMiniConfig(),"gr25test");
+        assertEquals("gr25testmini1",tokenManager.token2gameId(answer6));
+    }
+
+    @Test
+    void moveTest(){
+        StrategoController controller = new StrategoController();
+        RandomGeneratedTextTokens tokenManager = new RandomGeneratedTextTokens();
+        String answer = controller.joinGame("mini",returnMiniConfig(),"gr25test");
+        assertEquals("gr25testmini0",tokenManager.token2gameId(answer));
+
+        String answer2 = controller.joinGame("mini",returnMiniConfig(),"gr25test");
+        assertEquals("gr25testmini0",tokenManager.token2gameId(answer2));
+
+        Move move = controller.makeMove(tokenManager.token2gameId(answer),answer,new Coords(6,0),new Coords(5,0),"");
+        assertEquals("BLUE",move.getPlayer());
+        assertEquals(new Coords(6,0),move.getSrc());
+        assertEquals(new Coords(5,0),move.getTar());
     }
 
 }
