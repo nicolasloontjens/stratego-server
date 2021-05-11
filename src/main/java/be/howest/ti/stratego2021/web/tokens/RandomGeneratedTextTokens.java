@@ -8,9 +8,9 @@ public class RandomGeneratedTextTokens implements TokenManager{
     Random rand = new Random();
 
     @Override
-    public String createToken(String gameId, String player, int gameCount) {
-        int randomplayernr = rand.nextInt(99999999) + 9999;
-        return gameId + gameCount + '-' + Integer.toHexString(randomplayernr) + player;
+    public String createToken(String gameId,String version, String player, int gameCount) {
+        int randomplayernr = rand.nextInt(999999999) + 9999;
+        return gameId + version +  gameCount + '-' + Integer.toHexString(randomplayernr) + player;
     }
 
     @Override

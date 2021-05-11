@@ -3,12 +3,12 @@ package be.howest.ti.stratego2021.logic;
 public class Infiltration {
     private final String expected;
     private final String actual;
-    private final boolean success;
+    private final boolean successful;
 
     public Infiltration(String expected, String actual, boolean success) {
         this.expected = expected;
         this.actual = actual;
-        this.success = success;
+        this.successful = success;
     }
 
     public String getExpected() {
@@ -19,7 +19,7 @@ public class Infiltration {
         return actual;
     }
 
-    public boolean isSuccess() {
-        return success;
+    public boolean isSuccessful() {
+        return successful;
     }
 }

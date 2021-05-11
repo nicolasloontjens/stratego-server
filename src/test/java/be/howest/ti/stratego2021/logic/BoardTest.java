@@ -29,7 +29,7 @@ class BoardTest {
     @Test
     void testBoardConstructor(){
         Board board1 = new Board();
-        board1.getBoard().forEach(System.out::println);
+        //board1.getBoard().forEach(System.out::println);
         assertTrue(board1.getBoard().get(4).get(3).isWater());
         assertTrue(board1.getBoard().get(5).get(1).isEmpty());
     }
@@ -38,15 +38,6 @@ class BoardTest {
     void testPostBlueConfig(){
         Board board1 = new Board();
         board1.postConfig(returnBlueConfig(), "blue", 6,10);
-        board1.getBoard().forEach(System.out::println);
+        assertEquals("colonel",board1.getPawn(new Coords(9,9)).getPawnType());
     }
-
-    @Test
-    void testPostRedConfig(){
-        Board board1 = new Board();
-        board1.postConfig(returnBlueConfig(),"blue", 6, 10);
-        board1.postConfig(returnRedConfig(),"red", 0, 4);
-        board1.getBoard().forEach(System.out::println);
-    }
-
 }

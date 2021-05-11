@@ -13,13 +13,13 @@ class GameTest {
 
     List<List<String>> returnBlueConfig(){
         List<String> nullList = new ArrayList<>(Arrays.asList(null,null,null,null,null,null,null,null,null,null));
-        List<String> pawnList = new ArrayList<>(Arrays.asList("flag","bomb","colonel","colonel","colonel","colonel","colonel","colonel","colonel","infiltrator"));
+        List<String> pawnList = new ArrayList<>(Arrays.asList("flag","bomb","colonel","colonel","scout","colonel","colonel","colonel","colonel","infiltrator"));
         return new ArrayList<>(Arrays.asList(nullList,nullList,nullList,nullList,nullList,nullList,pawnList,pawnList,pawnList,pawnList));
     }
 
     List<List<String>> returnRedConfig(){
         List<String> nullList = new ArrayList<>(Arrays.asList(null,null,null,null,null,null,null,null,null,null));
-        List<String> pawnList = new ArrayList<>(Arrays.asList("flag","bomb","sergeant","sergeant","sergeant","sergeant","sergeant","sergeant","sergeant","infiltrator"));
+        List<String> pawnList = new ArrayList<>(Arrays.asList("flag","bomb","sergeant","sergeant",null,"sergeant","sergeant","sergeant","sergeant","infiltrator"));
         return new ArrayList<>(Arrays.asList(nullList,nullList,nullList,nullList,nullList,nullList,pawnList,pawnList,pawnList,nullList));
     }
 
@@ -115,10 +115,10 @@ class GameTest {
         game.executeMove(new Coords(6,4),new Coords(5,4),"blueTestToken");
         game.executeMove(new Coords(3,4),new Coords(4,4),"redTestToken");
         AttackMove move = game.executeAttack(new Coords(5,4),new Coords(4,4),"blueTestToken");
-        assertEquals("colonel",move.getAttack().getAttacker());
+        assertEquals("scout",move.getAttack().getAttacker());
         assertEquals("sergeant",move.getAttack().getDefender());
-        assertEquals("attacker",move.getAttack().getWinner());
-        assertEquals("colonel",game.getPawnAtPos(new Coords(4,4)).getPawnType());
+        assertEquals("defender",move.getAttack().getWinner());
+        assertEquals("sergeant",game.getPawnAtPos(new Coords(4,4)).getPawnType());
         assertEquals("empty",game.getPawnAtPos(new Coords(5,4)).getPawnType());
     }
 
@@ -153,9 +153,96 @@ class GameTest {
         game.executeMove(new Coords(5,8),new Coords(6,8),"redTestToken");
 
         InfiltrationMove move = game.infiltratePlayer(new Coords(3,9),new Coords(2,9),"blueTestToken","infiltrator");
-        System.out.println(move.getInfiltration().getExpected());
-        System.out.println(move.getInfiltration().getActual());
-        System.out.println(move.getInfiltration().isSuccess());
+        assertEquals("infiltrator",move.getInfiltration().getExpected());
+        assertEquals("flag",move.getInfiltration().getActual());
+        assertFalse(move.getInfiltration().isSuccessful());
+    }
+
+    @Test
+    void testInfiltrationEnemyTerritoryCheck(){
+        Game game = returnWorkingGame();
+        game.executeMove(new Coords(6,9),new Coords(5,9),"blueTestToken");
+        game.executeMove(new Coords(3,9),new Coords(4,9),"redTestToken");
+        game.executeMove(new Coords(6,4),new Coords(5,4),"blueTestToken");
+        game.executeMove(new Coords(4,9),new Coords(4,8),"redTestToken");
+        game.executeMove(new Coords(5,9),new Coords(4,9),"blueTestToken");
+        game.executeMove(new Coords(4,8),new Coords(5,8),"redTestToken");
+        assertThrows(StrategoGameRuleException.class, () ->{
+            InfiltrationMove move = game.infiltratePlayer(new Coords(4,9),new Coords(2,9),"blueTestToken","infiltrator");
+        });
+    }
+
+    @Test
+    void testInfiltrationCannotJumpOverPawn(){
+        Game game = returnWorkingGame();
+        game.executeMove(new Coords(6,9),new Coords(5,9),"blueTestToken");
+        game.executeMove(new Coords(3,9),new Coords(4,9),"redTestToken");
+        game.executeMove(new Coords(6,4),new Coords(5,4),"blueTestToken");
+        game.executeMove(new Coords(4,9),new Coords(4,8),"redTestToken");
+        game.executeMove(new Coords(5,9),new Coords(4,9),"blueTestToken");
+        game.executeMove(new Coords(4,8),new Coords(5,8),"redTestToken");
+        game.executeMove(new Coords(4,9),new Coords(3,9),"blueTestToken");
+        game.executeMove(new Coords(5,8),new Coords(6,8),"redTestToken");
+        assertThrows(StrategoGameRuleException.class, () ->{
+            InfiltrationMove move = game.infiltratePlayer(new Coords(3,9),new Coords(1,9),"blueTestToken","infiltrator");
+        });
+    }
+
+    @Test
+    void testInfiltrationFriendlyFireCheck(){
+        Game game = returnWorkingGame();
+        game.executeMove(new Coords(6,9),new Coords(5,9),"blueTestToken");
+        game.executeMove(new Coords(3,9),new Coords(4,9),"redTestToken");
+        game.executeMove(new Coords(6,4),new Coords(5,4),"blueTestToken");
+        game.executeMove(new Coords(4,9),new Coords(4,8),"redTestToken");
+        game.executeMove(new Coords(5,9),new Coords(4,9),"blueTestToken");
+        game.executeMove(new Coords(4,8),new Coords(5,8),"redTestToken");
+        game.getBoard().setPawn(new Coords(2,9),new Pawn("blueTestToken","colonel"));
+        assertThrows(StrategoGameRuleException.class, () ->{
+            InfiltrationMove move = game.infiltratePlayer(new Coords(4,9),new Coords(2,9),"blueTestToken","colonel");
+        });
+    }
+
+    @Test
+    void getMovesListAtGameStart(){
+        Game game = returnWorkingGame();
+        assertEquals(2,game.getMoveList().size());
+        assertEquals("BLUE",game.getMoveList().get(0).getPlayer());
+        assertEquals("RED",game.getMoveList().get(1).getPlayer());
+    }
+
+    @Test
+    void movesListContainsAllExecutedMoves(){
+        Game game = returnWorkingGame();
+        game.executeMove(new Coords(6,9),new Coords(5,9),"blueTestToken");
+        game.executeMove(new Coords(3,9),new Coords(4,9),"redTestToken");
+        game.executeMove(new Coords(6,4),new Coords(5,4),"blueTestToken");
+        game.executeMove(new Coords(4,9),new Coords(4,8),"redTestToken");
+        game.executeMove(new Coords(5,9),new Coords(4,9),"blueTestToken");
+        game.executeMove(new Coords(4,8),new Coords(5,8),"redTestToken");
+        assertEquals(8,game.getMoveList().size());
+        assertEquals(new Coords(4,9),game.getMoveList().get(3).getTar());
+        assertEquals("BLUE",game.getMoveList().get(4).getPlayer());
+    }
+
+    @Test
+    void scoutCanMoveMultiplePositions(){
+        Game game = returnWorkingGame();
+        assertEquals("scout",game.getPawnAtPos(new Coords(6,4)).getPawnType());
+        assertEquals("empty",game.getPawnAtPos(new Coords(5,4)).getPawnType());
+        assertEquals("empty",game.getPawnAtPos(new Coords(4,4)).getPawnType());
+        game.executeMove(new Coords(6,4),new Coords(3,4),"blueTestToken");
+        assertEquals("scout",game.getPawnAtPos(new Coords(3,4)).getPawnType());
+    }
+
+    @Test
+    void scoutCannotJumpOverPawns(){
+        Game game = returnWorkingGame();
+        game.setPawnAtPos(new Coords(5,4),new Pawn("redTestToken","colonel"));
+        assertThrows(StrategoGameRuleException.class, () ->{
+            game.applyGameRulesAndCheckIfAttackOrMove(new Coords(6,4),new Coords(3,4),"blueTestToken");
+            game.executeMove(new Coords(6,4),new Coords(3,4),"blueTestToken");
+        });
     }
 
 }
