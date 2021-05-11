@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class VersionTest {
 
-    @Test
+/**    @Test
     void checkIfVersionHasRightAmount(){
         Version original = new Version("original",PieceCount.valueOf("ORIGINAL"));
         assertEquals(1,original.getPieceCount().getGeneral());
@@ -15,5 +15,5 @@ class VersionTest {
         assertEquals(1,tiny.getPieceCount().getMarshal());
         assertEquals(0,tiny.getPieceCount().getInfiltrator());
     }
-
+*/
 }

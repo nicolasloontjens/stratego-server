@@ -11,6 +11,7 @@ import be.howest.ti.stratego2021.web.bridge.MakeMovePosBody;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -58,6 +59,7 @@ public class StrategoController implements StrategoWebController {
     @Override
     public String joinGame(String version, List<List<String>> startConfiguration, String gameID){
         String currentToken = "";
+        gameManager.checkRightVersion(version, startConfiguration);
         if(gameManager.checkForExistingGames(version)){
             currentToken = tokenGen.createToken(gameID,version,"RED",gameManager.getGamesCounter());
         }else{

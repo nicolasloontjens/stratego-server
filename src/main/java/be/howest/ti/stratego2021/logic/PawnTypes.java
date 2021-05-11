@@ -1,5 +1,7 @@
 package be.howest.ti.stratego2021.logic;
 
+import java.util.Locale;
+
 public enum PawnTypes {
     WATER(13),
     BOMB(11),
@@ -25,5 +27,10 @@ public enum PawnTypes {
 
     public int getRank() {
         return rank;
+    }
+
+    @Override
+    public String toString() {
+        return this.name().toLowerCase(Locale.ROOT);
     }
 }

@@ -2,12 +2,10 @@ package be.howest.ti.stratego2021.logic;
 
 import be.howest.ti.stratego2021.logic.exceptions.StrategoGameRuleException;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
+import be.howest.ti.stratego2021.logic.StrategoController;
 import be.howest.ti.stratego2021.web.exceptions.InvalidTokenException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameManager {
 
@@ -108,5 +106,32 @@ public class GameManager {
     public List<List<ReturnBoardPawn>> convertBoardForClient(String gameID, String token){
         Game game = getGameById(gameID);
         return game.returnClientBoard(token);
+    }
+
+    public void checkRightVersion(String version,List<List<String>> startConfiguration){
+        //get version total pieces
+        Map<PawnTypes, Integer> x = PieceCount.valueOf(version.toUpperCase(Locale.ROOT)).getCounters();
+
+        for (PawnTypes pawnTypes: x.keySet()) {
+            countPiece(startConfiguration, pawnTypes, x.get(pawnTypes));
+        }
+
+        //count and compares pawnTypes + throw when pieces dont match
+
+    }
+
+    private void countPiece(List<List<String>> startConfiguration,PawnTypes pawnTypes, int pieceAmount) {
+        int currentAmount = 0;
+
+        for (List<String> row: startConfiguration) {
+            for (String piece: row) {
+                if (piece != null && piece.equals(pawnTypes.toString())){
+                    currentAmount++;
+                }
+            }
+        }
+        if (currentAmount != pieceAmount){
+            throw new StrategoGameRuleException("version and amount of pieces on board don't match");
+        }
     }
 }

@@ -1,5 +1,7 @@
 package be.howest.ti.stratego2021.logic;
 
+import java.util.Map;
+
 public class Version {
 
     private final String name;
@@ -14,7 +16,15 @@ public class Version {
         return name;
     }
 
-    public PieceCount getPieceCount() {
-        return pieceCount;
+    public Map<PawnTypes, Integer> getPieceCount() {
+        return pieceCount.getCounters();
+    }
+
+    @Override
+    public String toString() {
+        return "Version{" +
+                "name='" + name + '\'' +
+                ", pieceCount=" + pieceCount +
+                '}';
     }
 }
