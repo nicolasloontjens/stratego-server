@@ -2,8 +2,6 @@ package be.howest.ti.stratego2021.logic;
 
 import be.howest.ti.stratego2021.logic.exceptions.StrategoGameRuleException;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
-import be.howest.ti.stratego2021.logic.StrategoController;
-import be.howest.ti.stratego2021.web.exceptions.InvalidTokenException;
 
 import java.util.*;
 
@@ -11,22 +9,28 @@ public class GameManager {
 
     private Map<String, List<Game>> gamesList;
     private Map<String,Game> gamesById;
-    private int gamesCounter;
+    private Map<String,Integer> gamesCounter;
 
     public GameManager(){
         gamesList = new HashMap<>();
         gamesById = new HashMap<>();
+        gamesCounter = new HashMap<>();
         gamesList.put("original",new ArrayList<>());
         gamesList.put("infiltrator",new ArrayList<>());
         gamesList.put("duel",new ArrayList<>());
         gamesList.put("mini",new ArrayList<>());
         gamesList.put("tiny",new ArrayList<>());
+        gamesCounter.put("original",0);
+        gamesCounter.put("infiltrator",0);
+        gamesCounter.put("duel",0);
+        gamesCounter.put("mini",0);
+        gamesCounter.put("tiny",0);
     }
 
     public void connectToGame(String version, String token, String id, List<List<String>> config){
         if(checkForExistingGames(version)){
             gamesList.get(version).get(gamesList.get(version).size()-1).connectRedPlayer(config,token);
-            gamesCounter++;
+            gamesCounter.put(version,gamesCounter.get(version)+1);
         }
         else{
             Game game = new Game(id,config,token,version);
@@ -46,8 +50,8 @@ public class GameManager {
         return game.getBlueToken().equals(token) || game.getRedToken().equals(token);
     }
 
-    public int getGamesCounter(){
-        return gamesCounter;
+    public int getGamesCounter(String version){
+        return gamesCounter.get(version);
     }
 
     public boolean checkForExistingGames(String version){

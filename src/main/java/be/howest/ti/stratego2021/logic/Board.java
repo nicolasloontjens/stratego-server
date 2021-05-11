@@ -6,16 +6,16 @@ import java.util.List;
 
 public class Board {
 
-    private List<List<Pawn>> board;
+    private List<List<Pawn>> theboard;
 
     public Board(){
-        board = new ArrayList<>();
+        theboard = new ArrayList<>();
         constructEmptyBoard();
     }
 
     //initializing the board
     private void constructEmptyBoard(){
-        board = new ArrayList<>(Arrays.asList(getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getWaterRow(),getWaterRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow()));
+        theboard = new ArrayList<>(Arrays.asList(getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getWaterRow(),getWaterRow(),getEmptyRow(),getEmptyRow(),getEmptyRow(),getEmptyRow()));
     }
     private List<Pawn> getEmptyRow(){
         return new ArrayList<>(Arrays.asList(getEmptyPawn(),getEmptyPawn(),getEmptyPawn(),getEmptyPawn(),getEmptyPawn(),getEmptyPawn(),getEmptyPawn(),getEmptyPawn(),getEmptyPawn(),getEmptyPawn()));
@@ -35,28 +35,28 @@ public class Board {
         for(int rowindex = startRowIndex; rowindex < maxRowIndex; rowindex++){
             for(int colindex = 0; colindex < 10; colindex++){
                 if(config.get(rowindex).get(colindex) == null){
-                    board.get(rowindex).set(colindex,new Pawn("empty", "EMPTY"));
+                    theboard.get(rowindex).set(colindex,new Pawn("empty", "EMPTY"));
                 }else{
-                    board.get(rowindex).set(colindex,new Pawn(token, config.get(rowindex).get(colindex)));
+                    theboard.get(rowindex).set(colindex,new Pawn(token, config.get(rowindex).get(colindex)));
                 }
             }
         }
     }
 
     public List<List<Pawn>> getBoard(){
-        return board;
+        return theboard;
     }
 
     public Pawn getPawn(Coords src){
-        return board.get(src.getRow()).get(src.getCol());
+        return theboard.get(src.getRow()).get(src.getCol());
     }
 
     public void setPawn(Coords src, Pawn pawn){
-        board.get(src.getRow()).set(src.getCol(),pawn);
+        theboard.get(src.getRow()).set(src.getCol(),pawn);
     }
 
     @Override
     public String toString() {
-        return "" + board;
+        return "" + theboard;
     }
 }

@@ -40,7 +40,7 @@ class GameManagerTest {
     void gamesCounterIncreases(){
         gameManager.connectToGame("original","blueTestToken","groep25test",returnBlueConfig());
         gameManager.connectToGame("original","redTestToken","groep25test",returnRedConfig());
-        assertTrue(gameManager.getGamesCounter()>0);
+        assertTrue(gameManager.getGamesCounter("original")>0);
     }
 
     @Test
