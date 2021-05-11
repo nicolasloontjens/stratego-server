@@ -33,9 +33,8 @@ public class Coords {
         this.row = row;
     }
 
-    public void invertCoords(){
-        col = Math.abs(col - 9);
-        row = Math.abs(row - 9);
+    public Coords invertCoords(){
+        return new Coords(Math.abs(row - 9),Math.abs(col - 9));
     }
 
     @Override
@@ -49,5 +48,13 @@ public class Coords {
     @Override
     public int hashCode() {
         return Objects.hash(col, row);
+    }
+
+    @Override
+    public String toString() {
+        return "Coords{" +
+                "col=" + col +
+                ", row=" + row +
+                '}';
     }
 }

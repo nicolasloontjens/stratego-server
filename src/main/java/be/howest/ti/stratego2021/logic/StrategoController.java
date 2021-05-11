@@ -72,7 +72,11 @@ public class StrategoController implements StrategoWebController {
     @Override
     public Move makeMove(String gameID,String token,Coords src, Coords tar, String infiltrate) {
         if(infiltrate.equals("")){
-            return gameManager.movePlayer(gameID,src,tar,token);
+            if(gameManager.applyGameRulesAndCheckIfAttackOrMove(gameID,src,tar,token)){
+                return gameManager.attackPlayer(gameID, src,tar,token);
+            }else{
+                return gameManager.movePlayer(gameID,src,tar,token);
+            }
         }
         else{
             return gameManager.infiltrate(gameID,src,tar,token,infiltrate);
@@ -91,13 +95,7 @@ public class StrategoController implements StrategoWebController {
 
     @Override
     public List<Move> getMoves(String gameID, String player) {
-        Game game = gameManager.getGameById(gameID);
-        if(gameManager.checkIfTokenBelongsToGame(game,player)){
-            return game.getMoveList();
-        }
-        else{
-            throw new InvalidTokenException();
-        }
+        return gameManager.getMovesFromGame(gameID,player);
     }
 
     @Override

@@ -1,8 +1,9 @@
 package be.howest.ti.stratego2021.logic;
 
-import be.howest.ti.stratego2021.web.bridge.ReturnBoardGetBody;
+import be.howest.ti.stratego2021.logic.exceptions.StrategoGameRuleException;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
 import be.howest.ti.stratego2021.logic.StrategoController;
+import be.howest.ti.stratego2021.web.exceptions.InvalidTokenException;
 
 import java.util.*;
 
@@ -36,7 +37,7 @@ public class GameManager {
 
     public Game getGameById(String gameID){
         if(!gamesById.containsKey(gameID)){
-            throw new IllegalArgumentException();
+            throw new StrategoGameRuleException("The game doesn't exist");
         }
         return gamesById.get(gameID);
     }
@@ -58,22 +59,48 @@ public class GameManager {
         return false;
     }
 
-    public Move infiltrate(String gameID, Coords src, Coords tar, String token, String infiltrationGuess){
+    public boolean applyGameRulesAndCheckIfAttackOrMove(String gameID, Coords src, Coords tar, String token){
+        //method for controller that will either execute move method or attack method
         Game game = getGameById(gameID);
-        if(game.getRedToken().equals(token)){
-            src.invertCoords();
-            tar.invertCoords();
+        if(!game.isGameStarted()){
+            throw new StrategoGameRuleException("the game hasn't started yet");
         }
-        return game.infiltratePlayer(src, tar, token, infiltrationGuess);
+        if(game.getRedToken().equals(token)){
+            return game.applyGameRulesAndCheckIfAttackOrMove(src.invertCoords(),tar.invertCoords(),token);
+        }
+        return game.applyGameRulesAndCheckIfAttackOrMove(src,tar,token);
     }
 
     public Move movePlayer(String gameID,Coords src, Coords tar, String token){
         Game game = getGameById(gameID);
         if(game.getRedToken().equals(token)){
-            src.invertCoords();
-            tar.invertCoords();
+            return game.executeMove(src.invertCoords(),tar.invertCoords(),token);
         }
-        return game.movePlayer(src,tar,token);
+        return game.executeMove(src,tar,token);
+    }
+
+    public AttackMove attackPlayer(String gameID, Coords src, Coords tar, String token){
+        Game game = getGameById(gameID);
+        if(game.getRedToken().equals(token)){
+            return game.executeAttack(src.invertCoords(),tar.invertCoords(),token);
+        }
+        return game.executeAttack(src,tar,token);
+    }
+
+    public InfiltrationMove infiltrate(String gameID, Coords src, Coords tar, String token, String infiltrationGuess){
+        Game game = getGameById(gameID);
+        if(game.getRedToken().equals(token)){
+            return game.infiltratePlayer(src.invertCoords(), tar.invertCoords(), token, infiltrationGuess);
+        }
+        return game.infiltratePlayer(src, tar, token, infiltrationGuess);
+    }
+
+    public List<Move> getMovesFromGame(String gameID, String player){
+        Game game = getGameById(gameID);
+        if(checkIfTokenBelongsToGame(game,player)){
+            return game.getMoveList();
+        }
+        throw new StrategoGameRuleException("Game doesn't exist, or you don't have the right token");
     }
 
     public List<List<ReturnBoardPawn>> convertBoardForClient(String gameID, String token){

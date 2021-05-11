@@ -11,7 +11,7 @@ public enum PieceCount {
     TINY (0,1,0,0,0,0,0,0,0,0,0,0,1);
 
     private final int bomb;
-    private final int marshall;
+    private final int marshal;
     private final int general;
     private final int colonel;
     private final int major;
@@ -24,10 +24,10 @@ public enum PieceCount {
     private final int infiltrator;
     private final int flag;
 
-    PieceCount(int bomb, int marshall, int general, int colonel, int major, int captain, int lieutenant, int sergeant,
+    PieceCount(int bomb, int marshal, int general, int colonel, int major, int captain, int lieutenant, int sergeant,
                int miner, int scout, int spy, int infiltrator, int flag) {
         this.bomb = bomb;
-        this.marshall = marshall;
+        this.marshal = marshal;
         this.general = general;
         this.colonel = colonel;
         this.major = major;
@@ -45,8 +45,8 @@ public enum PieceCount {
         return bomb;
     }
 
-    public int getMarshall() {
-        return marshall;
+    public int getMarshal() {
+        return marshal;
     }
 
     public int getGeneral() {

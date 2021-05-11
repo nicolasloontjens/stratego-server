@@ -28,6 +28,7 @@ import io.vertx.ext.web.handler.impl.HttpStatusException;
 import io.vertx.ext.web.openapi.RouterBuilder;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -89,34 +90,20 @@ public class StrategoBridge implements AuthenticationProvider {
 
     private void makeMove(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
-        Move move = null;
-        try{
-            move = controller.makeMove(requestParameters.getAuthorizedGameId(),
-                requestParameters.getAuthorizedPlayer(),
-                requestParameters.getSrc(),
-                requestParameters.getTar(),
-                requestParameters.getInfiltrate()
-        );
-        }catch(IllegalArgumentException exception){
-            StrategoResponses.sendFailure(ctx,403,"Forbidden");
-        }catch(ForbiddenAccessException exception){
-            StrategoResponses.sendFailure(ctx, 401,"Unauthorized");
-        }
+        Move move = controller.makeMove(requestParameters.getAuthorizedGameId(),
+                    requestParameters.getAuthorizedPlayer(),
+                    requestParameters.getSrc(),
+                    requestParameters.getTar(),
+                    requestParameters.getInfiltrate()
+            );
         StrategoResponses.sendMove(ctx,move);
     }
 
     private void getMoves(RoutingContext ctx) {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
         String player = requestParameters.getAuthorizedPlayer();
-        String gameID = requestParameters.getRoomID();
-        List<Move> res = null;
-        try {
-            res = controller.getMoves(gameID, player);
-        }catch(InvalidTokenException exception){
-            StrategoResponses.sendFailure(ctx, 401,"Unauthorized");
-        }catch(IllegalArgumentException exception){
-            StrategoResponses.sendFailure(ctx,403,"Forbidden");
-        }
+        String gameID = tokenManager.token2gameId(player);
+        List<Move> res = controller.getMoves(gameID, player);
         StrategoResponses.sendMoves(ctx, res);
     }
 
@@ -133,7 +120,7 @@ public class StrategoBridge implements AuthenticationProvider {
         }
 
 
-        StrategoResponses.sendJoinedGameInfo(ctx,tokenManager.token2gameId(res),tokenManager.token2player(res),res);
+        StrategoResponses.sendJoinedGameInfo(ctx,tokenManager.token2gameId(res),tokenManager.token2player(res).toUpperCase(Locale.ROOT),res);
 
     }
 
@@ -150,15 +137,11 @@ public class StrategoBridge implements AuthenticationProvider {
         StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
         String authorizedGameId = requestParameters.getAuthorizedGameId();
         String authorizedPlayer = requestParameters.getAuthorizedPlayer();
-        try{
-            if(controller.validateIfTokenBelongsToGame(controller.getGameFromID(authorizedGameId),authorizedPlayer)){
-                ctx.next();
-            }
-            else{
-                throw new IllegalArgumentException();
-            }
-        }catch(IllegalArgumentException exception){
-            StrategoResponses.sendFailure(ctx,401,"Unauthorized");
+        if(controller.validateIfTokenBelongsToGame(controller.getGameFromID(authorizedGameId),authorizedPlayer)){
+            ctx.next();
+        }
+        else{
+            throw new ForbiddenAccessException();
         }
     }
 

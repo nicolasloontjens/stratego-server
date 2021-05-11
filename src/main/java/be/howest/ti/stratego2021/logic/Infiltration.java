@@ -1,6 +1,6 @@
 package be.howest.ti.stratego2021.logic;
 
-public class Infiltration{
+public class Infiltration {
     private final String expected;
     private final String actual;
     private final boolean success;
