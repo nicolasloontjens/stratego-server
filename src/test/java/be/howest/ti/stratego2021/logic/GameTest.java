@@ -3,7 +3,6 @@ package be.howest.ti.stratego2021.logic;
 import be.howest.ti.stratego2021.logic.exceptions.StrategoGameRuleException;
 import be.howest.ti.stratego2021.web.exceptions.ForbiddenAccessException;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
