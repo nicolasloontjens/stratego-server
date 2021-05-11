@@ -108,30 +108,30 @@ public class GameManager {
         return game.returnClientBoard(token);
     }
 
-    public void checkRightVersion(String version,List<List<String>> startConfiguration){
-        //get version total pieces
-        Map<PawnTypes, Integer> x = PieceCount.valueOf(version.toUpperCase(Locale.ROOT)).getCounters();
-
-        for (PawnTypes pawnTypes: x.keySet()) {
-            countPiece(startConfiguration, pawnTypes, x.get(pawnTypes));
-        }
-
-        //count and compares pawnTypes + throw when pieces dont match
-
-    }
-
-    private void countPiece(List<List<String>> startConfiguration,PawnTypes pawnTypes, int pieceAmount) {
-        int currentAmount = 0;
-
-        for (List<String> row: startConfiguration) {
-            for (String piece: row) {
-                if (piece != null && piece.equals(pawnTypes.toString())){
-                    currentAmount++;
+    public void checkConfig(String version, List<List<String>> startConfig){
+        Map<PawnTypes, Integer> pieceCount = PieceCount.valueOf(version.toUpperCase(Locale.ROOT)).getCounters();
+        Map<PawnTypes,Integer> configCount = new HashMap<>();
+        Map<PawnTypes,Integer> compare = new HashMap<>();
+        for(List<String> row: startConfig){
+            for(String piece : row){
+                if(piece != null){
+                    PawnTypes currentpawn = PawnTypes.valueOf(piece.toUpperCase(Locale.ROOT));
+                    if(configCount.containsKey(currentpawn)){
+                        configCount.put(currentpawn,configCount.get(PawnTypes.valueOf(piece.toUpperCase(Locale.ROOT)))+1);
+                    }else{
+                        configCount.put(currentpawn,1);
+                    }
                 }
             }
         }
-        if (currentAmount != pieceAmount){
-            throw new StrategoGameRuleException("version and amount of pieces on board don't match");
+        for(PawnTypes type: pieceCount.keySet()){
+            if(pieceCount.get(type) >0){
+                compare.put(type,pieceCount.get(type));
+            }
+        }
+        if(!configCount.equals(compare)){
+            throw new StrategoGameRuleException("not valid");
         }
     }
+
 }
