@@ -116,10 +116,10 @@ class GameTest {
         game.executeMove(new Coords(6,4),new Coords(5,4),"blueTestToken");
         game.executeMove(new Coords(3,4),new Coords(4,4),"redTestToken");
         AttackMove move = game.executeAttack(new Coords(5,4),new Coords(4,4),"blueTestToken");
-        assertEquals("colonel",move.getAttack().getAttacker());
+        assertEquals("scout",move.getAttack().getAttacker());
         assertEquals("sergeant",move.getAttack().getDefender());
-        assertEquals("attacker",move.getAttack().getWinner());
-        assertEquals("colonel",game.getPawnAtPos(new Coords(4,4)).getPawnType());
+        assertEquals("defender",move.getAttack().getWinner());
+        assertEquals("sergeant",game.getPawnAtPos(new Coords(4,4)).getPawnType());
         assertEquals("empty",game.getPawnAtPos(new Coords(5,4)).getPawnType());
     }
 
@@ -240,7 +240,10 @@ class GameTest {
     void scoutCannotJumpOverPawns(){
         Game game = returnWorkingGame();
         game.setPawnAtPos(new Coords(5,4),new Pawn("redTestToken","colonel"));
-        game.executeMove(new Coords(6,4),new Coords(3,4),"blueTestToken");
+        assertThrows(StrategoGameRuleException.class, () ->{
+            game.applyGameRulesAndCheckIfAttackOrMove(new Coords(6,4),new Coords(3,4),"blueTestToken");
+            game.executeMove(new Coords(6,4),new Coords(3,4),"blueTestToken");
+        });
     }
 
 }
