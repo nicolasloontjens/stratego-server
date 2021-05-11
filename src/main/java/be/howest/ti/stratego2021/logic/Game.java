@@ -25,7 +25,7 @@ public class Game {
         board = new Board();
         board.postConfig(blueConfig, blueToken, 6,10);
         moveList = new ArrayList<>();
-        moveList.add(new Move("blue",new Coords(0,0),new Coords(0,0)));
+        moveList.add(new Move("BLUE",new Coords(0,0),new Coords(0,0)));
         isBlueTurn = true;
         gameStarted = false;
     }
@@ -37,7 +37,7 @@ public class Game {
         }
         board.postConfig(redConfig, redToken, 0,4);
         this.redToken = redToken;
-        moveList.add(new Move("red",new Coords(0,0),new Coords(0,0)));
+        moveList.add(new Move("RED",new Coords(0,0),new Coords(0,0)));
         gameStarted = true;
     }
 
