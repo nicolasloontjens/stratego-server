@@ -131,7 +131,7 @@ public class GameManager {
             }
         }
         if (currentAmount != pieceAmount){
-            throw new IllegalArgumentException();
+            throw new StrategoGameRuleException("version and amount of pieces on board don't match");
         }
     }
 }
