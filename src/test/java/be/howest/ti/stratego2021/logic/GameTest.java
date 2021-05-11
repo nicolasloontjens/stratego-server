@@ -154,9 +154,38 @@ class GameTest {
         game.executeMove(new Coords(5,8),new Coords(6,8),"redTestToken");
 
         InfiltrationMove move = game.infiltratePlayer(new Coords(3,9),new Coords(2,9),"blueTestToken","infiltrator");
-        System.out.println(move.getInfiltration().getExpected());
-        System.out.println(move.getInfiltration().getActual());
-        System.out.println(move.getInfiltration().isSuccess());
+        assertEquals("infiltrator",move.getInfiltration().getExpected());
+        assertEquals("flag",move.getInfiltration().getActual());
+        assertFalse(move.getInfiltration().isSuccess());
+    }
+
+    @Test
+    void testInfiltrationEnemyTerritoryCheck(){
+        Game game = returnWorkingGame();
+        game.executeMove(new Coords(6,9),new Coords(5,9),"blueTestToken");
+        game.executeMove(new Coords(3,9),new Coords(4,9),"redTestToken");
+        game.executeMove(new Coords(6,4),new Coords(5,4),"blueTestToken");
+        game.executeMove(new Coords(4,9),new Coords(4,8),"redTestToken");
+        game.executeMove(new Coords(5,9),new Coords(4,9),"blueTestToken");
+        game.executeMove(new Coords(4,8),new Coords(5,8),"redTestToken");
+        assertThrows(StrategoGameRuleException.class, () ->{
+            InfiltrationMove move = game.infiltratePlayer(new Coords(4,9),new Coords(2,9),"blueTestToken","infiltrator");
+        });
+    }
+
+    @Test
+    void testInfiltrationFriendlyFireCheck(){
+        Game game = returnWorkingGame();
+        game.executeMove(new Coords(6,9),new Coords(5,9),"blueTestToken");
+        game.executeMove(new Coords(3,9),new Coords(4,9),"redTestToken");
+        game.executeMove(new Coords(6,4),new Coords(5,4),"blueTestToken");
+        game.executeMove(new Coords(4,9),new Coords(4,8),"redTestToken");
+        game.executeMove(new Coords(5,9),new Coords(4,9),"blueTestToken");
+        game.executeMove(new Coords(4,8),new Coords(5,8),"redTestToken");
+        game.getBoard().setPawn(new Coords(2,9),new Pawn("blueTestToken","colonel"));
+        assertThrows(StrategoGameRuleException.class, () ->{
+            InfiltrationMove move = game.infiltratePlayer(new Coords(4,9),new Coords(2,9),"blueTestToken","colonel");
+        });
     }
 
 }
