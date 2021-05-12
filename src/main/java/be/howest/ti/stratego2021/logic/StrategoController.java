@@ -28,16 +28,6 @@ public class StrategoController implements StrategoWebController {
     RandomGeneratedTextTokens tokenGen = new RandomGeneratedTextTokens();
 
     @Override
-    public void getDemo() {
-        // needs to be removed in the final version
-    }
-
-    @Override
-    public void postDemo() {
-        // needs to be removed in the final version
-    }
-
-    @Override
     public String[] getStrategoVersions() {
         return new String[]{
                 "original", "infiltrator","duel", "mini","tiny"

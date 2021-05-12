@@ -26,9 +26,6 @@ import java.util.List;
  */
 public interface StrategoWebController {
 
-    void getDemo();
-    void postDemo();
-
     String[] getStrategoVersions();
     Version getStrategoVersion(String filter);
 

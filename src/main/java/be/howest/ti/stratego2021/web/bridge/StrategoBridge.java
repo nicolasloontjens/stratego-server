@@ -55,22 +55,6 @@ public class StrategoBridge implements AuthenticationProvider {
         this(new StrategoController());
     }
 
-    private void getDemo(RoutingContext ctx) {
-        StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
-
-        controller.getDemo();
-
-        StrategoResponses.sendGetDemoResponse(ctx);
-    }
-
-    private void postDemo(RoutingContext ctx) {
-        StrategoRequestParameters requestParameters = StrategoRequestParameters.from(ctx);
-
-        controller.postDemo();
-
-        StrategoResponses.sendPostDemoResponse(ctx);
-    }
-
     private void getStrategoVersions(RoutingContext ctx) {
 
         String[] allVersions = controller.getStrategoVersions();
@@ -152,11 +136,6 @@ public class StrategoBridge implements AuthenticationProvider {
 
 
         LOGGER.log(Level.INFO, "Installing dedicated handler for each operation");
-        routerBuilder.operation("getDemo").handler(this::getDemo);
-
-        routerBuilder.operation("postDemo")
-                .handler(this::authorize)
-                .handler(this::postDemo);
 
         routerBuilder.operation("getStrategoVersions").handler(this::getStrategoVersions);
 
