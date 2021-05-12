@@ -100,7 +100,7 @@ class VersionTest {
             gameManager.checkConfig("tiny", returnTooSmallConfigRow());
         });
         assertThrows(StrategoGameRuleException.class, ()-> {
-            gameManager.checkConfig("tiny", returnTooLargeConfigCol());
+            gameManager.checkConfig("tiny", returnTooSmallConfigCol());
         });
     }
 }
