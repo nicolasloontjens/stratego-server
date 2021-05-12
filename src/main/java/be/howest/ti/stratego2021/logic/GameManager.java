@@ -33,7 +33,7 @@ public class GameManager {
             gamesCounter.put(version,gamesCounter.get(version)+1);
         }
         else{
-            Game game = new Game(id,config,token,version);
+            Game game = new Game(id,config,token);
             gamesList.get(version).add(game);
             gamesById.put(id,game);
         }

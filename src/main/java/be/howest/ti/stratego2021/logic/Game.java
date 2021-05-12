@@ -11,17 +11,15 @@ public class Game {
     private final String gameId;
     private final String blueToken;
     private String redToken;
-    private final PieceCount gameType;
     private Board board;
     private List<Move> moveList;
     private boolean gameStarted;
     private boolean isBlueTurn;
 
-    public Game(String  id, List<List<String>> blueConfig, String blueToken, String gameType){
+    public Game(String  id, List<List<String>> blueConfig, String blueToken){
         gameId = id;
         this.blueToken = blueToken;
         this.redToken = null;
-        this.gameType = PieceCount.valueOf(gameType.toUpperCase(Locale.ROOT));
         board = new Board();
         board.postConfig(blueConfig, blueToken, 6,10);
         moveList = new ArrayList<>();

@@ -24,14 +24,14 @@ class GameTest {
     }
 
     Game returnWorkingGame(){
-        Game game = new Game("1",returnBlueConfig(),"blueTestToken","original");
+        Game game = new Game("1",returnBlueConfig(),"blueTestToken");
         game.connectRedPlayer(returnRedConfig(),"redTestToken");
         return game;
     }
 
     @Test
     void testGetPawnAtPos(){
-        Game game = new Game("1",returnBlueConfig(),"","original");
+        Game game = new Game("1",returnBlueConfig(),"");
         assertFalse(game.isGameStarted());
         game.connectRedPlayer(returnRedConfig(),"");
         assertEquals("colonel", game.getPawnAtPos(new Coords(6,7)).getPawnType());
