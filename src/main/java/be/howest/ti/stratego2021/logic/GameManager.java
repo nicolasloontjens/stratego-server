@@ -2,6 +2,7 @@ package be.howest.ti.stratego2021.logic;
 
 import be.howest.ti.stratego2021.logic.exceptions.StrategoGameRuleException;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
+import be.howest.ti.stratego2021.web.tokens.RandomGeneratedTextTokens;
 
 import java.util.*;
 
@@ -10,6 +11,7 @@ public class GameManager {
     private final Map<String, List<Game>> gamesList;
     private final Map<String,Game> gamesById;
     private final Map<String,Integer> gamesCounter;
+    RandomGeneratedTextTokens tokenGen = new RandomGeneratedTextTokens();
 
     public GameManager(){
         gamesList = new HashMap<>();
@@ -97,6 +99,10 @@ public class GameManager {
             return game.infiltratePlayer(src.invertCoords(), tar.invertCoords(), token, infiltrationGuess);
         }
         return game.infiltratePlayer(src, tar, token, infiltrationGuess);
+    }
+
+    public void giveUpMove(String gameID){
+        getGameById(gameID).addMove(new Move("PLAYERHASGIVENUP", new Coords(0,0),new Coords(0,0)));
     }
 
     public List<Move> getMovesFromGame(String gameID, String player){
