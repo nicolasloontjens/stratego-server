@@ -7,7 +7,6 @@ import be.howest.ti.stratego2021.web.tokens.RandomGeneratedTextTokens;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 /**
  * StrategoController is the default implementation for the StrategoWebController interface,
