@@ -7,9 +7,9 @@ import java.util.*;
 
 public class GameManager {
 
-    private Map<String, List<Game>> gamesList;
-    private Map<String,Game> gamesById;
-    private Map<String,Integer> gamesCounter;
+    private final Map<String, List<Game>> gamesList;
+    private final Map<String,Game> gamesById;
+    private final Map<String,Integer> gamesCounter;
 
     public GameManager(){
         gamesList = new HashMap<>();
