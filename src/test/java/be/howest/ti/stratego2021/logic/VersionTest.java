@@ -30,18 +30,32 @@ class VersionTest {
         return new ArrayList<>(Arrays.asList(nullList,nullList,nullList,nullList,nullList,nullList,nullList,nullList,nullList,nullList));
     }
 
-    List<List<String>> returnTooLargeConfig(){
+    List<List<String>> returnTooLargeConfigRow(){
         List<String> nullList = new ArrayList<>(Arrays.asList(null,null,null,null,null,null,null,null,null,null));
         List<String> flagList = new ArrayList<>(Arrays.asList("flag",null,null,null,null,null,null,null,null,null));
         List<String> marshalList = new ArrayList<>(Arrays.asList(null,null,null,"marshal",null,null,null,null,null,null));
         return new ArrayList<>(Arrays.asList(nullList,nullList,nullList,nullList,nullList,nullList,flagList,nullList,marshalList,nullList,nullList, nullList,nullList,nullList));
     }
 
-    List<List<String>> returnTooSmallConfig(){
+    List<List<String>> returnTooSmallConfigRow(){
         List<String> nullList = new ArrayList<>(Arrays.asList(null,null,null,null,null,null,null,null,null,null));
         List<String> flagList = new ArrayList<>(Arrays.asList("flag",null,null,null,null,null,null,null,null,null));
         List<String> marshalList = new ArrayList<>(Arrays.asList(null,null,null,"marshal",null,null,null,null,null,null));
         return new ArrayList<>(Arrays.asList(flagList,nullList,marshalList));
+    }
+
+    List<List<String>> returnTooLargeConfigCol(){
+        List<String> nullList = new ArrayList<>(Arrays.asList(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null));
+        List<String> flagList = new ArrayList<>(Arrays.asList("flag",null,null,null,null,null,null,null,null,null));
+        List<String> marshalList = new ArrayList<>(Arrays.asList(null,null,null,"marshal",null,null,null,null,null,null));
+        return new ArrayList<>(Arrays.asList(nullList,nullList,nullList,nullList,nullList,nullList,flagList,nullList,marshalList,nullList));
+    }
+
+    List<List<String>> returnTooSmallConfigCol(){
+        List<String> nullList = new ArrayList<>(Arrays.asList(null,null));
+        List<String> flagList = new ArrayList<>(Arrays.asList("flag",null,null,null,null,null,null,null,null,null));
+        List<String> marshalList = new ArrayList<>(Arrays.asList(null,null,null,"marshal",null,null,null,null,null,null));
+        return new ArrayList<>(Arrays.asList(nullList,nullList,nullList,nullList,nullList,nullList,flagList,nullList,marshalList,nullList));
     }
 
     @Test
@@ -72,7 +86,10 @@ class VersionTest {
     void checkIfConfigTooLarge(){
         GameManager gameManager = new GameManager();
         assertThrows(StrategoGameRuleException.class, ()-> {
-            gameManager.checkConfig("tiny", returnTooLargeConfig());
+            gameManager.checkConfig("tiny", returnTooLargeConfigRow());
+        });
+        assertThrows(StrategoGameRuleException.class, ()-> {
+            gameManager.checkConfig("tiny", returnTooLargeConfigCol());
         });
     }
 
@@ -80,7 +97,10 @@ class VersionTest {
     void checkIfConfigTooSmall(){
         GameManager gameManager = new GameManager();
         assertThrows(StrategoGameRuleException.class, ()-> {
-            gameManager.checkConfig("tiny", returnTooLargeConfig());
+            gameManager.checkConfig("tiny", returnTooSmallConfigRow());
+        });
+        assertThrows(StrategoGameRuleException.class, ()-> {
+            gameManager.checkConfig("tiny", returnTooLargeConfigCol());
         });
     }
 }
