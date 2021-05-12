@@ -11,8 +11,8 @@ public class Game {
     private final String gameId;
     private final String blueToken;
     private String redToken;
-    private Board board;
-    private List<Move> moveList;
+    private final Board board;
+    private final List<Move> moveList;
     private boolean gameStarted;
     private boolean isBlueTurn;
 
