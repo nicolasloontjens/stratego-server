@@ -11,17 +11,15 @@ public class Game {
     private final String gameId;
     private final String blueToken;
     private String redToken;
-    private final PieceCount gameType;
-    private Board board;
-    private List<Move> moveList;
+    private final Board board;
+    private final List<Move> moveList;
     private boolean gameStarted;
     private boolean isBlueTurn;
 
-    public Game(String  id, List<List<String>> blueConfig, String blueToken, String gameType){
+    public Game(String  id, List<List<String>> blueConfig, String blueToken){
         gameId = id;
         this.blueToken = blueToken;
         this.redToken = null;
-        this.gameType = PieceCount.valueOf(gameType.toUpperCase(Locale.ROOT));
         board = new Board();
         board.postConfig(blueConfig, blueToken, 6,10);
         moveList = new ArrayList<>();
@@ -156,10 +154,12 @@ public class Game {
         if(!isAttackableTarget(tar, token)){
             throw new StrategoGameRuleException("You can't attack this target");
         }
-        if(checkIfCoordsOutOfBounds(src,tar) && validateIfMoveable(src,token)&&gameStarted){
-            if(validateTargetCoords(src,tar)&& isAttackableTarget(tar,token)){
-                return isNotEmptySpot(tar);
-            }
+        if(checkIfCoordsOutOfBounds(src,tar) &&
+                validateIfMoveable(src,token) &&
+                gameStarted &&
+                validateTargetCoords(src,tar) &&
+                isAttackableTarget(tar,token)){
+            return isNotEmptySpot(tar);
         }
         throw new IllegalArgumentException();
 
@@ -236,12 +236,14 @@ public class Game {
         if(!isNotEmptySpot(tar)){
             throw new StrategoGameRuleException("You can't infiltrate an empty spot");
         }
-        if(isInfiltrator(src,token)&&checkIfCoordsOutOfBounds(src,tar)&&gameStarted){
-            if(isInEnemyTerritory(src,tar,token)){
-                if(infiltratorMovementValidation(src,tar)&& isAttackableTarget(tar,token)&& isNotEmptySpot(tar)){
-                    return executeInfiltration(src,tar,token,guess);
-                }
-            }
+        if(isInfiltrator(src,token) &&
+                checkIfCoordsOutOfBounds(src,tar) &&
+                gameStarted &&
+                isInEnemyTerritory(src,tar,token) &&
+                infiltratorMovementValidation(src,tar) &&
+                isAttackableTarget(tar,token) &&
+                isNotEmptySpot(tar)) {
+            return executeInfiltration(src,tar,token,guess);
         }
         throw new IllegalArgumentException();
     }

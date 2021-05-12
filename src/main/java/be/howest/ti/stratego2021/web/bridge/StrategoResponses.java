@@ -25,15 +25,6 @@ public class StrategoResponses {
                 .end(Json.encodePrettily(response));
     }
 
-    public static void sendGetDemoResponse(RoutingContext ctx) {
-        sendJsonResponse(ctx, 200, new JsonObject()
-        .put("msg", "hello world"));
-    }
-
-    public static void sendPostDemoResponse(RoutingContext ctx) {
-        sendNotYetImplementedResponse(ctx);
-    }
-
     public static void sendStrategoVersions(RoutingContext ctx, String[] versions) {
         sendJsonResponse(ctx, 200, new JsonObject().put("versions",versions));
     }
@@ -66,12 +57,5 @@ public class StrategoResponses {
         sendJsonResponse(ctx, code, new JsonObject()
                 .put("failure", code)
                 .put("cause", message));
-    }
-
-    // TODO skeleton: this method should not be used (and thus removed) in the final version.
-    private static void sendNotYetImplementedResponse(RoutingContext ctx) {
-        sendJsonResponse(ctx, 500, new JsonObject()
-                .put("message", "Not Yet Implemented (NYI)")
-        );
     }
 }
