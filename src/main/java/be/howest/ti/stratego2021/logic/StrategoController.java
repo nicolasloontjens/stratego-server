@@ -24,8 +24,6 @@ import java.util.logging.Logger;
  */
 public class StrategoController implements StrategoWebController {
 
-    private static final Logger LOGGER = Logger.getLogger(StrategoController.class.getName());
-
     GameManager gameManager = new GameManager();
     RandomGeneratedTextTokens tokenGen = new RandomGeneratedTextTokens();
 
@@ -60,7 +58,6 @@ public class StrategoController implements StrategoWebController {
         }else{
             currentToken = tokenGen.createToken(gameID,version,"BLUE",gameManager.getGamesCounter(version));
         }
-        System.out.println(currentToken);
         gameManager.connectToGame(version,currentToken,tokenGen.token2gameId(currentToken),startConfiguration);
         return currentToken;
     }

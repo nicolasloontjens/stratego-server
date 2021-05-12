@@ -5,8 +5,6 @@ import be.howest.ti.stratego2021.logic.Coords;
 import be.howest.ti.stratego2021.logic.Game;
 import be.howest.ti.stratego2021.logic.Move;
 import be.howest.ti.stratego2021.logic.Version;
-import be.howest.ti.stratego2021.web.bridge.MakeMovePosBody;
-import be.howest.ti.stratego2021.web.bridge.ReturnBoardGetBody;
 import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
 
 import java.util.List;
