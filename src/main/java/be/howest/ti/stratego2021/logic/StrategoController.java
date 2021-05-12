@@ -53,6 +53,9 @@ public class StrategoController implements StrategoWebController {
 
     @Override
     public Move makeMove(String gameID,String token,Coords src, Coords tar, String infiltrate) {
+        if(infiltrate.equals("ISurrender")){
+            gameManager.giveUpMove(gameID);
+        }
         if(infiltrate.equals("")){
             if(gameManager.applyGameRulesAndCheckIfAttackOrMove(gameID,src,tar,token)){
                 return gameManager.attackPlayer(gameID, src,tar,token);
