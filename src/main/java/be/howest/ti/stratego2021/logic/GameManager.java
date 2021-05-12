@@ -113,6 +113,7 @@ public class GameManager {
     }
 
     public void checkConfig(String version, List<List<String>> startConfig){
+        checkConfigSize(startConfig);
         Map<PawnTypes, Integer> pieceCount = PieceCount.valueOf(version.toUpperCase(Locale.ROOT)).getCounters();
         Map<PawnTypes,Integer> configCount = new HashMap<>();
         Map<PawnTypes,Integer> compare = new HashMap<>();
@@ -135,6 +136,17 @@ public class GameManager {
         }
         if(!configCount.equals(compare)){
             throw new StrategoGameRuleException("not valid");
+        }
+    }
+
+    private void checkConfigSize(List<List<String>> startConfig) {
+        if (startConfig.size() != 10){
+            throw new StrategoGameRuleException("not valid");
+        }
+        for (List<String> row : startConfig) {
+            if (row.size() != 10){
+                throw new StrategoGameRuleException("not valid");
+            }
         }
     }
 
