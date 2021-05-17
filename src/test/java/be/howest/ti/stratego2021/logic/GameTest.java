@@ -23,9 +23,21 @@ class GameTest {
         return new ArrayList<>(Arrays.asList(nullList,nullList,nullList,nullList,nullList,nullList,pawnList,pawnList,pawnList,nullList));
     }
 
+    List<List<String>> returnAlternativeRedConfig(){
+        List<String> nullList = new ArrayList<>(Arrays.asList(null,null,null,null,null,null,null,null,null,null));
+        List<String> pawnList = new ArrayList<>(Arrays.asList("flag","bomb","scout","scout",null,"scout","scout","scout","scout","infiltrator"));
+        return new ArrayList<>(Arrays.asList(nullList,nullList,nullList,nullList,nullList,nullList,pawnList,pawnList,pawnList,nullList));
+    }
+
     Game returnWorkingGame(){
         Game game = new Game("1",returnBlueConfig(),"blueTestToken");
         game.connectRedPlayer(returnRedConfig(),"redTestToken");
+        return game;
+    }
+
+    Game returnWorkingAlternativeGame(){
+        Game game = new Game("1",returnBlueConfig(),"blueTestToken");
+        game.connectRedPlayer(returnAlternativeRedConfig(),"redTestToken");
         return game;
     }
 
@@ -119,6 +131,19 @@ class GameTest {
         assertEquals("sergeant",move.getAttack().getDefender());
         assertEquals("defender",move.getAttack().getWinner());
         assertEquals("sergeant",game.getPawnAtPos(new Coords(4,4)).getPawnType());
+        assertEquals("empty",game.getPawnAtPos(new Coords(5,4)).getPawnType());
+    }
+
+    @Test
+    void checkIfAttackWorksDraw(){
+        Game game = returnWorkingAlternativeGame();
+        game.executeMove(new Coords(6,4),new Coords(5,4),"blueTestToken");
+        game.executeMove(new Coords(3,4),new Coords(4,4),"redTestToken");
+        AttackMove move = game.executeAttack(new Coords(5,4),new Coords(4,4),"blueTestToken");
+        assertEquals("scout",move.getAttack().getAttacker());
+        assertEquals("scout",move.getAttack().getDefender());
+        assertEquals("draw",move.getAttack().getWinner());
+        assertEquals("empty",game.getPawnAtPos(new Coords(4,4)).getPawnType());
         assertEquals("empty",game.getPawnAtPos(new Coords(5,4)).getPawnType());
     }
 
