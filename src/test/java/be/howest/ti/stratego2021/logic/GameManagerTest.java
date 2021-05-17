@@ -1,5 +1,6 @@
 package be.howest.ti.stratego2021.logic;
 
+import be.howest.ti.stratego2021.logic.exceptions.StrategoGameRuleException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -73,6 +74,46 @@ class GameManagerTest {
         assertEquals("defender",attack.getAttack().getWinner());
         assertEquals("empty",gameManager.getGameById("groep25test").getPawnAtPos(new Coords(6,4)).getPawnType());
         assertEquals("sergeant",gameManager.getGameById("groep25test").getPawnAtPos(new Coords(3,4)).getPawnType());
+    }
+
+    @Test
+    void testIfGameDoesntExist(){
+        gameManager.connectToGame("original","blueTestToken","groep25test",returnBlueConfig());
+        gameManager.connectToGame("original","redTestToken","groep25test",returnRedConfig());
+        assertThrows(StrategoGameRuleException.class,() -> {
+            gameManager.getGameById("groep25tes");
+        });
+    }
+
+    @Test
+    void testIfTokenDoesntBelongToGame(){
+        gameManager.connectToGame("original","blueTestToken","groep25test",returnBlueConfig());
+        gameManager.connectToGame("original","redTestToken","groep25test",returnRedConfig());
+        assertFalse(gameManager.checkIfTokenBelongsToGame(gameManager.getGameById("groep25test"),"TestToken"));
+    }
+
+    @Test
+    void testGetMovesFromGame(){
+        gameManager.connectToGame("original","blueTestToken","groep25test",returnBlueConfig());
+        gameManager.connectToGame("original","redTestToken","groep25test",returnRedConfig());
+        assertEquals(2,gameManager.getMovesFromGame("groep25test","blueTestToken").size());
+    }
+
+    @Test
+    void testGetMovesError(){
+        gameManager.connectToGame("original","blueTestToken","groep25test",returnBlueConfig());
+        gameManager.connectToGame("original","redTestToken","groep25test",returnRedConfig());
+        assertThrows(StrategoGameRuleException.class,() -> {
+            gameManager.getMovesFromGame("groep25test","bluTestToken");
+        });
+    }
+
+    @Test
+    void testGiveUpMove(){
+        gameManager.connectToGame("original","blueTestToken","groep25test",returnBlueConfig());
+        gameManager.connectToGame("original","redTestToken","groep25test",returnRedConfig());
+        gameManager.giveUpMove("groep25test");
+        assertEquals("PLAYERHASGIVENUP",gameManager.getGameById("groep25test").getMoveList().get(2).getPlayer());
     }
 
 }
