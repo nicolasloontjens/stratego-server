@@ -187,6 +187,18 @@ class GameTest {
             InfiltrationMove move = game.infiltratePlayer(new Coords(3,9),new Coords(1,9),"blueTestToken","infiltrator");
         });
     }
+    @Test
+    void testExecuteAttack(){
+        Game game = returnWorkingGame();
+        game.executeAttack(new Coords(5,9), new Coords(4,9),"blueTestToken");
+        assertThrows(StrategoGameRuleException.class, () ->{
+            game.applyGameRulesAndCheckIfAttackOrMove(new Coords(5,9), new Coords(5,9),"blueTestToken");
+           game.executeAttack(new Coords(5,9), new Coords(4,9),"blueTestToken");
+        });
+    }
+
+
+
 
     @Test
     void testInfiltrationFriendlyFireCheck(){
