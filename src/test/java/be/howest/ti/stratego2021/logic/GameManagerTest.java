@@ -82,7 +82,6 @@ class GameManagerTest {
         gameManager.connectToGame("original","redTestToken","groep25test",returnRedConfig());
         assertThrows(StrategoGameRuleException.class,() -> {
             gameManager.getGameById("groep25tes");
-
         });
     }
 
@@ -91,6 +90,30 @@ class GameManagerTest {
         gameManager.connectToGame("original","blueTestToken","groep25test",returnBlueConfig());
         gameManager.connectToGame("original","redTestToken","groep25test",returnRedConfig());
         assertFalse(gameManager.checkIfTokenBelongsToGame(gameManager.getGameById("groep25test"),"TestToken"));
+    }
+
+    @Test
+    void testGetMovesFromGame(){
+        gameManager.connectToGame("original","blueTestToken","groep25test",returnBlueConfig());
+        gameManager.connectToGame("original","redTestToken","groep25test",returnRedConfig());
+        assertEquals(2,gameManager.getMovesFromGame("groep25test","blueTestToken").size());
+    }
+
+    @Test
+    void testGetMovesError(){
+        gameManager.connectToGame("original","blueTestToken","groep25test",returnBlueConfig());
+        gameManager.connectToGame("original","redTestToken","groep25test",returnRedConfig());
+        assertThrows(StrategoGameRuleException.class,() -> {
+            gameManager.getMovesFromGame("groep25test","bluTestToken");
+        });
+    }
+
+    @Test
+    void testGiveUpMove(){
+        gameManager.connectToGame("original","blueTestToken","groep25test",returnBlueConfig());
+        gameManager.connectToGame("original","redTestToken","groep25test",returnRedConfig());
+        gameManager.giveUpMove("groep25test");
+        assertEquals("PLAYERHASGIVENUP",gameManager.getGameById("groep25test").getMoveList().get(2).getPlayer());
     }
 
 }
