@@ -1,6 +1,8 @@
 package be.howest.ti.stratego2021.logic;
 
 import be.howest.ti.stratego2021.logic.exceptions.StrategoGameRuleException;
+import be.howest.ti.stratego2021.web.bridge.ReturnBoardGetBody;
+import be.howest.ti.stratego2021.web.bridge.ReturnBoardPawn;
 import be.howest.ti.stratego2021.web.exceptions.ForbiddenAccessException;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
@@ -23,7 +25,81 @@ class GameTest {
         return new ArrayList<>(Arrays.asList(nullList,nullList,nullList,nullList,nullList,nullList,pawnList,pawnList,pawnList,nullList));
     }
 
+    List<List<String>> returnAlternativeRedConfig(){
+        List<String> nullList = new ArrayList<>(Arrays.asList(null,null,null,null,null,null,null,null,null,null));
+        List<String> pawnList = new ArrayList<>(Arrays.asList("flag","bomb","scout","scout",null,"scout","scout","scout","scout","infiltrator"));
+        return new ArrayList<>(Arrays.asList(nullList,nullList,nullList,nullList,nullList,nullList,pawnList,pawnList,pawnList,nullList));
+    }
+
+    List<List<ReturnBoardPawn>> returnBlueClientBoardConfig(){
+        List<ReturnBoardPawn> nullList = new ArrayList<>(Arrays.asList(null,null,null,null,null,null,null,null,null,null));
+        List<ReturnBoardPawn> pawnBlueList = new ArrayList<>(Arrays.asList(
+                new ReturnBoardGetBody("blue", "flag"),
+                new ReturnBoardGetBody("blue", "bomb"),
+                new ReturnBoardGetBody("blue", "colonel"),
+                new ReturnBoardGetBody("blue", "colonel"),
+                new ReturnBoardGetBody("blue", "scout"),
+                new ReturnBoardGetBody("blue", "colonel"),
+                new ReturnBoardGetBody("blue", "colonel"),
+                new ReturnBoardGetBody("blue", "colonel"),
+                new ReturnBoardGetBody("blue", "colonel"),
+                new ReturnBoardGetBody("blue", "infiltrator")));
+
+        List<ReturnBoardPawn> pawnRedList = new ArrayList<>(Arrays.asList(
+                new ReturnBoardPawn("red"),
+                new ReturnBoardPawn("red"),
+                new ReturnBoardPawn("red"),
+                new ReturnBoardPawn("red"),
+                new ReturnBoardPawn("red"),
+                null,
+                new ReturnBoardPawn("red"),
+                new ReturnBoardPawn("red"),
+                new ReturnBoardPawn("red"),
+                new ReturnBoardPawn("red")));
+        return new ArrayList<>(Arrays.asList(nullList,pawnRedList,pawnRedList,pawnRedList,nullList,nullList,pawnBlueList,pawnBlueList,pawnBlueList,pawnBlueList));
+    }
+
+    List<List<ReturnBoardPawn>> returnRedClientBoardConfig(){
+        List<ReturnBoardPawn> nullList = new ArrayList<>(Arrays.asList(null,null,null,null,null,null,null,null,null,null));
+        List<ReturnBoardPawn> pawnRedList = new ArrayList<>(Arrays.asList(
+                new ReturnBoardGetBody("red", "flag"),
+                new ReturnBoardGetBody("red", "bomb"),
+                new ReturnBoardGetBody("red", "sergeant"),
+                new ReturnBoardGetBody("red", "sergeant"),
+                null,
+                new ReturnBoardGetBody("red", "sergeant"),
+                new ReturnBoardGetBody("red", "sergeant"),
+                new ReturnBoardGetBody("red", "sergeant"),
+                new ReturnBoardGetBody("red", "sergeant"),
+                new ReturnBoardGetBody("red", "infiltrator")));
+
+        List<ReturnBoardPawn> pawnBlueList = new ArrayList<>(Arrays.asList(
+                new ReturnBoardPawn("blue"),
+                new ReturnBoardPawn("blue"),
+                new ReturnBoardPawn("blue"),
+                new ReturnBoardPawn("blue"),
+                new ReturnBoardPawn("blue"),
+                new ReturnBoardPawn("blue"),
+                new ReturnBoardPawn("blue"),
+                new ReturnBoardPawn("blue"),
+                new ReturnBoardPawn("blue"),
+                new ReturnBoardPawn("blue")));
+        return new ArrayList<>(Arrays.asList(pawnBlueList,pawnBlueList,pawnBlueList,pawnBlueList,nullList,nullList,pawnRedList,pawnRedList,pawnRedList,nullList));
+    }
+
     Game returnWorkingGame(){
+        Game game = new Game("1",returnBlueConfig(),"blueTestToken");
+        game.connectRedPlayer(returnRedConfig(),"redTestToken");
+        return game;
+    }
+
+    Game returnWorkingAlternativeGame(){
+        Game game = new Game("1",returnBlueConfig(),"blueTestToken");
+        game.connectRedPlayer(returnAlternativeRedConfig(),"redTestToken");
+        return game;
+    }
+
+    Game returnWorkingGameClientConfig(){
         Game game = new Game("1",returnBlueConfig(),"blueTestToken");
         game.connectRedPlayer(returnRedConfig(),"redTestToken");
         return game;
@@ -123,6 +199,19 @@ class GameTest {
     }
 
     @Test
+    void checkIfAttackWorksDraw(){
+        Game game = returnWorkingAlternativeGame();
+        game.executeMove(new Coords(6,4),new Coords(5,4),"blueTestToken");
+        game.executeMove(new Coords(3,4),new Coords(4,4),"redTestToken");
+        AttackMove move = game.executeAttack(new Coords(5,4),new Coords(4,4),"blueTestToken");
+        assertEquals("scout",move.getAttack().getAttacker());
+        assertEquals("scout",move.getAttack().getDefender());
+        assertEquals("draw",move.getAttack().getWinner());
+        assertEquals("empty",game.getPawnAtPos(new Coords(4,4)).getPawnType());
+        assertEquals("empty",game.getPawnAtPos(new Coords(5,4)).getPawnType());
+    }
+
+    @Test
     void checkIfFlagIsNotMoveable(){
         Game game = returnWorkingGame();
         assertThrows(StrategoGameRuleException.class, () ->{
@@ -187,6 +276,25 @@ class GameTest {
             InfiltrationMove move = game.infiltratePlayer(new Coords(3,9),new Coords(1,9),"blueTestToken","infiltrator");
         });
     }
+    @Test
+    void testExecuteAttack(){
+        Game game = returnWorkingGame();
+        game.executeAttack(new Coords(5,9), new Coords(4,9),"blueTestToken");
+        assertThrows(StrategoGameRuleException.class, () ->{
+            game.applyGameRulesAndCheckIfAttackOrMove(new Coords(5,9), new Coords(5,9),"blueTestToken");
+           game.executeAttack(new Coords(5,9), new Coords(4,9),"blueTestToken");
+        });
+    }
+
+    @Test
+    void testExecuteMove(){
+        Game game = returnWorkingGame();
+        game.executeMove(new Coords(2,1), new Coords(2,2),"blueTestToken");
+        assertThrows(StrategoGameRuleException.class, () ->{
+            game.applyGameRulesAndCheckIfAttackOrMove(new Coords(2,1),new Coords(2,2),"blueTestToken");
+            game.executeMove(new Coords(2,1),new Coords(2,2),"blueTestToken");
+        });
+    }
 
     @Test
     void testInfiltrationFriendlyFireCheck(){
@@ -243,6 +351,14 @@ class GameTest {
             game.applyGameRulesAndCheckIfAttackOrMove(new Coords(6,4),new Coords(3,4),"blueTestToken");
             game.executeMove(new Coords(6,4),new Coords(3,4),"blueTestToken");
         });
+    }
+
+    @Test
+    void  returnClientBoard(){
+        Game game = returnWorkingGameClientConfig();
+
+        assertEquals(returnBlueClientBoardConfig(),game.returnClientBoard("blueTestToken"));
+        assertEquals(returnRedClientBoardConfig(),game.returnClientBoard("redTestToken"));
     }
 
 }
