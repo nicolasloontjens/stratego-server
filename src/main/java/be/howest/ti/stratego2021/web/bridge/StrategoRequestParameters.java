@@ -1,6 +1,5 @@
 package be.howest.ti.stratego2021.web.bridge;
 
-import io.vertx.core.json.JsonObject;
 import be.howest.ti.stratego2021.logic.Coords;
 import io.vertx.ext.auth.User;
 import io.vertx.ext.web.RoutingContext;
