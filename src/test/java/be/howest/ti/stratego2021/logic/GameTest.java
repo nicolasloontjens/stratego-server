@@ -197,8 +197,15 @@ class GameTest {
         });
     }
 
-
-
+    @Test
+    void testExecuteMove(){
+        Game game = returnWorkingGame();
+        game.executeMove(new Coords(2,1), new Coords(2,2),"blueTestToken");
+        assertThrows(StrategoGameRuleException.class, () ->{
+            game.applyGameRulesAndCheckIfAttackOrMove(new Coords(2,1),new Coords(2,2),"blueTestToken");
+            game.executeMove(new Coords(2,1),new Coords(2,2),"blueTestToken");
+        });
+    }
 
     @Test
     void testInfiltrationFriendlyFireCheck(){
