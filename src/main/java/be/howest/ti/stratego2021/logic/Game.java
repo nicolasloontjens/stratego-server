@@ -15,6 +15,9 @@ public class Game {
     private final List<Move> moveList;
     private boolean gameStarted;
     private boolean isBlueTurn;
+    private static final String WATER = "water";
+    private static final String EMPTY = "empty";
+
 
     public Game(String  id, List<List<String>> blueConfig, String blueToken){
         gameId = id;
@@ -87,7 +90,7 @@ public class Game {
         String player = checkIfBlueOrRed(token);
         String enemy = getEnemy(player);
         List<List<ReturnBoardPawn>> res = getEmptyReturnBoard();
-        List<String> nonMoveableTypes = new ArrayList<>(Arrays.asList("water","empty"));
+        List<String> nonMoveableTypes = new ArrayList<>(Arrays.asList(WATER,EMPTY));
         for(int row = 0;row<10;row++){
             for(int col = 0;col<10;col++){
                 if(board.getPawn(new Coords(row,col)).getPlayerToken().equals(token)){
@@ -252,18 +255,18 @@ public class Game {
     //validation methods for the movement of pawns, comments in every function with it's functionality
     private boolean isAttackableTarget(Coords tar, String playerToken){
         //check if the target isn't water, or one of your own pawns
-        return !board.getPawn(tar).getPawnType().equals("water") && !board.getPawn(tar).getPlayerToken().equals(playerToken);
+        return !board.getPawn(tar).getPawnType().equals(WATER) && !board.getPawn(tar).getPlayerToken().equals(playerToken);
     }
 
     private boolean isNotEmptySpot(Coords tar){
         //check if tar contains a pawn or an empty spot
-        return !getPawnAtPos(tar).getPawnType().equals("empty");
+        return !getPawnAtPos(tar).getPawnType().equals(EMPTY);
     }
 
     private boolean validateIfMoveable(Coords src, String token){
         //check if the src pawn can be moved, by checking the type and the token it belongs to
         Pawn pawn = getPawnAtPos(src);
-        List<String> nonMoveableTypes = new ArrayList<>(Arrays.asList("water","empty","bomb","flag"));
+        List<String> nonMoveableTypes = new ArrayList<>(Arrays.asList(WATER,EMPTY,"bomb","flag"));
         return !nonMoveableTypes.contains(pawn.getPawnType()) && pawn.getPlayerToken().equals(token);
     }
 
@@ -306,7 +309,7 @@ public class Game {
         Coords curCords = new Coords(src.getRow(),src.getCol());
         while(!curCords.equals(tar)){
             curCords.setRow(curCords.getRow()+value);
-            if(!getPawnAtPos(curCords).getPawnType().equals("empty")&&curCords.getRow()!=tar.getRow()){
+            if(!getPawnAtPos(curCords).getPawnType().equals(EMPTY)&&curCords.getRow()!=tar.getRow()){
                 res = false;
             }
         }
@@ -319,7 +322,7 @@ public class Game {
         Coords curCords = new Coords(src.getRow(),src.getCol());
         while(!curCords.equals(tar)){
             curCords.setCol(curCords.getCol()+value);
-            if(!getPawnAtPos(curCords).getPawnType().equals("empty")&&curCords.getCol()!=tar.getCol()){
+            if(!getPawnAtPos(curCords).getPawnType().equals(EMPTY)&&curCords.getCol()!=tar.getCol()){
                 res = false;
             }
         }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -103,4 +104,18 @@ class VersionTest {
             gameManager.checkConfig("tiny", returnTooSmallConfigCol());
         });
     }
+
+    @Test
+    void testGetName(){
+        Version version = new Version("original",PieceCount.valueOf("original".toUpperCase(Locale.ROOT)));
+        assertEquals("original",version.getName());
+    }
+
+    @Test
+    void testGetPieceCount(){
+        Version version = new Version("original",PieceCount.valueOf("original".toUpperCase(Locale.ROOT)));
+        assertEquals(PieceCount.valueOf("ORIGINAL").getCounters(),version.getPieceCount());
+    }
+
+
 }

@@ -36,4 +36,11 @@ class PawnTest {
         assertTrue(scout.compareTo(major)<0);
     }
 
+    @Test
+    void testEquals(){
+        Pawn pawn1 = new Pawn("blue","infiltrator");
+        Pawn pawn2 = new Pawn("blue","infiltrator");
+        assertEquals(pawn1, pawn2);
+    }
+
 }
