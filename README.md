@@ -1,12 +1,12 @@
-# Stratego Server project group [number]
+# Stratego Server project group [25]
 
 ## Parent group
-https://git.ti.howest.be/TI/2020-2021/s2/programming-project/projects/group-XX
+https://git.ti.howest.be/TI/2020-2021/s2/programming-project/projects/students/group-25
 
 ## Remote urls
 
-* https://project-i.ti.howest.be/stratego-XX/ (this is your web client)
-* https://project-i.ti.howest.be/stratego-XX/api/stratego/versions/original (this will be available as soon as this project is deployed)
+* https://project-i.ti.howest.be/stratego-25/ (this is your web client)
+* https://project-i.ti.howest.be/stratego-25/api/versions/original (this will be available as soon as this project is deployed)
 * https://project-i.ti.howest.be/stratego-api-spec/ (this is a common resource: no write access)
 
 ## Before you start: Configure your server
@@ -59,4 +59,16 @@ For more details, please consult the [Sonar guide](https://git.ti.howest.be/TI/2
 
 ## Roadmap
 In order to help you along with planning, we've provided a server creation [roadmap](https://git.ti.howest.be/TI/2020-2021/s2/programming-project/documentation/stratego-documentation/-/blob/master/server-roadmap.md)
+
+## Implemented token authentication/authorization
+The tokens are created using 4 variables: the gameID (groep25), the version of the game it belongs to, the player (red or blue) and the amount of games the server has created.
+We are also using the Random class to create a random int between 9999 and 999999999. We then convert this number to a hexadecimal number.
+
+Example of generated tokens for a game: `groep25tiny2-2fe3b005BLUE` & `groep25tiny2-2af67e94RED`
+
+As for authorization, we check if the token matches those that are stored for that specific game. We also assign the tokens to every single pawn and check that way if you can move/attack/infiltrate that pawn.
+
+## Known bugs
+
+## Differences in implementation
 
